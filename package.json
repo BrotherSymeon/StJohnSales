@@ -1,0 +1,28 @@
+{
+  "name": "meadowlark",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "lint": "eslint *.js lib/*.js routes/*.js public/qa/*.js public/javascripts/*.js",
+    "test-unit": "mocha -u tdd -R spec qa/tests*.js ",
+    "test-integration": "mocha -u tdd -R spec qa/integration/tests-*.js "
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "express-hbs": "^2.2.0",
+    "body-parser": "^1.19.0",
+    "express-session": "^1.16.1",
+    "mocha": "^6.2.1"
+  },
+  "devDependencies": {
+    "chai": "4.2.0",
+    "eslint": "6.5.1",
+    "jshint": "2.10.2",
+    "zombie": "6.1.4"
+  }
+}
