@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 This document has been deleted outside of the editor.
 
 {"name":"eagle.jpg","date":"2019-11-06T16:46:49.913Z","url":"https://cdn.glitch.com/26f60f0e-5e92-4c0d-a906-860f7946052f%2Feagle.jpg","type":"image/jpeg","size":17835,"imageWidth":150,"imageHeight":150,"thumbnail":"https://cdn.glitch.com/26f60f0e-5e92-4c0d-a906-860f7946052f%2Feagle.jpg","thumbnailWidth":150,"thumbnailHeight":150,"uuid":"hgKCa34O5BbvzFCX"}
 Please run "refresh" in the console.
+=======
+{"name":"eagle.jpg","date":"2019-11-06T16:53:07.474Z","url":"https://cdn.glitch.com/24e113f1-de32-4494-8893-ab1861b094c2%2Feagle.jpg","type":"image/jpeg","size":17835,"imageWidth":150,"imageHeight":150,"thumbnail":"https://cdn.glitch.com/24e113f1-de32-4494-8893-ab1861b094c2%2Feagle.jpg","thumbnailWidth":150,"thumbnailHeight":150,"uuid":"EIashAe7qRxeGosq"}
+>>>>>>> af8f8361f928511ebcd3dc8177ae8dd0ed082517
+{"uuid":"EIashAe7qRxeGosq","deleted":true}
