@@ -24,17 +24,7 @@ router.get('/about', function (req, res, next) {
     pageTestScript: '/qa/tests-about.js'
   });
 });
-router.get('/login', function(req, res) {
-  res.locals.authenticated = false;
-  res.render('login', {layout: false});
-});
-router.post('/login', function(req, res) {
-  console.log('Form (from querystring): ' + req.query.form);
-console.log('CSRF token (from hidden form field): ' + req.body._csrf);
-console.log('Name (from visible form field): ' + req.body.password);
-console.log('Email (from visible form field): ' + req.body.email);
-  res.redirect(303, '/');
-});
+
 router.get('/headers', function (req, res) {
   res.set('Content-Type', 'text/plain');
   var s = '';
