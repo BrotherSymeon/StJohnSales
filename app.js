@@ -27,8 +27,8 @@ app.set('views', __dirname + '/views');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(
-app.use(var passport = requ)
+app.use(cookieParser());
+app.use(passport.initialize())
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function(req, res, next){
