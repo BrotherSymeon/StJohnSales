@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var hbs = require('express-hbs');
 var debug = require('debug')('meadowlark:server');
+var passport = require('passport');
 
 var weather = require('./lib/weather');
 
@@ -26,7 +27,8 @@ app.set('views', __dirname + '/views');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(
+app.use(var passport = requ)
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function(req, res, next){

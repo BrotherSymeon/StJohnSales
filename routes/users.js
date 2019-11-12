@@ -30,7 +30,7 @@ passport.deserializeUser(function(obj, cb) {
 
 /* GET users listing. */
 router.get('/auth/google',
-  passport.authenticate('google', { scope:  ['https://www.googleapis.com/auth/plus.login'] }));
+  passport.authenticate('google', { scope:   ['https://www.googleapis.com/auth/userinfo.profile'] }));
 
 router.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/users/login' }),
