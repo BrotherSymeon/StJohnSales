@@ -9,9 +9,13 @@ passport.use(new GoogleStrategy({
     callbackURL: "https://stjohnsales.glitch.me/users/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ googleId: profile.id }, function (err, user) {
-      return cb(err, user);
-    });
+    //User.findOrCreate({ googleId: profile.id }, function (err, user) {
+    //  return cb(err, user);
+    //});
+    return cb(null, {
+                profile: profile,
+                token: token
+            });
   }
 ));
 
@@ -26,7 +30,7 @@ passport.deserializeUser(function(obj, cb) {
 
 /* GET users listing. */
 router.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile'] }));
+  passport.authenticate('google', { scope:  ['https://www.googleapis.com/auth/plus.login'] }));
 
 router.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/users/login' }),
@@ -40,7 +44,7 @@ router.get('/login', function(req, res) {
   res.render('login');
 });
 
-app.get('/login/google',
+router.get('/login/google',
   passport.authenticate('google'));
 
 router.post('/login', function(req, res) {
