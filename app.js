@@ -8,27 +8,21 @@ var debug = require('debug')('meadowlark:server');
 var passport = require('passport');
 
 
-var app = module.exports = express();
+
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
  
 var options = {
-    host: 'localhost',
+    host: process.env.MYSQL_HOST,
     port: 3306,
-    user: 'session_test',
-    password: 'password',
-    database: 'session_test'
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PSWD,
+    database: process.env.MYSQL_DB
 };
  
 var sessionStore = new MySQLStore(options);
  
-app.use(session({
-    key: 'session_cookie_name',
-    secret: 'session_cookie_secret',
-    store: sessionStore,
-    resave: false,
-    saveUninitialized: false
-}));
+
 
 
 var weather = require('./lib/weather');
@@ -38,6 +32,15 @@ var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/api');
 
 var app = express();
+
+app.use(session({
+    key: 'session_cookie_name',
+    secret: 'session_cookie_secret',
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false
+}));
+
 
 // view engine setup
 app.engine('hbs', hbs.express4({

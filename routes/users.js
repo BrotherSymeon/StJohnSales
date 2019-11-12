@@ -1,4 +1,5 @@
 var express = require('express');
+var mysql = require('mysql')
 var router = express.Router();
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -18,6 +19,15 @@ passport.use(new GoogleStrategy({
             });
   }
 ));
+
+
+var connection = mysql.createConnection({
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PSWD,
+  database : process.env.MYSQL_DB
+});
+
 
 passport.serializeUser(function(user, cb) {
   cb(null, user);
