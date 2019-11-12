@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-var GoogleStrategy = require('passport-google-oauth').Strategy;
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
@@ -33,7 +33,7 @@ router.get('/auth/google',
   passport.authenticate('google', { scope:   ['https://www.googleapis.com/auth/userinfo.profile'] }));
 
 router.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/users/login' }),
+  passport.authenticate('google', { failureRedirect: '/' }),
   function(req, res) {
     // Successful authentication, redirect home.
     res.redirect('/');
@@ -45,7 +45,7 @@ router.get('/login', function(req, res) {
 });
 
 router.get('/login/google',
-  passport.authenticate('google'));
+  passport.authenticate('google', { scope:   ['https://www.googleapis.com/auth/userinfo.profile'] }));
 
 router.post('/login', function(req, res) {
   console.log('Form (from querystring): ' + req.query.form);
