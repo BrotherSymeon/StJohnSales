@@ -15,6 +15,15 @@ passport.use(new GoogleStrategy({
   }
 ));
 
+passport.serializeUser(function(user, cb) {
+  cb(null, user);
+});
+
+passport.deserializeUser(function(obj, cb) {
+  cb(null, obj);
+});
+
+
 /* GET users listing. */
 router.get('/auth/google',
   passport.authenticate('google', { scope: ['profile'] }));
@@ -28,8 +37,11 @@ router.get('/auth/google/callback',
 
 router.get('/login', function(req, res) {
   res.locals.authenticated = false;
-  res.render('login', {layout: false});
+  res.render('login');
 });
+
+app.get('/login/google',
+  passport.authenticate('google'));
 
 router.post('/login', function(req, res) {
   console.log('Form (from querystring): ' + req.query.form);
