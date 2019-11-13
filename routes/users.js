@@ -41,6 +41,7 @@ passport.deserializeUser(function(obj, cb) {
 });
 
 //'https://www.googleapis.com/auth/userinfo.email', 
+//https://www.googleapis.com/auth/userinfo.email
 /* GET users listing. */
 router.get('/auth/google',
   passport.authenticate('google', { scope:   ['https://www.googleapis.com/auth/plus.me'] }));
