@@ -18,8 +18,9 @@ exports.getAll = function(done) {
 };
 
 exports.getByEmail = function ( email, done ) {
-  db.get().query('SELECT * FROM Users WHERE email = ;', function ( err, rows) {
+  db.get().query('SELECT * FROM Users WHERE email = ?;', email, function ( err, rows) {
     if (err) return done(err);
     done( null, rows);
   });
-}
+};
+
