@@ -1,4 +1,5 @@
 var express = require('express');
+var User = require('../models/user')
 var mysql = require('mysql')
 var router = express.Router();
 var passport = require('passport');
@@ -11,7 +12,7 @@ passport.use(new GoogleStrategy({
   },
   function(accessToken, refreshToken, profile, cb) {
     console.log(profile)
-    //User.findOrCreate({ googleId: profile.id }, function (err, user) {
+    User.findByEmail(profile.emails[0].value, function (err, data) {
     //  return cb(err, user);
     //});
     return cb(null, {

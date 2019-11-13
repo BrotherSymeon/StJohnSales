@@ -5,6 +5,14 @@ var fortune = require('../lib/fortune');
 
 var router = express.Router();
 
+var sessionChecker = (req, res, next) => {
+    if (req.session.user && req.cookies.user_sid) {
+        next();
+    } else {
+        res.redirect('/users/login');
+    }    
+};
+
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
