@@ -7,7 +7,7 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "https://stjohnsales.glitch.me/users/auth/google/callback"
+    callbackURL: "/users/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, cb) {
     //User.findOrCreate({ googleId: profile.id }, function (err, user) {
@@ -45,7 +45,7 @@ router.get('/auth/google',
   passport.authenticate('google', { scope:   ['https://www.googleapis.com/auth/userinfo.profile'] }));
 
 router.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/' }),
+  passport.authenticate('google', { failureRedirect: '/users/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
     res.redirect('/');
