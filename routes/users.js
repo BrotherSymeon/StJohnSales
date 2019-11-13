@@ -1,6 +1,6 @@
 var express = require('express');
-var User = require('../models/user')
-var mysql = require('mysql')
+var User = require('../models/user');
+var mysql = require('mysql');
 var router = express.Router();
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -11,10 +11,12 @@ passport.use(new GoogleStrategy({
     callbackURL: 'https://stjohnsales.glitch.me/users/auth/google/callback'
   },
   function(accessToken, refreshToken, profile, cb) {
-    console.log(profile)
+    console.log(profile);
     User.findByEmail(profile.emails[0].value, function (err, data) {
-    //  return cb(err, user);
-    //});
+      console.log('user:');
+      var user = JSON.parse(JSON.stringify(data[0]))
+      console.log(user);
+    });
     return cb(null, {
                 profile: '',
                 token: ''
