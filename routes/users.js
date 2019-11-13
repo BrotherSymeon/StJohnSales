@@ -30,10 +30,12 @@ var connection = mysql.createConnection({
 
 
 passport.serializeUser(function(user, cb) {
+  console.log(user);
   cb(null, user);
 });
 
 passport.deserializeUser(function(obj, cb) {
+  console.log(obj);
   cb(null, obj);
 });
 
