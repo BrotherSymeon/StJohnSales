@@ -7,15 +7,16 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "/users/auth/google/callback"
+    callbackURL: 'https://stjohnsales.glitch.me/users/auth/google/callback'
   },
   function(accessToken, refreshToken, profile, cb) {
+    console.log(profile)
     //User.findOrCreate({ googleId: profile.id }, function (err, user) {
     //  return cb(err, user);
     //});
     return cb(null, {
-                profile: profile,
-                token: token
+                profile: '',
+                token: ''
             });
   }
 ));
@@ -45,9 +46,10 @@ router.get('/auth/google',
   passport.authenticate('google', { scope:   ['https://www.googleapis.com/auth/userinfo.profile'] }));
 
 router.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/users/login' }),
+  passport.authenticate('google', { failureRedirect: 'https://stjohnsales.glitch.me/users/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
+    console.log('redirecting');
     res.redirect('/');
   });
 
