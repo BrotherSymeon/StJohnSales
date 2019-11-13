@@ -31,11 +31,13 @@ var connection = mysql.createConnection({
 
 
 passport.serializeUser(function(user, cb) {
+  console.log(`serializing:`);
   console.log(user);
   cb(null, user);
 });
 
 passport.deserializeUser(function(obj, cb) {
+  console.log(`deserializing:`);
   console.log(obj);
   cb(null, obj);
 });
@@ -44,7 +46,7 @@ passport.deserializeUser(function(obj, cb) {
 //https://www.googleapis.com/auth/userinfo.email
 /* GET users listing. */
 router.get('/auth/google',
-  passport.authenticate('google', { scope:   ['https://www.googleapis.com/auth/plus.me'] }));
+  passport.authenticate('google', { scope:   ['openid', 'https://www.googleapis.com/auth/userinfo.email','https://www.googleapis.com/auth/plus.me'] }));
 
 router.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: 'https://stjohnsales.glitch.me/users/login' }),
@@ -60,7 +62,7 @@ router.get('/login', function(req, res) {
 });
 
 router.get('/login/google',
-  passport.authenticate('google', { scope:   ['https://www.googleapis.com/auth/userinfo.profile'] }));
+  passport.authenticate('google', { scope:   ['openid', 'https://www.googleapis.com/auth/userinfo.email','https://www.googleapis.com/auth/userinfo.profile'] }));
 
 router.post('/login', function(req, res) {
   console.log('Form (from querystring): ' + req.query.form);
