@@ -1,4 +1,5 @@
 dependencies:
+  async: 3.1.0
   body-parser: 1.19.0
   cookie-parser: 1.4.4
   debug: 2.6.9
@@ -199,6 +200,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-csOlWGAcRFJaI6m+F2WKdnMKr4HhdhFVBk0H/QbJFMCr+uO2kwohwXQPxw/9OCxp05r5ghVBFSyioixx3gfkNQ==
+  /async/3.1.0:
+    dev: false
+    resolution:
+      integrity: sha512-4vx/aaY6j/j3Lw3fbCHNWP0pPaTCew3F6F3hYyl/tHs/ndmV1q7NW9T5yuJ2XAGwdQrP+6Wu20x06U4APo/iQQ==
   /asynckit/0.4.0:
     dev: true
     resolution:
@@ -3436,6 +3441,7 @@ registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
+  async: ^3.1.0
   body-parser: ^1.19.0
   chai: 4.2.0
   cookie-parser: ~1.4.4

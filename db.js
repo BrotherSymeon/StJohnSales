@@ -1,4 +1,5 @@
 var mysql = require('mysql');
+var async = require('async');
 var PROD_DB ='app_prod_db'
   , TEST_DB = 'app_test_db';
 
@@ -32,5 +33,12 @@ exports.fixtures = function(data) {
   if(!pool) return done(new Error('Missing database connection.'));
   
   var names = Object.keys(data.tables);
-  
+  async.each(names, function(name, cb) {
+    async.each(data.tables[name], function(row, cb) {
+      var keys = Object.keys(row)
+        ,values = keys.map(function(key){ return `'${row[key]}'`; });
+      
+      pool.query(`INSERT INTO ${name} ( ${ keys.join(',') } ) VALUES ( ${ values.join(',') } );`, cb);
+    });
+  });
 };
