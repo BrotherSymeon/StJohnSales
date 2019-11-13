@@ -40,10 +40,10 @@ passport.deserializeUser(function(obj, cb) {
   cb(null, obj);
 });
 
-
+//'https://www.googleapis.com/auth/userinfo.email', 
 /* GET users listing. */
 router.get('/auth/google',
-  passport.authenticate('google', { scope:   ['https://www.googleapis.com/auth/userinfo.profile'] }));
+  passport.authenticate('google', { scope:   ['https://www.googleapis.com/auth/plus.me'] }));
 
 router.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: 'https://stjohnsales.glitch.me/users/login' }),
