@@ -19,6 +19,7 @@ passport.use(new GoogleStrategy({
         return cb(err);
       }
       console.log('profile2:');
+      console.log(data.length === 0)
       var user = JSON.parse(JSON.stringify(data[0]));
       //console.log(user);
       user.displayName = profile.displayName;
