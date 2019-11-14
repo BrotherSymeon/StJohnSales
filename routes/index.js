@@ -6,6 +6,7 @@ var fortune = require('../lib/fortune');
 var router = express.Router();
 
 var sessionChecker = (req, res, next) => {
+  console.log('sessionChecker')
     if (req.session.user && req.cookies.user_sid) {
         next();
     } else {
