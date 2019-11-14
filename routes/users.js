@@ -42,9 +42,15 @@ passport.serializeUser(function(user, cb) {
 });
 
 passport.deserializeUser(function(obj, cb) {
-  console.log(`deserializing:`);
+  console.log('deserializing:');
   console.log(obj);
-  cb(null, obj);
+  User.findByEmail(obj.emails[0].value, function(err, user) {
+    console.log('found User:');
+    console.log(user);
+    if(err){ cb(err);}
+    cb(null, user);
+  });
+
 });
 
 //'https://www.googleapis.com/auth/userinfo.email', 
