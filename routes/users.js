@@ -16,11 +16,12 @@ passport.use(new GoogleStrategy({
     User.findByEmail(profile.emails[0].value, function (err, data) {
       if(err) return cb(err);
       
-      console.log('user:');
+      //console.log('profile:');
       var user = JSON.parse(JSON.stringify(data[0]));
       //console.log(user);
+      user.displayName = profile.displayName;
       user.photo = avatar.get(profile)
-      console.log(user);
+      console.log(profile.displayName);
       cb(null, user);
     });
     //return cb(null, {profile: '',token: ''});
