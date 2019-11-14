@@ -12,14 +12,15 @@ passport.use(new GoogleStrategy({
     callbackURL: 'https://stjohnsales.glitch.me/users/auth/google/callback'
   },
   function(accessToken, refreshToken, profile, cb) {
-    console.log(profile);
+   
     User.findByEmail(profile.emails[0].value, function (err, data) {
       if(err) return cb(err);
       
-      //console.log('user:');
+      console.log('user:');
       var user = JSON.parse(JSON.stringify(data[0]));
       //console.log(user);
-      
+      user.photo = avatar.get(profile)
+      console.log(user);
       cb(null, user);
     });
     //return cb(null, {profile: '',token: ''});
