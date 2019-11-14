@@ -14,7 +14,10 @@ passport.use(new GoogleStrategy({
   function(accessToken, refreshToken, profile, cb) {
    
     User.findByEmail(profile.emails[0].value, function (err, data) {
-      if(err) return cb(err);
+      if(err) {
+        
+        return cb(err);
+      }
       console.log('profile2:');
       var user = JSON.parse(JSON.stringify(data[0]));
       //console.log(user);
