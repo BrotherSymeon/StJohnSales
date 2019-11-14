@@ -25,7 +25,7 @@ router.get('/', sessionChecker, function (req, res, next) {
   }
 
 });
-router.get('/about', function (req, res, next) {
+router.get('/about',sessionChecker, function (req, res, next) {
   console.log('/about');
   console.log(req.session);
   res.locals.authenticated = true
@@ -39,17 +39,6 @@ router.get('/about', function (req, res, next) {
   });
 });
 
-router.get('/headers', function (req, res) {
-  res.set('Content-Type', 'text/plain');
-  var s = '';
-  for (var name in req.headers) s += name + ': ' + req.headers[name] + '\n';
-  res.send(s);
-});
-router.get('/tours/hood-river', function (req, res) {
-  res.render('tours/hood-river', { title: 'Meadowlark Travel' });
-});
-router.get('/tours/request-group-rate', function (req, res) {
-  res.render('tours/request-group-rate', { title: 'Meadowlark Travel' });
-});
+
 
 module.exports = router;
