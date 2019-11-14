@@ -64,7 +64,9 @@ app.use(session({
 // This usually happens when you stop your express server after login, your cookie still remains saved in the browser.
 app.use((req, res, next) => {
     if (req.cookies.user_sid && !req.session.user) {
-        res.clearCookie('user_sid');        
+        res.clearCookie('user_sid');     
+        res.redirect('/users/logout');
+      
     }else{
       res.locals.authenticated = true;
       res.locals.user = req.session.user;
