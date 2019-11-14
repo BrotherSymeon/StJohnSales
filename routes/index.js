@@ -25,6 +25,7 @@ router.get('/', function (req, res, next) {
 
 });
 router.get('/about', function (req, res, next) {
+  console.log(req)
   var randomFortune = fortune.getFortune();
   res.render('about', {
     fortune: randomFortune,
