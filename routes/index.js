@@ -29,6 +29,7 @@ router.get('/about', function (req, res, next) {
   console.log('/about');
   console.log(req.session);
   res.locals.authenticated = true
+  
   //eq.cookies.user_sid && !req.session.user) 
   var randomFortune = fortune.getFortune();
   res.render('about', {
