@@ -80,6 +80,15 @@ router.get('/login', function(req, res) {
   res.render('login');
 });
 
+router.get('/logout', (req, res) => {
+    if (req.session.user && req.cookies.user_sid) {
+        res.clearCookie('user_sid');
+        res.redirect('/');
+    } else {
+        res.redirect('/login');
+    }
+});
+
 router.get('/login/google',
   passport.authenticate('google', { scope:   ['openid', 'https://www.googleapis.com/auth/userinfo.email','https://www.googleapis.com/auth/userinfo.profile'] }));
 

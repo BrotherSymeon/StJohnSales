@@ -15,7 +15,7 @@ var sessionChecker = (req, res, next) => {
 
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/', sessionChecker, function (req, res, next) {
   try {
     res.render('index', { title: 'St John Sales' });
   } catch (err) {
