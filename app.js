@@ -33,13 +33,7 @@ var apiRouter = require('./routes/api');
 
 var app = express();
 
-app.use(session({
-    key: 'user_sid',
-    secret: 'session_cookie_secret',
-    store: sessionStore,
-    resave: false,
-    saveUninitialized: false
-}));
+
 
 
 // view engine setup
@@ -57,6 +51,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(passport.initialize())
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+    key: 'user_sid',
+    secret: 'session_cookie_secret',
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false
+}));
 
 // This middleware will check if user's cookie is still saved in browser and user is not set, then automatically log the user out.
 // This usually happens when you stop your express server after login, your cookie still remains saved in the browser.
