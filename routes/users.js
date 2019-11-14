@@ -51,6 +51,7 @@ passport.deserializeUser(function(obj, cb) {
   User.findByEmail(obj.emails[0].value, function(err, user) {
     //console.log('found User:');
     //console.log(user);
+    
     user.photo = obj.photos[0].value;
     if(err){ cb(err);}
     cb(null, user);
