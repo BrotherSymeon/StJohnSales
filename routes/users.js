@@ -60,12 +60,12 @@ router.get('/auth/google',
   passport.authenticate('google', { scope:   ['openid', 'https://www.googleapis.com/auth/userinfo.email','https://www.googleapis.com/auth/plus.me'] }));
 
 router.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: 'https://stjohnsales.glitch.me/users/login' }),
+  passport.authenticate('google', { failureRedirect: '/users/login' }),
   function(req, res) {
-    // Successful authentication, redirect home.
-    console.log('redirecting');
+    console.log(req)
     res.redirect('/');
   });
+
 
 router.get('/login', function(req, res) {
   res.locals.authenticated = false;

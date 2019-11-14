@@ -25,7 +25,9 @@ router.get('/', function (req, res, next) {
 
 });
 router.get('/about', function (req, res, next) {
-  console.log(req)
+  console.log(req.cookies);
+  console.log(req.session);
+  //eq.cookies.user_sid && !req.session.user) 
   var randomFortune = fortune.getFortune();
   res.render('about', {
     fortune: randomFortune,
