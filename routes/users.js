@@ -1,5 +1,6 @@
 var express = require('express');
 var User = require('../models/user');
+var avatar = require('../helpers/avatar');
 var mysql = require('mysql');
 var router = express.Router();
 var passport = require('passport');
@@ -39,7 +40,8 @@ passport.serializeUser(function(user, cb) {
   //console.log(user);
   var data = {
     id: user.id,
-    email: user.email
+    email: user.email,
+    photo: avatar.get(user)
   };
   
   cb(null, data);
@@ -49,10 +51,7 @@ passport.deserializeUser(function(obj, cb) {
   console.log('deserializing:');
   console.log(obj);
   User.findByEmail(obj.emails[0].value, function(err, user) {
-    //console.log('found User:');
-    //console.log(user);
     
-    user.photo = obj.photos[0].value;
     if(err){ cb(err);}
     cb(null, user);
   });
@@ -68,10 +67,9 @@ router.get('/auth/google',
 router.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/users/login' }),
   function(req, res) {
-  console.log('/auth/google/callback')
-    
+    console.log('/auth/google/callback');
     req.session.user = req.user;
-  console.log(req.user);
+    console.log(req.user);
     console.log(req.session);
     res.redirect('/');
   });
