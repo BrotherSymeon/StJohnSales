@@ -36,12 +36,13 @@ var connection = mysql.createConnection({
 
 
 passport.serializeUser(function(user, cb) {
-  //console.log('serializing:');
-  //console.log(user);
+  console.log('serializing:');
+  console.log(user);
+ // photo: avatar.get(user)
   var data = {
-    id: user.id,
-    email: user.email,
-    photo: avatar.get(user)
+    id: user.user_id,
+    email: user.email
+    
   };
   
   cb(null, data);
