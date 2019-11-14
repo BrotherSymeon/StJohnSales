@@ -15,13 +15,12 @@ passport.use(new GoogleStrategy({
    
     User.findByEmail(profile.emails[0].value, function (err, data) {
       if(err) return cb(err);
-      
-      //console.log('profile:');
+      console.log('profile2:');
       var user = JSON.parse(JSON.stringify(data[0]));
       //console.log(user);
       user.displayName = profile.displayName;
       user.photo = avatar.get(profile)
-      console.log(profile.displayName);
+      console.log(profile);
       cb(null, user);
     });
     //return cb(null, {profile: '',token: ''});
