@@ -15,9 +15,9 @@ passport.use(new GoogleStrategy({
     User.findByEmail(profile.emails[0].value, function (err, data) {
       if(err) return cb(err);
       
-      console.log('user:');
+      //console.log('user:');
       var user = JSON.parse(JSON.stringify(data[0]));
-      console.log(user);
+      //console.log(user);
       
       cb(null, user);
     });
@@ -35,18 +35,22 @@ var connection = mysql.createConnection({
 
 
 passport.serializeUser(function(user, cb) {
-  console.log('serializing:');
-  console.log(user);
+  //console.log('serializing:');
+  //console.log(user);
+  var data = {
+    id: user.id,
+    email: user.email
+  };
   
-  cb(null, user.email);
+  cb(null, data);
 });
 
 passport.deserializeUser(function(obj, cb) {
-  console.log('deserializing:');
-  console.log(obj);
+  //console.log('deserializing:');
+  //console.log(obj);
   User.findByEmail(obj.emails[0].value, function(err, user) {
-    console.log('found User:');
-    console.log(user);
+    //console.log('found User:');
+    //console.log(user);
     if(err){ cb(err);}
     cb(null, user);
   });
@@ -62,7 +66,9 @@ router.get('/auth/google',
 router.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/users/login' }),
   function(req, res) {
-    console.log(req)
+  console.log('/auth/google/callback')
+    console.log(req.user)
+    console.log(req.session)
     res.redirect('/');
   });
 
