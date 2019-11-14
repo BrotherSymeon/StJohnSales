@@ -13,14 +13,15 @@ passport.use(new GoogleStrategy({
   function(accessToken, refreshToken, profile, cb) {
     console.log(profile);
     User.findByEmail(profile.emails[0].value, function (err, data) {
+      if(err) return cb(err);
+      
       console.log('user:');
-      var user = JSON.parse(JSON.stringify(data[0]))
+      var user = JSON.parse(JSON.stringify(data[0]));
       console.log(user);
+      
+      cb(null, user);
     });
-    return cb(null, {
-                profile: '',
-                token: ''
-            });
+    //return cb(null, {profile: '',token: ''});
   }
 ));
 
@@ -34,9 +35,10 @@ var connection = mysql.createConnection({
 
 
 passport.serializeUser(function(user, cb) {
-  console.log(`serializing:`);
+  console.log('serializing:');
   console.log(user);
-  cb(null, user);
+  
+  cb(null, user.email);
 });
 
 passport.deserializeUser(function(obj, cb) {
