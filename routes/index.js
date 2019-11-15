@@ -7,7 +7,7 @@ var router = express.Router();
 var sessionChecker = (req, res, next) => {
   console.log("sessionChecker");
   //console.log(req.session.user.id);
-  if (req.session.user && req.cookies.user_sid) {
+  if (req.session.user.id && req.cookies.user_sid) {
     console.log('one')
     next();
   } else if (!req.session.user) {
