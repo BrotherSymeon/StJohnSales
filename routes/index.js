@@ -9,7 +9,7 @@ var sessionChecker = (req, res, next) => {
   //console.log(req.session.user.id);
   if (req.session.user && req.cookies.user_sid) {
     next();
-  } else if (!req.session.user.id) {
+  } else if (!req.session.user) {
     res.redirect("/users/login");
   } else {
     res.redirect("/users/login");
