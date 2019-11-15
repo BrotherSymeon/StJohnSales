@@ -20,7 +20,7 @@ exports.getAll = function(done) {
 exports.findByEmail = function ( email, done ) {
   db.get().query('SELECT * FROM Users WHERE email = ?;', email, function ( err, rows) {
     if (err) return done(err);
-    console.log(err)
+    console.log(err);
     //if (rows.length === 0) return done(new Error('no data'))
     console.log(rows);
     done( null, rows);

@@ -22,6 +22,7 @@ passport.use(
         try {
           console.log("profile2:");
           console.log(data.length === 0);
+          console.log(JSON.stringify(data[0]))
           var user = JSON.parse(JSON.stringify(data[0]));
           //console.log(user);
           user.displayName = profile.displayName;
@@ -104,7 +105,7 @@ router.get("/logout", (req, res) => {
     res.clearCookie("user_sid");
     res.redirect("/");
   } else {
-    res.redirect("/login");
+    res.redirect("/users/login");
   }
 });
 
