@@ -48,9 +48,9 @@ var connection = mysql.createConnection({
 
 passport.serializeUser(function(user, cb) {
   console.log("serializing:");
-  console.log(user);
+  //console.log(user);
   // photo: avatar.get(user)
-  if (user.user_id) {
+  if (user && user.user_id) {
     var data = {
       id: user.user_id,
       email: user.email
@@ -58,7 +58,7 @@ passport.serializeUser(function(user, cb) {
 
     cb(null, data);
   } else {
-    cb(null, null);
+    cb(null, {});
   }
 });
 

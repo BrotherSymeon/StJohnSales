@@ -8,10 +8,13 @@ var sessionChecker = (req, res, next) => {
   console.log("sessionChecker");
   //console.log(req.session.user.id);
   if (req.session.user && req.cookies.user_sid) {
+    console.log('one')
     next();
   } else if (!req.session.user) {
+    console.log('2')
     res.redirect("/users/login");
   } else {
+    console.log('3')
     res.redirect("/users/login");
   }
 };
