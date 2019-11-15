@@ -22,7 +22,7 @@ passport.use(
         try {
           console.log("profile2:");
           console.log(data.length === 0);
-          console.log(JSON.stringify(data[0]))
+          console.log(data[0]);
           var user = JSON.parse(JSON.stringify(data[0]));
           //console.log(user);
           user.displayName = profile.displayName;
@@ -31,7 +31,7 @@ passport.use(
           cb(null, user);
         } catch (err) {
           console.log(err);
-          return cb(null, { profile: '', token: '' });
+          return cb(null, { profile: "", token: "" });
         }
       });
       //return cb(null, {profile: '',token: ''});
@@ -50,12 +50,16 @@ passport.serializeUser(function(user, cb) {
   console.log("serializing:");
   console.log(user);
   // photo: avatar.get(user)
-  var data = {
-    id: user.user_id,
-    email: user.email
-  };
+  if (user.user_id) {
+    var data = {
+      id: user.user_id,
+      email: user.email
+    };
 
-  cb(null, data);
+    cb(null, data);
+  } else {
+    cb(null, null);
+  }
 });
 
 passport.deserializeUser(function(obj, cb) {
