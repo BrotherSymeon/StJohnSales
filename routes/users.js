@@ -56,7 +56,7 @@ passport.serializeUser(function(user, cb) {
       email: user.email
     };
 
-    cb(null, data);
+    cb(null, user);
   } else {
     cb(null, {});
   }
