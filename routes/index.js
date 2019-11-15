@@ -6,13 +6,14 @@ var router = express.Router();
 
 var sessionChecker = (req, res, next) => {
   console.log("sessionChecker");
-  //console.log(req.session);
-  if (req.session.user.user_id && req.cookies.user_sid) {
-    //console.log('one')
-    next();
-  } else if (!req.session.user) {
-    //console.log('2')
+  console.log(req.session);
+  if (!req.session.user) {
     res.redirect("/users/login");
+    //console.log('one')
+    
+  } else if (req.session.user.user_id && req.cookies.user_sid) {
+    //console.log('2')
+    next();
   } else {
     //console.log('3')
     res.redirect("/users/login");

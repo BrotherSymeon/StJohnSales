@@ -31,7 +31,7 @@ passport.use(
           cb(null, user);
         } catch (err) {
           console.log(err);
-          return cb(null, { profile: "", token: "" });
+          return cb(null, {});
         }
       });
       //return cb(null, {profile: '',token: ''});
