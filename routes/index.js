@@ -51,7 +51,9 @@ router.get("/test", sessionChecker, function(req, res) {
   pool.query("SELECT * FROM tempOrders;", function(error, results, fields) {
     if (error) throw error;
     console.log("The solution is: ", results[0]);
+    return res.sendStatus(200);
   });
+  
 });
 
 module.exports = router;
