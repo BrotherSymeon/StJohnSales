@@ -39,20 +39,21 @@ router.get("/about", sessionChecker, function(req, res, next) {
   });
 });
 
-router.get("/test", sessionChecker, function(req, res) {
-  var mysql = require("mysql");
-  var pool = mysql.createPool({
-    host: "35.196.170.106",
-    user: "salesadmin",
-    password: "johnnyappleseed3334",
-    database: "sales"
-  });
-
-  pool.query("SELECT * FROM tempOrders;", function(error, results, fields) {
-    if (error) throw error;
-    console.log("The solution is: ", results[0]);
-    return res.sendStatus(200);
-  });
+router.get('/test', sessionChecker, function(req, res) {
+  return res.sendStatus(200);
+  //var mysql = require("mysql");
+  //var pool = mysql.createPool({
+  //  host: "35.196.170.106",
+  //  user: "salesadmin",
+  //  password: "johnnyappleseed3334",
+  //  database: "sales"
+  //});
+//
+  //pool.query("SELECT * FROM tempOrders;", function(error, results, fields) {
+   // if (error) throw error;
+   // console.log("The solution is: ", results[0]);
+   // 
+  //});
   
 });
 
