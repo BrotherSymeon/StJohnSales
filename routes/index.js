@@ -1,5 +1,6 @@
 var express = require("express");
 var fortune = require("../lib/fortune");
+var gcp = require('../gcpDb');
 //var debug = require('debug')('meadowlark:server');
 
 var router = express.Router();
@@ -36,6 +37,12 @@ router.get("/about", sessionChecker, function(req, res, next) {
     fortune: randomFortune,
     title: "Meadowlark Travel",
     pageTestScript: "/qa/tests-about.js"
+  });
+});
+
+router.get('/test', sessionChecker, function(req, res){
+  db.connect(db.MODE_PROD, function(err) {
+    console.log(err);
   });
 });
 
