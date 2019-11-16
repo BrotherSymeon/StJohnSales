@@ -1,6 +1,6 @@
 var express = require("express");
 var fortune = require("../lib/fortune");
-var gcp = require('../gcpDb');
+var gcp = require("../gcpDb");
 //var debug = require('debug')('meadowlark:server');
 
 var router = express.Router();
@@ -11,7 +11,6 @@ var sessionChecker = (req, res, next) => {
   if (!req.session.user) {
     res.redirect("/users/login");
     //console.log('one')
-    
   } else if (req.session.user.user_id && req.cookies.user_sid) {
     //console.log('2')
     next();
@@ -40,9 +39,18 @@ router.get("/about", sessionChecker, function(req, res, next) {
   });
 });
 
-router.get('/test', sessionChecker, function(req, res){
-  db.connect(db.MODE_PROD, function(err) {
-    console.log(err);
+router.get("/test", sessionChecker, function(req, res) {
+  var mysql = require("mysql");
+  var pool = mysql.createPool({
+    host: "35.196.170.106",
+    user: "salesadmin",
+    password: "johnnyappleseed3334",
+    database: "sales"
+  });
+
+  pool.query("SELECT 1 + 1 AS solution", function(error, results, fields) {
+    if (error) throw error;
+    console.log("The solution is: ", results[0].solution);
   });
 });
 
