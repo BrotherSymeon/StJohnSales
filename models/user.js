@@ -17,6 +17,24 @@ exports.getAll = function(done) {
   });
 };
 
+exports.create = function ({ username, email, description }, done) {
+  let stmt = `INSERT INTO Users(username, email, description)
+                VALUES(?,?,?)`;
+  let user = [username, email, description];
+  db.get().query(stmt, user, function(err, results, fields) {
+    
+  })
+  
+}
+
+exports.findById = function (id, done) {
+   db.get().query('SELECT * FROM Users WHERE user_id = ?;', id, function ( err, rows) {
+    if (err) return done(err);
+    var user = JSON.parse(JSON.stringify(rows[0]));
+    done( null, user);
+  });
+};
+
 exports.findByEmail = function ( email, done ) {
   db.get().query('SELECT * FROM Users WHERE email = ?;', email, function ( err, rows) {
     if (err) return done(err);
