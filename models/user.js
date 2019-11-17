@@ -14,27 +14,29 @@ exports.create = function(username, email, description, done) {
 };
 
 exports.getAll = function(done) {
-  db.get().query("SELECT * FROM Users;", function(err, rows) {
+  db.get().query('SELECT * FROM Users;', function(err, rows) {
     if (err) return done(err);
     done(null, rows);
   });
 };
 
-exports.create = function({ username, email, description }, done) {
+exports.create = function({ username, email, description, roles }, done) {
   let stmt = `INSERT INTO Users(username, email, description)
-                VALUES(?,?,?)`;
+                VALUES(?,?,?,?)`;
+  
   let user = [username, email, description];
+  user.push(JSON.stringify(roles));
   db.get().query(stmt, user, function(err, results, fields) {
     if (err) {
       return console.error(err.message);
     }
     // get inserted id
-    console.log("User user_id:" + results.insertId);
+    console.log('User user_id:' + results.insertId);
   });
 };
 
 exports.findById = function(id, done) {
-  db.get().query("SELECT * FROM Users WHERE user_id = ?;", id, function(
+  db.get().query('SELECT * FROM Users WHERE user_id = ?;', id, function(
     err,
     rows
   ) {
@@ -45,7 +47,7 @@ exports.findById = function(id, done) {
 };
 
 exports.findByEmail = function(email, done) {
-  db.get().query("SELECT * FROM Users WHERE email = ?;", email, function(
+  db.get().query('SELECT * FROM Users WHERE email = ?;', email, function(
     err,
     rows
   ) {

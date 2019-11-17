@@ -13,3 +13,4 @@ router.get('/users/new', adminController.users_new);
 
 router.get('/data', adminController.data_upload);
 
+module.exports = router;
