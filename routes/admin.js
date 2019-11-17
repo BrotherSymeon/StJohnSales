@@ -1,2 +1,2 @@
 var express = require('express');
-var
+var router = express.Router();
