@@ -13,7 +13,12 @@ var sessionChecker = (req, res, next) => {
     res.redirect("/users/login");
     //console.log('one')
   } else if (req.session.user.user_id && req.cookies.user_sid) {
-    //console.log('2')
+    try{
+      console.log(JSON.parse(req.session.user.roles));
+    }catch(err){
+      console.log(err)
+    }
+    
     next();
   } else {
     //console.log('3')
