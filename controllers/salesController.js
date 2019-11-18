@@ -5,7 +5,10 @@ exports.dashboard = async function(req, res) {
   try{
     var data = await Sales.OrderAmountsByMonth(2019);
     return res.render('index', { title : 'St Johns Sales'});
-  }cat
+  }catch(err){
+    console.error(err)
+    return res.render('index', { title : 'St Johns Sales'});
+  }
   
   
 };

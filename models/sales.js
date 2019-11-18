@@ -3,10 +3,13 @@ var salesDb = require('../gcpDb');
 
 exports.OrderAmountsByMonth = async function ( year ) {
   return new Promise(function(resolve, reject){
-    salesDb.get().query('SELECT MonthOfYear, SUM(OrderTotal) as Amount FROM Orders GROUP BY MonthOfYear', year, function(err, result) {
-      if (err) return reject(err);
-      resolve(JSON.parse(JSON.stringify(result)));
-    });
+    salesDb.connect(salesDb.MODE_PROD, function(){
+      salesDb.get().query('SELECT MonthOfYear, SUM(OrderTotal) as Amount FROM Orders GROUP BY MonthOfYear', year, function(err, result) {
+        if (err) return reject(err);
+        resolve(JSON.parse(JSON.stringify(result)));
+      });
+    })
+   
   });
  
 };
