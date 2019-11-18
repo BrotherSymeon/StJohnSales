@@ -14,7 +14,7 @@ var sessionChecker = (req, res, next) => {
     //console.log('one')
   } else if (req.session.user.user_id && req.cookies.user_sid) {
     try{
-      console.log(JSON.parse(req.session.user.roles));
+      //console.log(JSON.parse(req.session.user.roles));
     }catch(err){
       console.log(err)
     }
