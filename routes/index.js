@@ -1,10 +1,11 @@
-var express = require("express");
-var fortune = require("../lib/fortune");
-var gcp = require("../gcpDb");
+var express = require('express');
+var fortune = require('../lib/fortune');
+var salesController = require('../controllers/salesController');
+//var gcp = require("../gcpDb");
 //var debug = require('debug')('meadowlark:server');
 
 var router = express.Router();
-var title = 'St Johns Sales'
+var title = 'St Johns Sales';
 
 var sessionChecker = (req, res, next) => {
   console.log("sessionChecker");
@@ -27,11 +28,8 @@ var sessionChecker = (req, res, next) => {
 };
 
 /* GET home page. */
-router.get('/', sessionChecker, function(req, res) {
- 
-    res.render('index', { title });
- 
-});
+router.get('/', sessionChecker, salesController.dashboard);
+
 router.get('/about', sessionChecker, function(req, res) {
   //eq.cookies.user_sid && !req.session.user)
   var randomFortune = fortune.getFortune();
