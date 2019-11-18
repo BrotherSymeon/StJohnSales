@@ -23,7 +23,7 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
-gcpDb.connect(gcp.Db.MODE_PROD, function(err){
+gcpDb.connect(gcpDb.MODE_PROD, function(err){
   if ( err ) {
     console.log('Unable to connect to database.')
   }
