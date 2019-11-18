@@ -1,3 +1,5 @@
 var Sales = require('../models/sales');
 
-exports.dashboard = function(re)
+exports.dashboard = async function(req, res) {
+  
+};
