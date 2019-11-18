@@ -39,7 +39,12 @@ var app = express();
 
 // view engine setup
 app.engine('hbs', hbs.express4({
-  partialsDir: __dirname + '/views/partials'
+  partialsDir: __dirname + '/views/partials',
+   helpers: {
+    toJSON : function(object) {
+      return JSON.stringify(object);
+    }
+  }
 }));
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');

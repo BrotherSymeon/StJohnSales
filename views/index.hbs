@@ -27,6 +27,7 @@
 {{#contentFor "pageScripts"}}
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <script>
+    {{{toJSON data }}}
   window.addEventListener('load', function () {
     //your code right here;
     console.log('hello')
