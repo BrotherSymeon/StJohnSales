@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var salesController = require('../controllers/salesController')
 
 var tours = [
   {id:1, name:'Hood River Tour', price: 789.00},
