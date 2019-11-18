@@ -28,7 +28,7 @@ var sessionChecker = (req, res, next) => {
 };
 
 /* GET home page. */
-router.get('/', sessionChecker, salesController.dashboard);
+router.get('/', sessionChecker, salesController.dashboard );
 
 router.get('/about', sessionChecker, function(req, res) {
   //eq.cookies.user_sid && !req.session.user)
