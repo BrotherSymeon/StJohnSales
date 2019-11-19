@@ -21,7 +21,22 @@
     </div>
   </div>
   <div class="col-xl-6">
-    
+     <div class="card">
+      <div class="card-header">
+        <h4 class="card-title mb-0">
+          <i class="fas fa-chart-pie"></i>
+            Etsy Sales By Quarter
+        </h4>
+        <div class="card-body">
+          <div class="tab-content p-0">
+          <!-- Morris chart - Sales -->
+            <div class="chart tab-pane active" id="etsy-quarter-revenue-chart" style="position: relative; height: 300px;">
+              <canvas id="etsy-quarter-revenue-chart-canvas" height="300" style="height: 300px;"></canvas>                         
+            </div>
+           </div>
+        </div><!-- /.card-body -->
+       </div>
+    </div>
   </div>
 </div>
 
@@ -34,11 +49,14 @@
     var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
     var etsyMonthlyData = {{{toJSON etsyMonthlyData }}}
     var etsyQuarterlyData = {{{toJSON etsyQuarterlyData }}}
+    var squareMonthlyData = {{{toJSON squareMonthlyData }}}
+    var squareQuarterlyData = {{{toJSON squareQuarterlyData }}}
     
-    var mylabels = etsyMonthlyData.map(function(item){
+    
+    var etsyMonthlyLabels = etsyMonthlyData.map(function(item){
       return months[Number(item.MonthOfYear) - 1]
     });
-    var myDataPoints = etsyMonthlyData.map(function(item){
+    var etsyMonthlyDataPoints = etsyMonthlyData.map(function(item){
       return item.Amount
     });
     
@@ -53,7 +71,8 @@
         return item.Amount
       });
     }
-    function buildChart(chartLabels, chartDataPoints, chartCanvasId){
+    function buildChart( chartCanvasId, dataOptions, chartOptions){
+      var canvas = document.getElementById(chartCanvasId).getContext('2d');
       
     }
   window.addEventListener('load', function () {
@@ -65,7 +84,7 @@
   //$('#revenue-chart').get(0).getContext('2d');
 
   var etsyMonthlySalesChartData = {
-    labels  : mylabels,
+    labels  : etsyMonthlyLabels,
     datasets: [
       {
         label               : 'Etsy Sales By Month',
@@ -76,7 +95,7 @@
         pointStrokeColor    : 'rgba(60,141,188,1)',
         pointHighlightFill  : '#fff',
         pointHighlightStroke: 'rgba(60,141,188,1)',
-        data                : myDataPoints
+        data                : etsyMonthlyDataPoints
       }
     ]
   }
@@ -103,8 +122,8 @@
   // This will get the first returned node in the jQuery collection.
   var etsyMonthlySalesChart = new Chart(etsyMonthlySalesChartCanvas, { 
       type: 'line', 
-      data: salesChartData, 
-      options: salesChartOptions
+      data: etsyMonthlySalesChartData, 
+      options: etsyMonthlySalesChartOptions
     }
   )
   
