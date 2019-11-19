@@ -3,23 +3,22 @@
 <h3>Dashboard</h3>
 <div>
   <div class="col-xl-6">
-     <div class="card">
-              <div class="card-header">
-                <h4 class="card-title mb-0">
-                  <i class="fas fa-chart-pie"></i>
-                  Etsy Sales By Month
-                </h4>
-<div class="card-body">
-  <div class="tab-content p-0">
-    <!-- Morris chart - Sales -->
-    <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;">
-      <canvas id="revenue-chart-canvas" height="300" style="height: 300px;"></canvas>                         
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title mb-0">
+          <i class="fas fa-chart-pie"></i>
+            Etsy Sales By Month
+        </h4>
+        <div class="card-body">
+          <div class="tab-content p-0">
+          <!-- Morris chart - Sales -->
+            <div class="chart tab-pane active" id="etsy-month-revenue-chart" style="position: relative; height: 300px;">
+              <canvas id="etsy-month-revenue-chart-canvas" height="300" style="height: 300px;"></canvas>                         
+            </div>
+           </div>
+        </div><!-- /.card-body -->
+       </div>
     </div>
-   
-  </div>
-</div><!-- /.card-body -->
-   </div>
-</div>
   </div>
   <div class="col-xl-6">
     
@@ -40,20 +39,21 @@
     });
     var myDataPoints = data.map(function(item){
       return item.Amount
-    })
+    });
+    function buildChart(chartLabels, chartDataPoints)
   window.addEventListener('load', function () {
     //your code right here;
     console.log('hello')
       /* Chart.js Charts */
   // Sales chart
-  var salesChartCanvas = document.getElementById('revenue-chart-canvas').getContext('2d');
+  var etsyMonthlySalesChartCanvas = document.getElementById('etsy-month-revenue-chart-canvas').getContext('2d');
   //$('#revenue-chart').get(0).getContext('2d');
 
-  var salesChartData = {
+  var etsyMonthlySalesChartData = {
     labels  : mylabels,
     datasets: [
       {
-        label               : 'Etsy Sales',
+        label               : 'Etsy Sales By Month',
         backgroundColor     : 'rgba(60,141,188,0.9)',
         borderColor         : 'rgba(60,141,188,0.8)',
         pointRadius          : false,
@@ -65,7 +65,7 @@
       }
     ]
   }
-   var salesChartOptions = {
+   var etsyMonthlySalesChartOptions = {
     maintainAspectRatio : false,
     responsive : true,
     legend: {
@@ -86,7 +86,7 @@
   }
 
   // This will get the first returned node in the jQuery collection.
-  var salesChart = new Chart(salesChartCanvas, { 
+  var etsyMonthlySalesChart = new Chart(etsyMonthlySalesChartCanvas, { 
       type: 'line', 
       data: salesChartData, 
       options: salesChartOptions
