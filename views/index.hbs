@@ -71,14 +71,18 @@
         return item.Amount
       });
     }
-    function buildChart( chartCanvasId, dataOptions, chartOptions){
+    function buildChart( chartCanvasId, dataOptions, chartOptions, type){
       var canvas = document.getElementById(chartCanvasId).getContext('2d');
-      
+      var etsyMonthlySalesChart = new Chart(canvas, { 
+          type: type, 
+          data: dataOptions, 
+          options: chartOptions
+        }
+      )
     }
   window.addEventListener('load', function () {
-    //your code right here;
-    console.log('hello')
-      /* Chart.js Charts */
+    
+
   // Sales chart
   var etsyMonthlySalesChartCanvas = document.getElementById('etsy-month-revenue-chart-canvas').getContext('2d');
   //$('#revenue-chart').get(0).getContext('2d');
