@@ -95,6 +95,9 @@
     var squareMonthlyData = {{{toJSON squareMonthlyData }}}
     var squareQuarterlyData = {{{toJSON squareQuarterlyData }}}
     
+    etsyQuarterlyData.push(etsyQuarterlyData.shift());
+    squareQuarterlyData.push(squareQuarterlyData.shift());
+    
     
     var etsyMonthlyLabels = etsyMonthlyData.map(function(item){
       return months[Number(item.MonthOfYear) - 1]
