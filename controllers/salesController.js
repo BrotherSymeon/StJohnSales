@@ -3,8 +3,8 @@ var someAsync = require('../helpers/someAsync');
 
 exports.dashboard = async function(req, res) {
   try{
-    var data = await Sales.OrderAmountsByMonth(2019);
-    var quarterData = await Sales.OrderAmountsByQuarter(2019);
+    var data = await Sales.OrderAmountsByMonth(2019, 'ETSY');
+    var quarterData = await Sales.OrderAmountsByQuarter(2019, 'ETSY');
     //console.log(data)
     res.locals.data = data;
     res.locals.quarterData = quarterData;

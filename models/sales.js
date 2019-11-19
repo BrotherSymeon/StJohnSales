@@ -1,10 +1,11 @@
 var salesDb = require('../gcpDb');
 
 
-exports.OrderAmountsByMonth = async function ( year ) {
+exports.OrderAmountsByMonth = async function ( year, soldThrough ) {
+  var params = [year, soldThrough]
   return new Promise(function(resolve, reject){
     salesDb.connect(salesDb.MODE_PROD, function(){
-      salesDb.get().query('SELECT MonthOfYear, SUM(OrderTotal) as Amount FROM Orders WHERE PaymentMethod != "Other" GROUP BY MonthOfYear', year, function(err, result) {
+      salesDb.get().query('SELECT MonthOfYear, SUM(OrderTotal) as Amount FROM Orders WHERE SaleYear = ? AND SoldThrough = ? GROUP BY MonthOfYear', params, function(err, result) {
         if (err) return reject(err);
         resolve(JSON.parse(JSON.stringify(result)));
       });
