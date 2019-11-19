@@ -32,15 +32,30 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <script>
     var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
-    var data = {{{toJSON data }}}
-    var quarterData = {{{toJSON quarterData }}}
-    var mylabels = data.map(function(item){
+    var etsyMonthlyData = {{{toJSON etsyMonthlyData }}}
+    var etsyQuarterlyData = {{{toJSON etsyQuarterlyData }}}
+    
+    var mylabels = etsyMonthlyData.map(function(item){
       return months[Number(item.MonthOfYear) - 1]
     });
-    var myDataPoints = data.map(function(item){
+    var myDataPoints = etsyMonthlyData.map(function(item){
       return item.Amount
     });
-    function buildChart(chartLabels, chartDataPoints)
+    
+    
+    function mapLabels(data, hashName){
+      return data.map(function(item){
+        return months[Number(item[hashName]) - 1]
+      });
+    }
+    function mapData(data){
+      return data.map(function(item){
+        return item.Amount
+      });
+    }
+    function buildChart(chartLabels, chartDataPoints, chartCanvasId){
+      
+    }
   window.addEventListener('load', function () {
     //your code right here;
     console.log('hello')
