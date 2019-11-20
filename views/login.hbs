@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="/vendors/themify-icons/css/themify-icons.css">
     
     <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/bootstrap-social.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
     <style>
       .bg-login{
@@ -42,33 +43,14 @@
                     <img class="align-content" src="https://cdn.glitch.com/26f60f0e-5e92-4c0d-a906-860f7946052f%2Feagle.jpg?v=1573058809913" alt="">
                     
                 </div>
-                <div class="login-form">
-                    <form role="form" action="/login" method="POST">
-                      <input type="hidden" name="_csrf" value="{{csrf}}">
-                        <div class="form-group">
-                            <label>Email address</label>
-                            <input type="email" name="email" class="form-control" placeholder="Email">
-                        </div>
-                            <div class="form-group">
-                                <label>Password</label>
-                                <input type="password" name="password" class="form-control" placeholder="Password">
-                        </div>
-                                <div class="checkbox">
-                                    <label>
-                                <input type="checkbox" name="rememberme"> Remember Me
-                            </label>
-                                    <label class="pull-right">
-                                <a href="#">Forgotten Password?</a>
-                            </label>
+              <div style="background-color: white; padding: 5px">
+                <a class="btn btn-block btn-social btn-google">
+                  <span class="fa fa-google"></span>
+                    Sign in with Google
+                </a>
+              </div>
 
-                                </div>
-                                <button type="submit" class="btn btn-success btn-flat m-b-30 m-t-30">Sign in</button>
-                      
-                              
-                                
-                    </form>
-                  <a href="/users/login/google">Log In with Google</a>
-                </div>
+                
             </div>
         </div>
     </div>
