@@ -1,5 +1,6 @@
 var User = require('../models/user');
 var Sales = require('../models/sales');
+var OrderHelper = require(('../helpers/orders'));
 
 
 
@@ -30,7 +31,7 @@ exports.upload_orders = async function (req, res) {
   //console.log(req.file);// contains files
   
   setTimeout(function(){
-    
+    OrderHelper.process(req.file.buffer.toString("utf-8"))
     console.log('yeaaaaaah');
     console.log(req.file)
     
