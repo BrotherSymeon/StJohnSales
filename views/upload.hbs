@@ -25,8 +25,12 @@
 
 {{#contentFor "pageScripts"}}
 <script>
-  window.addEventListener('load', function () {
+
+  jQuery(document).ready(function ($) {
+    // Your code here
+     console.log( "ready!" );
     $('.toast').toast('show');
-  }
+});
+ 
 </script>
 {{/contentFor}}
