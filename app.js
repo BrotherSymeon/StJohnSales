@@ -6,6 +6,7 @@ var logger = require('morgan');
 var hbs = require('express-hbs');
 var debug = require('debug')('meadowlark:server');
 var passport = require('passport');
+const formidableMiddleware = require('express-formidable');
 
 
 
@@ -60,6 +61,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(formidableMiddleware());
 
 app.use(session({
     key: 'user_sid',
