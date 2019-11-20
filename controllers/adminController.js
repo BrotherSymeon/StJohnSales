@@ -19,6 +19,6 @@ exports.user_create = function(req, res) {
 };
 
 exports.data_upload = function (req, res) {
-   res.send('NOT IMPLEMENTED: page to upload data');
+   return res.render('upload', { title : 'St Johns Sales - Upload Data'});
 };
 
