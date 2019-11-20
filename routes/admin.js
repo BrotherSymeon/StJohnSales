@@ -3,7 +3,8 @@ var router = express.Router();
 var adminController = require('../controllers/adminController');
 
 var multer  = require('multer')
-var upload = multer({ dest: 'uploads/' })
+var storage = multer.memoryStorage()
+var upload = multer({ storage: storage })
 
 
 router.get('/users', adminController.users_list);
