@@ -53,9 +53,15 @@ exports.process = function (data, {processId, fileName}) {
   const lines = data.split('\n');
   e.emit('BeginProcess', {
     processId: processId,
-    message: `Processing ${fileName}: ${lines.length} lines of data to process.`
+    message: `Processing ${fileName}: ${lines.length} lines of data to process.`,
+    percentDone: 0
   });
   lines.forEach((val, i, array) => {
+     e.emit('BeginProcess', {
+    processId: processId,
+    message: `Processing ${fileName}: ${lines.length} lines of data to process.`,
+    percentDone: 0
+  });
     //val is a comma seperated line
     val = utils.replaceCommasInDoubleQuotes(val)
     if (i > 0) {
