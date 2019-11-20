@@ -27,8 +27,14 @@ exports.data_upload = function (req, res) {
 exports.upload_orders = async function (req, res) {
   var message = "Thank You, we will haave this done shortly"
   //req.fields; // contains non-file fields
-  console.log(req.file);// contains files
+  //console.log(req.file);// contains files
   
+  setTimeout(function(){
+    
+    console.log('yeaaaaaah');
+    console.log(req.file)
+    
+  }, 5000);
   console.log(req.file.buffer.toString("utf-8"));
   //do upload stuff
   //then return 
