@@ -1,4 +1,4 @@
-
+let emitter = require('events').EventEmitter;
 let Enumeration = require('../lib/enumeration');
 let utils = require('../lib/utilities');
 
@@ -41,24 +41,20 @@ let OrderColumns = new Enumeration([
 
 
 
-exports.process = function(data){
-  let retval = [];
-  var lines = data.split('\n');
-  console.log(lines.length)
-}
 
 
 
 
 
 
-
-
-exports.process = function (data) {
- 
+exports.process = function (data, {processId, fileName}) {
+  var e = new emitter();
   let retval = [];
   const lines = data.split('\n');
-
+  e.emit('BeginProcess', {
+    processId: processId,
+    message: `Processing ${fileName}: ${lines.length} lines of data to process.`
+  });
   lines.forEach((val, i, array) => {
     //val is a comma seperated line
     val = utils.replaceCommasInDoubleQuotes(val)
@@ -92,7 +88,7 @@ exports.process = function (data) {
 
   });
 
-  return retval;
+  return e;
 
 };
 
