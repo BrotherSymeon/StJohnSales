@@ -19,10 +19,11 @@
 </div>
 {{/if}}
 
-<form method="POST" action="/admin/upload/orders">
-  <input type="file"/>
-  <input type="submit"/>
+<form method="POST" action="/admin/upload/orders" enctype="multipart/form-data">
+  <input type="file" name="document" />
+  <input type="submit" />
 </form>
+
 
 {{#contentFor "pageScripts"}}
 <script>

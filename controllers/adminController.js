@@ -22,10 +22,10 @@ exports.data_upload = function (req, res) {
    return res.render('upload', { title : 'St Johns Sales - Upload Data'});
 };
 
-exports.upload_orders = function (req, res) {
+exports.upload_orders = async function (req, res) {
   var message = "Thank You, we will haave this done shortly"
-  req.fields; // contains non-file fields
-  console.log(req.files)// contains files
+  //req.fields; // contains non-file fields
+  console.log(await req.files.name);// contains files
   //do upload stuff
   //then return 
   return res.render('upload', { 
