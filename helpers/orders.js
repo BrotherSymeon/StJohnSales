@@ -1,4 +1,5 @@
 let emitter = require('events').EventEmitter;
+let Sales = require('../models/sales');
 let Enumeration = require('../lib/enumeration');
 let utils = require('../lib/utilities');
 
@@ -92,6 +93,8 @@ exports.process = function (data, {processId, fileName}) {
         cleanData.push( lineData.join('\t') );
       }
     });
+    
+    await Sales.InsertIntoOrderTable(cleanData)
 
 
     }, 2000);
