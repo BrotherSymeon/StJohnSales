@@ -25,12 +25,20 @@
 
 {{#contentFor "pageScripts"}}
 <script>
-
-  jQuery(document).ready(function ($) {
+jQuery.noConflict();
+(function( $ ) {
+    $(document).ready(function ($) {
     // Your code here
      console.log( "ready!" );
     $('.toast').toast('show');
 });
+  $(function() {
+    // More code using $ as alias to jQuery
+  });
+})(jQuery);
+  
+  
+
  
 </script>
 {{/contentFor}}
