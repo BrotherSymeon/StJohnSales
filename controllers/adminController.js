@@ -22,3 +22,12 @@ exports.data_upload = function (req, res) {
    return res.render('upload', { title : 'St Johns Sales - Upload Data'});
 };
 
+exports.upload_orders = function (req, res) {
+  var message = "Thank You, we will haave this done shortly"
+  //do upload stuff
+  //then return 
+  return res.render('upload', { 
+    title : 'St Johns Sales - Upload Data',
+    message: message
+  });
+};
