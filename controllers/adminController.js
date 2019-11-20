@@ -1,6 +1,8 @@
 var User = require('../models/user');
 var Sales = require('../models/sales');
 
+
+
 exports.users_list = function(req, res) {
    res.send('NOT IMPLEMENTED: page to list users');
 };
@@ -25,7 +27,7 @@ exports.data_upload = function (req, res) {
 exports.upload_orders = async function (req, res) {
   var message = "Thank You, we will haave this done shortly"
   //req.fields; // contains non-file fields
-  console.log(await req.files.name);// contains files
+  console.log(req.file.filename);// contains files
   //do upload stuff
   //then return 
   return res.render('upload', { 
