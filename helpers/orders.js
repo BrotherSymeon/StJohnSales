@@ -94,7 +94,22 @@ exports.process = function (data, {processId, fileName}) {
       }
     });
     
-    await Sales.InsertIntoOrderTable(cleanData)
+    e.emit('BeginDataInsertProcess', {
+      processId: processId,
+      message: `Inserting DataRows from ${fileName} into tempOrders.`,
+      percentDone: 0
+    });
+    Sales.InsertIntoOrderTable(cleanData).then(function(count){
+      e.emit('EndDataInsertProcess', {
+        processId: processId,
+        message: `Inserted ${count} DataRows from ${fileName} into tempOrders.`,
+        percentDone: 100,
+        complete: false
+      });
+    })
+    .catch(function(err) {
+      console.error(err)
+    });
 
 
     }, 2000);
