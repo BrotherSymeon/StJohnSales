@@ -22,3 +22,11 @@
 <form method="POST" action="/admin/upload/orders">
   <input type="submit">submit</input>
 </form>
+
+{{#contentFor "pageScripts"}}
+<script>
+  window.addEventListener('load', function () {
+    $('.toast').toast('show');
+  }
+</script>
+{{/contentFor}}
