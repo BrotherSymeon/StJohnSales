@@ -1,5 +1,6 @@
 
 let Enumeration = require('../lib/enumeration');
+let utils = require('../lib/utilities');
 
 let OrderColumns = new Enumeration([
   'SaleDate',
@@ -60,7 +61,7 @@ exports.process = function (data) {
 
   lines.forEach((val, i, array) => {
     //val is a comma seperated line
-    val = replaceCommasInDoubleQuotes(val)
+    val = utils.replaceCommasInDoubleQuotes(val)
     if (i > 0) {
       let lineData = val.split(',');
      
@@ -78,10 +79,10 @@ exports.process = function (data) {
         OrderColumns.DISCOUNTAMOUNT,
         OrderColumns.ORDERVALUE,
         OrderColumns.ORDERNET].includes(index)) {
-          console.log(removeCharacters( elem, '"' ));
-          lineData[index] = Number(removeCharacters( elem, '"' ));
+          console.log(utils.removeCharacters( elem, '"' ));
+          lineData[index] = Number(utils.removeCharacters( elem, '"' ));
         }else{
-          lineData[index] = removeCharacters( elem, '"' );
+          lineData[index] = utils.removeCharacters( elem, '"' );
         }
 
       });
@@ -96,35 +97,4 @@ exports.process = function (data) {
 };
 
 
-var removeCharacters = function(str, remove){
-  var out = '';
-  
-  Array.from(str).forEach((i) =>{
-    if(i !== remove){
-      out += i;
-    }else{
-      out += '';
-    }
-  });
-  return out;
-};
 
-var replaceCommasInDoubleQuotes = function(str){
-  var isBetweenQuotes = false;
-  var out = '';
-  Array.from(str).forEach((i) => {
-    if(i === '"' && isBetweenQuotes === false){
-      isBetweenQuotes = true;
-    }else if(i === '"' && isBetweenQuotes === true){
-      isBetweenQuotes = false;
-    }
-
-    if(i === ',' && isBetweenQuotes){
-      out += '';
-    }else{
-      out += i;
-    }
-  });
-
-  return out;
-};
