@@ -1,8 +1,9 @@
 var salesDb = require('../gcpDb');
 
 exports.InsertIntoOrderTable = async function (lines) {
+  
   var rows = lines.map((line) => line.split('\t'));
-  var sqlStmt = `INSERT INTO tempOrders(  
+  var sqlInsertStmt = `INSERT INTO tempOrders(  
               SaleDate,
               BuyerUserId,
               FullName,
@@ -40,7 +41,7 @@ exports.InsertIntoOrderTable = async function (lines) {
   
   return new Promise(function(resolve, reject){
     salesDb.connect(salesDb.MODE_PROD, function(){
-      salesDb.get().query(sqlStmt, [rows], function(err, result) {
+      salesDb.get().query(sqlInsertStmt, [rows], function(err, result) {
         if (err) return reject(err);
         resolve(result.affectedRows);
       });
