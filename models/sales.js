@@ -2,7 +2,7 @@ var salesDb = require('../gcpDb');
 
 exports.InsertIntoOrderTable = async function (lines) {
   
-  var rows = lines.map((line) => line.split('\t'));
+  //var rows = lines.map((line) => line.split('\t'));
   var sqlInsertStmt = `INSERT INTO tempOrders(  
               SaleDate,
               BuyerUserId,
@@ -38,13 +38,24 @@ exports.InsertIntoOrderTable = async function (lines) {
               PaymentType,
               InPersonDiscount,
               InPersonLocation)  VALUES ?  `;
-  
-  return new Promise(function(resolve, reject){
-    salesDb.connect(salesDb.MODE_PROD, function(){
-      salesDb.get().query(sqlInsertStmt, [rows], function(err, result) {
+  var promises = [];
+  promises = lines.map(function(line) {
+    return new Promise(function(resolve, reject){
+      salesDb.get().query(sqlInsertStmt, line.split('\t'), function(err, result) {
         if (err) return reject(err);
         resolve(result.affectedRows);
       });
+    });
+  });
+  
+  return new Promise(function(resolve, reject){
+    salesDb.connect(salesDb.MODE_PROD, function(){
+      
+      Promise.all(promises).then(values => { 
+        console.log(values); // [3, 1337, "foo"] 
+        resolve(values)
+      });
+      
     });
   });
   
