@@ -91,7 +91,7 @@ exports.process = function (data, {processId, fileName}) {
             lineData[index] = utils.removeCharacters( elem, '"' );
           }
         });
-        cleanData.push( lineData.join(',') );
+        cleanData.push( lineData );
       }
     });
     
