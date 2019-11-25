@@ -22,20 +22,23 @@ exports.InsertIntoOrderTable = async function (lines, emitter) {
     });
   });
   
+  rows.forEach((line => {
+    promises.push()
+  }))
   promises.concat(rows.map(function(line) {
     
-    var f = function(done) {
-      debugger;
-        salesDb.get().query(sqlInsertStmt, [line], (err, result) => {
+    return function insert(done) {
+        salesDb.get().query(sqlInsertStmt, [[line]], (err, result) => {
           if (err) return done(err);
           return done(null, result);
         });
-      };
-    return f;
+    };
+    
+    
   }));
   
   
-  
+  console.log(promises.length)
   salesDb.connect(salesDb.MODE_PROD, function(){
     
     async.series(promises, (err, results) => {
