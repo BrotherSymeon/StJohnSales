@@ -6,8 +6,8 @@ exports.InsertIntoOrderTable = async function (lines, emitter) {
   var rows = lines;
   var sqlInsertStmt = 'INSERT INTO tempOrders(SaleDate,BuyerUserId,FullName,FirstName,LastName,NumberOfItems,PaymentMethod,DateShipped,Street1,Street2,ShipCity,ShipState,ShipZipCode,ShipCountry,Currency,OrderValue,CouponCode,CouponDetails,DiscountAmount,ShippingDiscount,Shipping,SalesTax,OrderTotal,Status,CardProcessingFees,OrderNet,AdjustedOrderTotal,AdjustedCardProcessingFees,AdjustedNetOrderAmount,Buyer,OrderType,PaymentType,InPersonDiscount,InPersonLocation)  VALUES ?';
   console.log('first  row');
-  console.log([[rows[0]]]);
-  var query = salesDb.get().query(sqlInsertStmt, [[rows[0]]], function(err, result) {
+  console.log([[rows[15]]]);
+  var query = salesDb.get().query(sqlInsertStmt, [[rows[15]]], function(err, result) {
         if (err) return console.log(err);
         return Promise.resolve(result.affectedRows);
       });
