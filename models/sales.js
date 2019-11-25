@@ -83,6 +83,7 @@ exports.OrderAmountsByQuarter = async function( year, soldThrough ) {
 
 const extractToOrders = `INSERT INTO Orders (
   SaleDate,
+  OrderId,
   DayOfYear, 
   MonthOfYear, 
   QuarterOfYear, 
@@ -132,6 +133,7 @@ const extractToOrders = `INSERT INTO Orders (
       MID(SaleDate, 4, 2) 
       ) 
     )) as DayOfYear,
+  OrderId,
   MID(SaleDate, 1, 2) as SaleMonth,  
     FiscalYearStartDate( DATE( 
     CONCAT( 
