@@ -8,7 +8,7 @@ exports.InsertIntoOrderTable = async function (lines, emitter) {
   console.log('first  row');
   console.log([[rows[0]]]);
   var query = salesDb.get().query(sqlInsertStmt, [[rows[0]]], function(err, result) {
-        if (err) return reject(err);
+        if (err) return console.log(err);
         return Promise.resolve(result.affectedRows);
       });
   console.log(query.sql);
