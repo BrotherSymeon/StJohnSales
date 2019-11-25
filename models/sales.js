@@ -32,29 +32,30 @@ exports.InsertIntoOrderTable = async function (lines, emitter) {
     });
   }));
   
-  return new Promise(function(resolve, reject){
-    salesDb.connect(salesDb.MODE_PROD, function(){
-      
-      promises.reduce((promiseChain, currentArray) => {
-        console.log(currentArray);
-        return promiseChain.then(chainResults =>
-                Promise.all(currentArray).then(currentResult => currentResult)
-            );
-        }, Promise.resolve([])).then(arrayOfArraysOfResults => {
-            // Do something with all results
-            console.log(arrayOfArraysOfResults);
-            resolve(arrayOfArraysOfResults);
-      }).catch(function(err){
-        console.log(err);
+  salesDb.connect(salesDb.MODE_PROD, function(){
+    return Promise.all(promises).then(values => { 
+        console.log(values); // [3, 1337, "foo"] 
+        //resolve(values);
       });
-      
-      //Promise.all(promises).then(values => { 
-      //  console.log(values); // [3, 1337, "foo"] 
-      //  resolve(values)
-      //});
-      
-    });
   });
+   
+  
+  //return new Promise(function(resolve, reject){
+  //  salesDb.connect(salesDb.MODE_PROD, function(){
+  //    promises.reduce((promiseChain, currentArray) => {
+  //      console.log(currentArray);
+  //      return promiseChain.then(chainResults =>
+  //              Promise.all(currentArray).then(currentResult => currentResult)
+  //          );
+  //      }, Promise.resolve([])).then(arrayOfArraysOfResults => {
+  //          // Do something with all results
+  //          console.log(arrayOfArraysOfResults);
+  //          resolve(arrayOfArraysOfResults);
+  //    }).catch(function(err){
+  //      console.log(err);
+  //    });
+  //  });
+  //});
   
 };
 exports.OrderAmountsByMonth = async function ( year, soldThrough ) {
