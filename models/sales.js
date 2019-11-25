@@ -1,5 +1,5 @@
 var salesDb = require('../gcpDb');
-var 
+var async = require('async');
 exports.InsertIntoOrderTable = async function (lines, emitter) {
   
   var sqlDeleteStmt = 'DELETE FROM tempOrders;';
@@ -14,6 +14,15 @@ exports.InsertIntoOrderTable = async function (lines, emitter) {
   //console.log(query.sql);
     
   var promises = [];
+  
+  promises.push(function(done){
+    salesDb.get().query(sqlDeletStmt, (err, result) => {
+      if (err) return done(err);
+      
+    })
+  });
+  
+  
   //promises.push(new Promise(function(resolve, reject){
   //  salesDb.get().query(sqlDeleteStmt, function(err, result){
   //    if (err) return reject(err);
