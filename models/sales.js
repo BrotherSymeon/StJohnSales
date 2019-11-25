@@ -22,12 +22,19 @@ exports.InsertIntoOrderTable = async function (lines, emitter) {
     });
   });
   
-  promises.push(function(done) {
-    salesDb.get().query(sqlInsertStmt, [[rows]], (err, result) => {
-      if (err) return done(err);
-      return done(null, result);
-    });
-  });
+  promises.concat(rows.map(function(line) {
+    
+    var f = function(done) {
+      debugger;
+        salesDb.get().query(sqlInsertStmt, [line], (err, result) => {
+          if (err) return done(err);
+          return done(null, result);
+        });
+      };
+    return f;
+  }));
+  
+  
   
   salesDb.connect(salesDb.MODE_PROD, function(){
     
@@ -35,7 +42,7 @@ exports.InsertIntoOrderTable = async function (lines, emitter) {
         if (err) {
             return console.log(err);
         }
-        return rconsole.log(results);
+        return console.log(results);
     });
     
   });
