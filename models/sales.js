@@ -17,7 +17,7 @@ exports.InsertIntoOrderTable = async function (lines, emitter) {
   rows.forEach((line => {
     promises.push(function(done) {
         salesDb.get().query(sqlInsertStmt, [[line]], (err, result) => {
-          //if (err) return done(err);
+          if (err) return done(null, err);
           return done(null, result);
         });
     });
