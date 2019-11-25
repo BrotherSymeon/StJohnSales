@@ -1,8 +1,8 @@
 var salesDb = require('../gcpDb');
 
-exports.InsertIntoOrderTable = async function (lines) {
+exports.InsertIntoOrderTable = async function (lines, emitter) {
   
-  var sqlDeleteStmt = 'DELETE * FROM tempOrders;';
+  var sqlDeleteStmt = 'DELETE FROM tempOrders;';
   //var rows = lines.map((line) => line.split('\t'));
   var sqlInsertStmt = `INSERT INTO tempOrders(  
               SaleDate,
