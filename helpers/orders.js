@@ -85,13 +85,22 @@ exports.process = function (data, {processId, fileName}) {
           OrderColumns.DISCOUNTAMOUNT,
           OrderColumns.ORDERVALUE,
           OrderColumns.ORDERNET].includes(index)) {
-            console.log(utils.removeCharacters( elem, '"' ));
+            //console.log(utils.removeCharacters( elem, '"' ));
             lineData[index] = Number(utils.removeCharacters( elem, '"' ));
           }else{
             lineData[index] = utils.removeCharacters( elem, '"' );
           }
         });
-        cleanData.push( lineData );
+        
+        if(lineData.length === 35){
+          // only insert ones with a row length of 35
+          cleanData.push( lineData );
+          
+        } else {
+          console.log(`linedata length: ${lineData.length}`);
+          console.log(lineData);
+        }
+        
       }
     });
     
