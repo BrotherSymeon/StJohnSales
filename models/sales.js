@@ -36,10 +36,9 @@ exports.InsertIntoOrderTable = async function (lines, emitter) {
     salesDb.connect(salesDb.MODE_PROD, function(){
       
       promises.reduce((promiseChain, currentArray) => {
+        console.log(currentArray);
         return promiseChain.then(chainResults =>
-                Promise.all(currentArray).then(currentResult =>
-                    [...chainResults, currentResult]
-                )
+                Promise.all(currentArray).then(currentResult => currentResult)
             );
         }, Promise.resolve([])).then(arrayOfArraysOfResults => {
             // Do something with all results
