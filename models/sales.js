@@ -46,14 +46,16 @@ exports.InsertIntoOrderTable = async function (lines, emitter) {
       resolve(result.affectedRows);
     });
   }));
+  console.log(`line count = ${rows[0].length}`);
+  console.log(rows[0]);
   promises.concat(rows.map(function(line) {
-    console.log(`line count = ${line.length}`);
-    console.log(line);
+    
     return new Promise(function(resolve, reject){
-      salesDb.get().query(sqlInsertStmt, line, function(err, result) {
+      var query = salesDb.get().query(sqlInsertStmt, line, function(err, result) {
         if (err) return reject(err);
         resolve(result.affectedRows);
       });
+      console.log(query.sql)
     });
   }));
   
@@ -70,6 +72,8 @@ exports.InsertIntoOrderTable = async function (lines, emitter) {
             // Do something with all results
             console.log(arrayOfArraysOfResults);
             resolve(arrayOfArraysOfResults);
+      }).catch(function(err){
+        console.log(err)
       });
       
       //Promise.all(promises).then(values => { 
