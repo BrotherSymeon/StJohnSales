@@ -2,6 +2,7 @@ var salesDb = require('../gcpDb');
 
 exports.InsertIntoOrderTable = async function (lines) {
   
+  var sqlDeleteStmt = 'DELETE * FROM tempOrders;';
   //var rows = lines.map((line) => line.split('\t'));
   var sqlInsertStmt = `INSERT INTO tempOrders(  
               SaleDate,
@@ -39,14 +40,20 @@ exports.InsertIntoOrderTable = async function (lines) {
               InPersonDiscount,
               InPersonLocation)  VALUES ?  `;
   var promises = [];
-  promises = lines.map(function(line) {
+  promises.push(new Promise(function(resolve, reject){
+    salesDb.get().query(sqlDeleteStmt, function(err, result){
+      if (err) return reject(err);
+      resolve(result.affectedRows);
+    });
+  }));
+  promises.concat(lines.map(function(line) {
     return new Promise(function(resolve, reject){
       salesDb.get().query(sqlInsertStmt, line.split('\t'), function(err, result) {
         if (err) return reject(err);
         resolve(result.affectedRows);
       });
     });
-  });
+  }));
   
   return new Promise(function(resolve, reject){
     salesDb.connect(salesDb.MODE_PROD, function(){
