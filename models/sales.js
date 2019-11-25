@@ -17,7 +17,7 @@ exports.InsertIntoOrderTable = async function (lines, emitter) {
   rows.forEach((line => {
     promises.push(function(done) {
         salesDb.get().query(sqlInsertStmt, [[line]], (err, result) => {
-          if (err) return done(err);
+          //if (err) return done(err);
           return done(null, result);
         });
     });
@@ -124,6 +124,7 @@ const extractToOrders = `INSERT INTO Orders (
   InPersonLocation 
 ) select
   SaleDate,
+  OrderId,
   DAYOFYEAR(DATE( 
     CONCAT( 
       CONCAT('20', MID(SaleDate, 7, 2)), 
@@ -133,7 +134,7 @@ const extractToOrders = `INSERT INTO Orders (
       MID(SaleDate, 4, 2) 
       ) 
     )) as DayOfYear,
-  OrderId,
+  
   MID(SaleDate, 1, 2) as SaleMonth,  
     FiscalYearStartDate( DATE( 
     CONCAT( 
