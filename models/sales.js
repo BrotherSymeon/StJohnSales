@@ -16,47 +16,30 @@ exports.InsertIntoOrderTable = async function (lines, emitter) {
   var promises = [];
   
   promises.push(function(done){
-    salesDb.get().query(sqlDeletStmt, (err, result) => {
+    salesDb.get().query(sqlDeleteStmt, (err, result) => {
       if (err) return done(err);
-      
-    })
+      return done(null, result.affectedRows);
+    });
   });
   
-  
-  //promises.push(new Promise(function(resolve, reject){
-  //  salesDb.get().query(sqlDeleteStmt, function(err, result){
-  //    if (err) return reject(err);
-      
-  //    console.log(`Deleted ${result.affectedRows} rows`)
-  //    resolve(result.affectedRows);
-  //  });
-  //}));
-  
-  promises.concat(rows.map(function(line) {
-    
-    return new Promise(function(resolve, reject){
-      var query = salesDb.get().query(sqlInsertStmt, [[line]], function(err, result) {
-        if (err) return reject(err);
-        console.log(result.affectedRows)
-         resolve(result.affectedRows);
-      });
-     
+  promises.push(function(done) {
+    salesDb.get().query(sqlInsertStmt, [[rows]], (err, result) => {
+      if (err) return done(err);
+      return done(null, result);
     });
-  }));
+  });
   
   salesDb.connect(salesDb.MODE_PROD, function(){
-    salesDb.get().query(sqlDeleteStmt, function(err, result){
-      if (err) return reject(err);
-      
-      console.log(`Deleted ${result.affectedRows} rows`)
-      
-      return Promise.all(promises).then(values => { 
-        console.log(values); // [3, 1337, "foo"] 
-        //resolve(values);
-      });
+    
+    async.series(promises, (err, results) => {
+        if (err) {
+            return console.log(err);
+        }
+        return rconsole.log(results);
     });
     
   });
+  
    
   
   //return new Promise(function(resolve, reject){
