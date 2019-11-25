@@ -50,6 +50,7 @@ let OrderColumns = new Enumeration([
 
 exports.process = function (data, {processId, fileName}) {
   var e = new emitter();
+  debugger;
   setTimeout(function(){
     
     let cleanData = [];
@@ -90,7 +91,7 @@ exports.process = function (data, {processId, fileName}) {
             lineData[index] = utils.removeCharacters( elem, '"' );
           }
         });
-        cleanData.push( lineData.join('\t') );
+        cleanData.push( lineData.join(',') );
       }
     });
     
