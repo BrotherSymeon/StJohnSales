@@ -1,5 +1,5 @@
 var salesDb = require('../gcpDb');
-
+var 
 exports.InsertIntoOrderTable = async function (lines, emitter) {
   
   var sqlDeleteStmt = 'DELETE FROM tempOrders;';
@@ -14,18 +14,21 @@ exports.InsertIntoOrderTable = async function (lines, emitter) {
   //console.log(query.sql);
     
   var promises = [];
-  promises.push(new Promise(function(resolve, reject){
-    salesDb.get().query(sqlDeleteStmt, function(err, result){
-      if (err) return reject(err);
-      resolve(result.affectedRows);
-    });
-  }));
+  //promises.push(new Promise(function(resolve, reject){
+  //  salesDb.get().query(sqlDeleteStmt, function(err, result){
+  //    if (err) return reject(err);
+      
+  //    console.log(`Deleted ${result.affectedRows} rows`)
+  //    resolve(result.affectedRows);
+  //  });
+  //}));
   
   promises.concat(rows.map(function(line) {
     
     return new Promise(function(resolve, reject){
       var query = salesDb.get().query(sqlInsertStmt, [[line]], function(err, result) {
         if (err) return reject(err);
+        console.log(result.affectedRows)
          resolve(result.affectedRows);
       });
      
@@ -33,10 +36,17 @@ exports.InsertIntoOrderTable = async function (lines, emitter) {
   }));
   
   salesDb.connect(salesDb.MODE_PROD, function(){
-    return Promise.all(promises).then(values => { 
+    salesDb.get().query(sqlDeleteStmt, function(err, result){
+      if (err) return reject(err);
+      
+      console.log(`Deleted ${result.affectedRows} rows`)
+      
+      return Promise.all(promises).then(values => { 
         console.log(values); // [3, 1337, "foo"] 
         //resolve(values);
       });
+    });
+    
   });
    
   
