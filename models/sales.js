@@ -4,46 +4,12 @@ exports.InsertIntoOrderTable = async function (lines, emitter) {
   
   var sqlDeleteStmt = 'DELETE FROM tempOrders;';
   var rows = lines.map((line) => line.split('\t'));
-  var sqlInsertStmt = `INSERT INTO tempOrders(  
-              SaleDate,
-              BuyerUserId,
-              FullName,
-              FirstName,
-              LastName,
-              NumberOfItems,
-              PaymentMethod,
-              DateShipped,
-              Street1,
-              Street2,
-              ShipCity,
-              ShipState,
-              ShipZipCode,
-              ShipCountry,
-              Currency,
-              OrderValue,
-              CouponCode,
-              CouponDetails,
-              DiscountAmount,
-              ShippingDiscount,
-              Shipping,
-              SalesTax,
-              OrderTotal,
-              Status,
-              CardProcessingFees,
-              OrderNet,
-              AdjustedOrderTotal,
-              AdjustedCardProcessingFees,
-              AdjustedNetOrderAmount,
-              Buyer,
-              OrderType,
-              PaymentType,
-              InPersonDiscount,
-              InPersonLocation)  VALUES ?  `;
-  
-  console.log([[rows[0]]])
+  var sqlInsertStmt = 'INSERT INTO tempOrders(SaleDate,BuyerUserId,FullName,FirstName,LastName,NumberOfItems,PaymentMethod,DateShipped,Street1,Street2,ShipCity,ShipState,ShipZipCode,ShipCountry,Currency,OrderValue,CouponCode,CouponDetails,DiscountAmount,ShippingDiscount,Shipping,SalesTax,OrderTotal,Status,CardProcessingFees,OrderNet,AdjustedOrderTotal,AdjustedCardProcessingFees,AdjustedNetOrderAmount,Buyer,OrderType,PaymentType,InPersonDiscount,InPersonLocation)  VALUES ?';
+  console.log('first  row');
+  console.log([[rows[0]]]);
   var query = salesDb.get().query(sqlInsertStmt, [[rows[0]]], function(err, result) {
         if (err) return reject(err);
-        resolve(result.affectedRows);
+        return Promise.resolve(result.affectedRows);
       });
   console.log(query.sql);
     
