@@ -58,10 +58,22 @@ exports.InsertIntoOrderTable = async function (lines) {
   return new Promise(function(resolve, reject){
     salesDb.connect(salesDb.MODE_PROD, function(){
       
-      Promise.all(promises).then(values => { 
-        console.log(values); // [3, 1337, "foo"] 
-        resolve(values)
+      promises.reduce((promiseChain, currentArray) => {
+        return promiseChain.then(chainResults =>
+                Promise.all(currentArray).then(currentResult =>
+                    [...chainResults, currentResult]
+                )
+            );
+        }, Promise.resolve([])).then(arrayOfArraysOfResults => {
+            // Do something with all results
+            console.log(arrayOfArraysOfResults);
+            resolve(arrayOfArraysOfResults);
       });
+      
+      //Promise.all(promises).then(values => { 
+      //  console.log(values); // [3, 1337, "foo"] 
+      //  resolve(values)
+      //});
       
     });
   });
