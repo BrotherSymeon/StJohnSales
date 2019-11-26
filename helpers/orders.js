@@ -131,6 +131,20 @@ exports.process = function (data, {processId, fileName}) {
   
 
   var processor = processData(data, processId, fileName)
+  
+  processor.on('BeginFileProcess', function (data) {
+    console.log('File Process has Begun: ' + data);
+  });
+  processor.on('FileLineProcess', function (data) {
+    //console.log('Line of File has been read: ' + data);
+  });
+  processor.on('BeginDataInsertProcess', function (data) {
+    console.log('Begining data Reading: ' + data);
+  });
+  processor.on('EndDataInsertProcess', function (data) {
+    console.log('Finished data reading: ' + data);
+  });
+  
 };
 
 
