@@ -86,7 +86,8 @@ exports.OrderAmountsByQuarter = async function( year, soldThrough ) {
 
 
 
-const extractToOrders = `INSERT INTO Orders (
+const extractToOrders = `
+INSERT INTO Orders (
   SaleDate,
   OrderId,
   DayOfYear, 
@@ -139,7 +140,6 @@ const extractToOrders = `INSERT INTO Orders (
       MID(SaleDate, 4, 2) 
       ) 
     )) as DayOfYear,
-  
   MID(SaleDate, 1, 2) as SaleMonth,  
     FiscalYearStartDate( DATE( 
     CONCAT( 
@@ -185,4 +185,9 @@ const extractToOrders = `INSERT INTO Orders (
   PaymentType ,
   InPersonDiscount ,
   InPersonLocation 
-  FROM tempOrders;`;
+  FROM tempOrders t 
+  WHERE NOT EXISTS
+    (SELECT 1
+     FROM Orders o
+     WHERE o.OrderId = t.OrderId);
+`;
