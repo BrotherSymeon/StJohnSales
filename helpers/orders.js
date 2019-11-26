@@ -109,7 +109,7 @@ exports.process = function (data, {processId, fileName}) {
       message: `Inserting DataRows from ${fileName} into tempOrders.`,
       percentDone: 0
     });
-    Sales.InsertIntoOrderTable(cleanData, e).then(function(count){
+    Sales.InsertIntoOrderTable(cleanData, e, processId).then(function(count){
       e.emit('EndDataInsertProcess', {
         processId: processId,
         message: `Inserted ${count} DataRows from ${fileName} into tempOrders.`,

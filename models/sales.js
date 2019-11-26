@@ -1,6 +1,6 @@
 var salesDb = require('../gcpDb');
 var async = require('async');
-exports.InsertIntoOrderTable = async function (lines, emitter) {
+exports.InsertIntoOrderTable = async function (lines, emitter, processId) {
   
   var sqlDeleteStmt = 'DELETE FROM tempOrders;';
   var rows = lines;
@@ -11,25 +11,49 @@ exports.InsertIntoOrderTable = async function (lines, emitter) {
   promises.push(function(done){
     salesDb.get().query(sqlDeleteStmt, (err, result) => {
       if (err) return done(err);
+      
+      e.emit('ClearedPrepTableProcess', {
+        processId: processId,
+        message: `Cleared Prep Table`,
+        percentDone: null
+      });
+      
       return done(null, result.affectedRows);
     });
   });
   
-  rows.forEach((line => {
+  rows.forEach(((line, index) => {
     promises.push(function(done) {
         salesDb.get().query(sqlInsertStmt, [[line]], (err, result) => {
           if (err) {
-            errors.push({ err, result})
+            errors.push({ err, result});
             return done(null, err);
           }
+          var total = rows.length;
+          e.emit('SavedDataLine', {
+            processId: processId,
+            message: `Saved data line ${index} of ${total} to prep table`,
+            percentDone: ((index/total)*100)
+          });
           return done(null, result);
         });
     });
   }));
   
   promises.push(function(done){
+    e.emit('BeginFinalProcessing', {
+      processId: processId,
+      message: `Begining Final Process`,
+      percentDone: null
+    });
     salesDb.get().query(extractToOrders, (err, result) => {
       if (err) return done(err);
+      
+      e.emit('BeginFinalProcessing', {
+        processId: processId,
+        message: `Begining Final Process`,
+        percentDone: null
+    });
       console.log(result.affectedRows)
       return done(null, result.affectedRows);
     });
