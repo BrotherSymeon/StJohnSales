@@ -1,9 +1,9 @@
 var Db = require('../gcpDb');
 
 var FileProcess = function(file){
-  this.fileId = file.fileId;
-  this.fileName = file.fileName;
-  this.processStatus = file.processStatus;
+  this.FileId = file.fileId;
+  this.FileName = file.fileName;
+  this.ProcessStatus = file.processStatus;
 };
 
 FileProcess.create = function(newFileProcess, done){
@@ -12,8 +12,9 @@ FileProcess.create = function(newFileProcess, done){
       console.log('error: ', err);
       done(err, null);
     }
+    newFileProcess.FileId = res.insertId
     console.log(res.insertId);
-    done(null, res.insertId);
+    done(null, newFileProcess);
   });
 };
 FileProcess.find = funciton()
