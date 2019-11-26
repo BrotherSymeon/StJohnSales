@@ -49,11 +49,11 @@ exports.InsertIntoOrderTable = async function (lines, emitter, processId) {
     salesDb.get().query(extractToOrders, (err, result) => {
       if (err) return done(err);
       
-      e.emit('BeginFinalProcessing', {
+      e.emit('CompleteFinalProcessing', {
         processId: processId,
-        message: `Begining Final Process`,
+        message: `Final Process done. ${result.affectedRows} entries added to order table.`,
         percentDone: null
-    });
+      });
       console.log(result.affectedRows)
       return done(null, result.affectedRows);
     });

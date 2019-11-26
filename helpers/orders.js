@@ -44,13 +44,9 @@ let OrderColumns = new Enumeration([
 
 
 
-
-
-
-
-exports.process = function (data, {processId, fileName}) {
+const processData = (data, processId, fileName) => {
   var e = new emitter();
-  debugger;
+
   setTimeout(function(){
     
     let cleanData = [];
@@ -127,7 +123,14 @@ exports.process = function (data, {processId, fileName}) {
 
   
   return e;
+};
 
+
+
+exports.process = function (data, {processId, fileName}) {
+  
+
+  var processor = processData(data, processId, fileName)
 };
 
 
