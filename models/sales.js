@@ -30,6 +30,7 @@ exports.InsertIntoOrderTable = async function (lines, emitter) {
   promises.push(function(done){
     salesDb.get().query(extractToOrders, (err, result) => {
       if (err) return done(err);
+      console.log(result.affectedRows)
       return done(null, result.affectedRows);
     });
   });
@@ -44,7 +45,7 @@ exports.InsertIntoOrderTable = async function (lines, emitter) {
             console.log(err);
         }
         console.log(errors)
-        //console.log(results);
+        console.log(JSON.parse(JSON.stringify(results)));
     });
     
   });
