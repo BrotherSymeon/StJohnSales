@@ -142,19 +142,22 @@ exports.process = function (data, {processId, fileName}) {
     console.log('Begining Writing to Memeory: ' + data);
   });
   processor.on('EndDataInsertProcess', function (data) {
-    console.log('Finished Writing to Memory: ' + data);
+    console.log('Finished Writing to Memory: ', data);
   });
   processor.on('ClearedPrepTableProcess', function(data) {
-    console.log('Deleted all form tempOrders table: ' + data);
+    console.log('Deleted all form tempOrders table: ',data);
   });
   processor.on('SavedDataLine', function(data) {
-    console.log('Saved Data Line to tempOrders table: ' + data);
+    //console.log('Saved Data Line to tempOrders table: ', data);
   });
   processor.on('BeginFinalProcessing', function(data) {
-    console.log('begin moving data from tempOrders to Orders : ' + data);
+    console.log('begin moving data from tempOrders to Orders : ', data);
   });
   processor.on('CompleteFinalProcessing', function(data) {
-    console.log('end moving data from tempOrders to Orders : ' + data);
+    console.log('end moving data from tempOrders to Orders : ', data);
+  });
+  processor.on('Done', function(data) {
+    console.log('Done : ', data);
   });
   
 };
