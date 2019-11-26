@@ -139,10 +139,10 @@ exports.process = function (data, {processId, fileName}) {
     //console.log('Line of File has been read: ' + data);
   });
   processor.on('BeginDataInsertProcess', function (data) {
-    console.log('Begining data Reading: ' + data);
+    console.log('Begining Writing to DB: ' + data);
   });
   processor.on('EndDataInsertProcess', function (data) {
-    console.log('Finished data reading: ' + data);
+    console.log('Finished Writing to DB: ' + data);
   });
   
 };
