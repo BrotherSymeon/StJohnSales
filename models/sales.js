@@ -70,6 +70,13 @@ exports.InsertIntoOrderTable = async function (lines, e, processId) {
         }
         console.log(errors)
         console.log(JSON.parse(JSON.stringify(results)));
+        e.emit('Done', {
+          processId: processId,
+          message: 'Done',
+          percentDone: 100,
+          errors: errors,
+          results: JSON.parse(JSON.stringify(results))
+        });
     });
     
   });
