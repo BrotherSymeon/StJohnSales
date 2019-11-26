@@ -6,6 +6,15 @@ var FileProcess = function(file){
   this.processStatus = file.processStatus;
 };
 
-FileProcess.Create = function(newFileProcess, done){
-  Db.get().query('INSERT 
-}
+FileProcess.create = function(newFileProcess, done){
+  Db.get().query('INSERT INTO FileProcess set ?', newFileProcess, function(err, res){
+    if(err) {
+      console.log('error: ', err);
+      done(err, null);
+    }
+    console.log(res.insertId);
+    done(null, res.insertId);
+  });
+};
+FileProcess.find = funciton()
+module.exports= FileProcess;
