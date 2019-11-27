@@ -107,16 +107,13 @@ const processData = (data, processId, fileName) => {
       message: `Inserting DataRows from ${fileName} into tempOrders.`,
       percentDone: 0
     });
-    Sales.InsertIntoOrderTable(cleanData, e, processId).then(function(count){
+    Sales.InsertIntoOrderTable(cleanData, e, processId, function(count){
       e.emit('EndDataInsertProcess', {
         processId: processId,
         message: `Inserted ${count} DataRows from ${fileName} into tempOrders.`,
         percentDone: 100,
         complete: false
       });
-    })
-    .catch(function(err) {
-      console.error(err)
     });
 
 

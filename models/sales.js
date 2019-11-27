@@ -1,122 +1,121 @@
-var salesDb = require('../gcpDb');
-var async = require('async');
-exports.InsertIntoOrderTable = async function (lines, e, processId) {
-  
-  var sqlDeleteStmt = 'DELETE FROM tempOrders;';
+var salesDb = require("../gcpDb");
+var async = require("async");
+exports.InsertIntoOrderTable = function(lines, e, processId, cb) {
+  var sqlDeleteStmt = "DELETE FROM tempOrders;";
   var rows = lines;
-  var sqlInsertStmt = 'INSERT INTO tempOrders(SaleDate,OrderId,BuyerUserId,FullName,FirstName,LastName,NumberOfItems,PaymentMethod,DateShipped,Street1,Street2,ShipCity,ShipState,ShipZipCode,ShipCountry,Currency,OrderValue,CouponCode,CouponDetails,DiscountAmount,ShippingDiscount,Shipping,SalesTax,OrderTotal,Status,CardProcessingFees,OrderNet,AdjustedOrderTotal,AdjustedCardProcessingFees,AdjustedNetOrderAmount,Buyer,OrderType,PaymentType,InPersonDiscount,InPersonLocation)  VALUES ?';
+  var sqlInsertStmt =
+    "INSERT INTO tempOrders(SaleDate,OrderId,BuyerUserId,FullName,FirstName,LastName,NumberOfItems,PaymentMethod,DateShipped,Street1,Street2,ShipCity,ShipState,ShipZipCode,ShipCountry,Currency,OrderValue,CouponCode,CouponDetails,DiscountAmount,ShippingDiscount,Shipping,SalesTax,OrderTotal,Status,CardProcessingFees,OrderNet,AdjustedOrderTotal,AdjustedCardProcessingFees,AdjustedNetOrderAmount,Buyer,OrderType,PaymentType,InPersonDiscount,InPersonLocation)  VALUES ?";
   var promises = [];
   var errors = [];
-  
-  promises.push(function(done){
+
+  promises.push(function(done) {
     salesDb.get().query(sqlDeleteStmt, (err, result) => {
       if (err) return done(err);
-      
-      e.emit('ClearedPrepTableProcess', {
+
+      e.emit("ClearedPrepTableProcess", {
         processId: processId,
         message: `Cleared Prep Table`,
         percentDone: null
       });
-      
+
       return done(null, result.affectedRows);
     });
   });
-  
-  rows.forEach(((line, index) => {
+
+  rows.forEach((line, index) => {
     promises.push(function(done) {
-        salesDb.get().query(sqlInsertStmt, [[line]], (err, result) => {
-          if (err) {
-            errors.push({ err, result});
-            return done(null, err);
-          }
-          var total = rows.length;
-          e.emit('SavedDataLine', {
-            processId: processId,
-            message: `Saved data line ${index} of ${total} to prep table`,
-            percentDone: ((index/total)*100)
-          });
-          return done(null, result);
+      salesDb.get().query(sqlInsertStmt, [[line]], (err, result) => {
+        if (err) {
+          errors.push({ err, result });
+          return done(null, err);
+        }
+        var total = rows.length;
+        e.emit("SavedDataLine", {
+          processId: processId,
+          message: `Saved data line ${index} of ${total} to prep table`,
+          percentDone: (index / total) * 100
         });
+        return done(null, result);
+      });
     });
-  }));
-  
-  promises.push(function(done){
-    e.emit('BeginFinalProcessing', {
+  });
+
+  promises.push(function(done) {
+    e.emit("BeginFinalProcessing", {
       processId: processId,
       message: `Begining Final Process`,
       percentDone: null
     });
     salesDb.get().query(extractToOrders, (err, result) => {
       if (err) return done(err);
-      
-      e.emit('CompleteFinalProcessing', {
+
+      e.emit("CompleteFinalProcessing", {
         processId: processId,
         message: `Final Process done. ${result.affectedRows} entries added to order table.`,
         percentDone: null
       });
-      console.log(result.affectedRows)
+      console.log(result.affectedRows);
       return done(null, result.affectedRows);
     });
   });
- 
-  
-  
-  console.log(promises.length)
-  salesDb.connect(salesDb.MODE_PROD, function(){
-    
+
+  console.log(promises.length);
+  salesDb.connect(salesDb.MODE_PROD, function() {
     async.series(promises, (err, results) => {
-        if (err) {
-            console.log(err);
-        }
-        //console.log(errors)
-        //console.log(JSON.parse(JSON.stringify(results)));
-        e.emit('Done', {
-          processId: processId,
-          message: 'Done',
-          percentDone: 100,
-          errors: errors,
-          results: JSON.parse(JSON.stringify(results))
-        });
-    });
-    
-  });
-  
-   
-  
-  
-};
-exports.OrderAmountsByMonth = async function ( year, soldThrough ) {
-  var params = [year, soldThrough];
-  return new Promise(function(resolve, reject){
-    salesDb.connect(salesDb.MODE_PROD, function(){
-      salesDb.get().query('SELECT MonthOfYear, SUM(OrderTotal) as Amount FROM Orders WHERE SaleYear = ? AND SoldThrough = ? GROUP BY MonthOfYear', params, function(err, result) {
-        if (err) return reject(err);
-        resolve(JSON.parse(JSON.stringify(result)));
+      if (err) {
+        console.log(err);
+      }
+      //console.log(errors)
+      //console.log(JSON.parse(JSON.stringify(results)));
+      e.emit("Done", {
+        processId: processId,
+        message: "Done",
+        percentDone: 100,
+        errors: errors,
+        results: JSON.parse(JSON.stringify(results))
       });
+      if(cb){
+        cb(JSON.parse(JSON.stringify(results)));
+      }
     });
-    
-    
-    
-   
   });
- 
+};
+exports.OrderAmountsByMonth = async function(year, soldThrough) {
+  var params = [year, soldThrough];
+  return new Promise(function(resolve, reject) {
+    salesDb.connect(salesDb.MODE_PROD, function() {
+      salesDb
+        .get()
+        .query(
+          "SELECT MonthOfYear, SUM(OrderTotal) as Amount FROM Orders WHERE SaleYear = ? AND SoldThrough = ? GROUP BY MonthOfYear",
+          params,
+          function(err, result) {
+            if (err) return reject(err);
+            resolve(JSON.parse(JSON.stringify(result)));
+          }
+        );
+    });
+  });
 };
 
-exports.OrderAmountsByQuarter = async function( year, soldThrough ) {
+exports.OrderAmountsByQuarter = async function(year, soldThrough) {
   //SELECT MonthOfYear, SUM(OrderTotal) as Amount FROM Orders WHERE SaleYear=? GROUP BY MonthOfYear;
   var params = [year, soldThrough];
-    return new Promise(function(resolve, reject){
-    salesDb.connect(salesDb.MODE_PROD, function(){
-      salesDb.get().query(' SELECT QuarterOfYear, SUM(OrderTotal) as Amount FROM Orders WHERE SaleYear = ? AND SoldThrough = ? GROUP BY QuarterOfYear;', params, function(err, result) {
-        if (err) return reject(err);
-        resolve(JSON.parse(JSON.stringify(result)));
-      });
+  return new Promise(function(resolve, reject) {
+    salesDb.connect(salesDb.MODE_PROD, function() {
+      salesDb
+        .get()
+        .query(
+          " SELECT QuarterOfYear, SUM(OrderTotal) as Amount FROM Orders WHERE SaleYear = ? AND SoldThrough = ? GROUP BY QuarterOfYear;",
+          params,
+          function(err, result) {
+            if (err) return reject(err);
+            resolve(JSON.parse(JSON.stringify(result)));
+          }
+        );
     });
-   
   });
 };
-
-
 
 const extractToOrders = `
 INSERT INTO Orders (
