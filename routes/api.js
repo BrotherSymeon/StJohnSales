@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var salesController = require('../controllers/salesController')
+var salesController = require('../controllers/salesController');
+var fileProcessController = require('../controllers/fileProcessController');
 
 var tours = [
   {id:1, name:'Hood River Tour', price: 789.00},
@@ -37,5 +38,9 @@ router.delete('/api/tour/:id', function(req, res) {
     res.json({ error: 'no such tour'});
   }
 });
+
+router.get('/api/process/:id/details', fileProcessController.process_status);
+
+
 
 module.exports = router;
