@@ -1,21 +1,16 @@
-var Db = require('../gcpDb');
 
-var FileProcess = function(file){
-  this.FileId = file.fileId;
-  this.FileName = file.fileName;
-  this.ProcessStatus = file.processStatus;
-};
+var mysqlModel = require('../lib/mysql-model');
+//Then create a model that will be main one for your application (all others will extend it):
+var dbConfig = {
+    host: '35.196.170.106',
+    user: 'salesadmin',
+    password: 'johnnyappleseed3334',
+    database : 'sales'
+  };
+var MyAppModel = mysqlModel.createConnection(dbConfig);
 
-FileProcess.create = function(newFileProcess, done){
-  Db.get().query('INSERT INTO FileProcess set ?', newFileProcess, function(err, res){
-    if(err) {
-      console.log('error: ', err);
-      done(err, null);
-    }
-    newFileProcess.FileId = res.insertId
-    console.log(res.insertId);
-    done(null, newFileProcess);
-  });
-};
-FileProcess.find = funciton()
-module.exports= FileProcess;
+module.exports = MyAppModel.extend({
+	tableName: 'FileProcess',
+});
+
+
