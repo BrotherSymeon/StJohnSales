@@ -14,7 +14,7 @@
 @charset "UTF-8";
 
 .progress{
-  
+  max-width: 650px !important;
 }
 
 /*!
