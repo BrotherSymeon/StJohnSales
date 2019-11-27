@@ -100,11 +100,15 @@ const processData = (data, processId, fileName) => {
         
       }
     });
-    
+    e.emit('EndFileProcess', {
+      processId: processId,
+      message: `Processing ${fileName}: ${lines.length} lines DONE.`,
+      percentDone: (1*.25)*100
+    });
     e.emit('BeginDataInsertProcess', {
       processId: processId,
       message: `Inserting DataRows from ${fileName} into tempOrders.`,
-      percentDone: 0
+      percentDone: (.25)*100
     });
     Sales.InsertIntoOrderTable(cleanData, e, processId, function(results){
       console.log(results[results.length-1])
@@ -140,8 +144,12 @@ exports.process = function (data, {processId, fileName}) {
     saveMessage(processId, data);
     //console.log('Line of File has been read: ' + data);
   });
+  processor.on('EndFileProcess', function(data) {
+    saveMessage(processId, data);
+    console.log('File Process has Ended: ' + data.message);
+  })
   processor.on('BeginDataInsertProcess', function (data) {
-    console.log('Begining Writing to Memeory: ' + data);
+    console.log('Begining Writing to Memeory: ' + data.message);
     saveMessage(processId, data);
   });
   processor.on('EndDataInsertProcess', function (data) {
