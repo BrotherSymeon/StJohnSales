@@ -1,5 +1,6 @@
 dependencies:
   async: 3.1.0
+  backbone: 1.4.0
   body-parser: 1.19.0
   cookie-parser: 1.4.4
   debug: 2.6.9
@@ -14,6 +15,7 @@ dependencies:
   mysql: 2.17.1
   passport: 0.4.0
   passport-google-oauth: 2.0.0
+  underscore: 1.9.1
 devDependencies:
   chai: 4.2.0
   eslint: 6.5.1
@@ -235,6 +237,12 @@ packages:
     dev: true
     resolution:
       integrity: sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
+  /backbone/1.4.0:
+    dependencies:
+      underscore: 1.9.1
+    dev: false
+    resolution:
+      integrity: sha512-RLmDrRXkVdouTg38jcgHhyQ/2zjg7a8E6sz2zxfz21Hh17xDJYUHBZimVIt5fUyS8vbfpeSmTL3gUjTEvUV3qQ==
   /balanced-match/1.0.0:
     resolution:
       integrity: sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
@@ -3514,6 +3522,7 @@ shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
   async: ^3.1.0
+  backbone: ^1.4.0
   body-parser: ^1.19.0
   chai: 4.2.0
   cookie-parser: ~1.4.4
@@ -3531,4 +3540,5 @@ specifiers:
   mysql: ^2.17.1
   passport: ^0.4.0
   passport-google-oauth: ^2.0.0
+  underscore: ^1.9.1
   zombie: 6.1.4
