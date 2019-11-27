@@ -93,10 +93,9 @@ const processData = (data, processId, fileName) => {
         if(lineData.length === 35){
           // only insert ones with a row length of 35
           cleanData.push( lineData );
-          
         } else {
-          console.log(`linedata length: ${lineData.length}`);
-          console.log(lineData);
+          //console.log(`linedata length: ${lineData.length}`);
+          //console.log(lineData);
         }
         
       }
@@ -107,10 +106,11 @@ const processData = (data, processId, fileName) => {
       message: `Inserting DataRows from ${fileName} into tempOrders.`,
       percentDone: 0
     });
-    Sales.InsertIntoOrderTable(cleanData, e, processId, function(count){
+    Sales.InsertIntoOrderTable(cleanData, e, processId, function(results){
+      console.log(results[results.length-1])
       e.emit('EndDataInsertProcess', {
         processId: processId,
-        message: `Inserted ${count} DataRows from ${fileName} into tempOrders.`,
+        message: `Inserted ${0} DataRows from ${fileName} into tempOrders.`,
         percentDone: 100,
         complete: false
       });
@@ -132,7 +132,7 @@ exports.process = function (data, {processId, fileName}) {
   var processor = processData(data, processId, fileName)
   
   processor.on('BeginFileProcess', function (data) {
-    console.log('File Process has Begun: ' + data);
+    console.log('File Process has Begun: ' + data.message);
     saveMessage(processId, data);
    
   });
@@ -181,7 +181,7 @@ var saveMessage = (procId, data) => {
     });
     detail.save((err, result) => {
       if(err) console.log(err);
-      console.log(result);
+      //console.log(result);
     });
 };
 
