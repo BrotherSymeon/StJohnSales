@@ -3,5 +3,9 @@ let FileProcessDetails = require('../models/FileProcessDetails');
 
 exports.process_status = function(req, res){
   //console.log(req.params.id);
-  res.JSON(2);
+  var detail = new FileProcessDetails();
+  detail.find('all', {where: 'FileId ='+req.params.id}, function(err, rows, fields){
+    
+  })
+  res.json(req.params.id);
 };
