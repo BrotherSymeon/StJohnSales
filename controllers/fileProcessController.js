@@ -1,7 +1,7 @@
 let FileProcess = require('../models/FileProcess');
 let FileProcessDetails = require('../models/FileProcessDetails');
 
-exports.process_status = (req, res) => {
-  console.log(req.body.pocId);
-  res.JSON(req.body.pocId);
+exports.process_status = function(req, res){
+  console.log(req.params.id);
+  res.JSON(req.params.id);
 };

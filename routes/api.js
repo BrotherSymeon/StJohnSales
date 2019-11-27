@@ -39,7 +39,7 @@ router.delete('/api/tour/:id', function(req, res) {
   }
 });
 
-router.get('/api/process/:id/details', fileProcessController.process_status);
+router.get('/process/:id/details', fileProcessController.process_status);
 
 
 
