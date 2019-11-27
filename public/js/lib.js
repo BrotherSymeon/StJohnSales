@@ -13,5 +13,7 @@
   }
 
   function setText(elementId, txt) {
-    
+    var elem = document.getElementById(elementId);
+    var txt = document.createTextNode(txt);
+    elem.appendChild(txt);
   }
