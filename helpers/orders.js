@@ -62,7 +62,7 @@ const processData = (data, processId, fileName) => {
       e.emit('FileLineProcess', {
         processId: processId,
         message: `Processing ${fileName}: processing line ${i} of ${lines.length} lines.`,
-        percentDone: ((i / lines.length) * 100)
+        percentDone: (((i / lines.length)* .25) * 100)
       });
       //val is a comma seperated line
       val = utils.replaceCommasInDoubleQuotes(val);
@@ -173,8 +173,8 @@ exports.process = function (data, {processId, fileName}) {
     saveMessage(processId, data);
   });
   processor.on('Done', function(data) {
-    console.log('Done : ;-)');
-    saveMessage(processId, data);
+    //console.log('Done : ;-)');
+    //saveMessage(processId, data);
   });
   
 };

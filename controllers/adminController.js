@@ -21,7 +21,7 @@ exports.user_create = function(req, res) {
 };
 
 exports.data_upload = function(req, res) {
-  return res.render("upload", { title: "St Johns Sales - Upload Data" });
+  return res.render("upload", { title: "St Johns Sales - Upload Data" , processId: 0});
 };
 
 exports.upload_orders = async function(req, response) {

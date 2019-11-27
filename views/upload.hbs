@@ -14,7 +14,7 @@
     </button>
   </div>
   <div class="toast-body">
-    Thanks for uploading your Data file.
+    Thanks for uploading your Data file. Make the call using id:{{processId}}
   </div>
 </div>
 {{/if}}
@@ -30,20 +30,17 @@
 
 {{#contentFor "pageScripts"}}
 <script>
-jQuery.noConflict();
-(function( $ ) {
+  var processId = {{processId}}
+  jQuery.noConflict();
+  (function( $ ) {
     $(document).ready(function ($) {
-    // Your code here
-     console.log( "ready!" );
-    $('.toast').toast('show');
-});
-  $(function() {
-    // More code using $ as alias to jQuery
-  });
+      // Your code here
+      console.log( "ready! " + processId );
+      $('.toast').toast('show');
+      
+      
+      
+    });
 })(jQuery);
-  
-  
-
- 
 </script>
 {{/contentFor}}
