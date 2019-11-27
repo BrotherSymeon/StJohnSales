@@ -15,7 +15,7 @@
   </div>
   <div class="toast-body">
     Thanks for uploading your Data file. Make the call using id:{{processId}}
-  <div class="progress">
+  <div class="progress" style="max-width: 100%;">
   <div id="progressBar" class="progress-bar" role="progressbar" style="width: 1%;" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100"></div>
 </div>
   </div>
@@ -59,8 +59,9 @@
         const response = await fetch(`/api/process/${processId}/details`);
         const myJson = await response.json();
         if(myJson[0]){
+          console.log(myJson[0].PercentDone)
           $('#progressBar').attr('aria-valuenow', myJson[0].PercentDone).css('width', myJson[0].PercentDone);
-          $('#progressBar').innerHTML = `${myJson[0].PercentDone}%`
+          $('#progressBar').innerText = `${myJson[0].PercentDone}%`
           if(myJson[0].PercentDone === 100){
             done = true
           }
