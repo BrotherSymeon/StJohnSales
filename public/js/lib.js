@@ -14,6 +14,7 @@
 
   function setText(elementId, txt) {
     var elem = document.getElementById(elementId);
+    elem.innerHTML = ''
     var txt = document.createTextNode(txt);
     elem.appendChild(txt);
   }
