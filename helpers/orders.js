@@ -2,6 +2,7 @@ let emitter = require('events').EventEmitter;
 let Sales = require('../models/sales');
 let Enumeration = require('../lib/enumeration');
 let utils = require('../lib/utilities');
+let FileProcessDetails = require('../models/FileProcessDetails')
 
 
 let OrderColumns = new Enumeration([
@@ -135,6 +136,7 @@ exports.process = function (data, {processId, fileName}) {
   
   processor.on('BeginFileProcess', function (data) {
     console.log('File Process has Begun: ' + data);
+    saveMessage(processId, data);
    
   });
   processor.on('FileLineProcess', function (data) {
@@ -164,5 +166,15 @@ exports.process = function (data, {processId, fileName}) {
   
 };
 
+
+var saveMessage = (procId, data) => {
+   var detail = new FileProcessDetails({
+      DetailType: 'MESSAGE',
+      MessageDetail: data.message,
+      FileId: procId,
+      
+    });
+    detail.save();
+}
 
 

@@ -38,10 +38,11 @@ exports.upload_orders = async function (req, res) {
       ProcessStatus: 'Started'
     });
     process.save(function(err, res){
-      proc
+      processId = res.insertId;
+      console.log(`new fileid: ${processId}`);
+      OrderHelper.process(req.file.buffer.toString("utf-8"), {processId, fileName : req.file.originalname})
     });
-    console.log(`new fileid: ${process.FileId}`);
-    OrderHelper.process(req.file.buffer.toString("utf-8"), {processId: process.FileId, fileName : req.file.originalname})
+    
    
     
   }, 5000);
