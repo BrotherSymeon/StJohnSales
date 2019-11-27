@@ -7,8 +7,8 @@ exports.process_status = function(req, res){
   var detail = new FileProcessDetails();
   detail.query(sql, function(err, rows, fields){
     if(err){
-      console.log(err)
-      res.send(500).status
+      console.log(err);
+      res.status(500).send(err.message);
     }
     res.json(rows);
   })

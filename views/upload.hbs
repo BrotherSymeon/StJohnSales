@@ -40,15 +40,27 @@
       // Your code here
       console.log( "ready! " + processId );
       //$()
-      $('.toast').toast('show');
+      //$('.toast').toast('show');
+      
       
       if(processId>0){
+        $('.toast').toast('show');
         run();
       }
       
+      function checkDone(){
+        if(done){
+          $('#progressBar').innerHTML = ''
+          $('#progressBar').hide()
+          $('.toast').toast('hide');
+          clearInterval(timerId)
+        }
+      }
+      
       async function run(){
-        let done = false;
-        let timerId = setInterval(async () => {
+       let done = false;
+      let timerId = null;
+        timerId = setInterval(async () => {
         const response = await fetch(`/api/process/${processId}/details`);
         const myJson = await response.json();
         if(myJson[0]){
@@ -58,13 +70,14 @@
             done = true
           }
         }
+        if(done){
+          $('#progressBar').innerHTML = ''
+          $('#progressBar').hide()
+          clearInterval(timerId)
+        }
       }, 2000);
         
-      if(done){
-        $('#progressBar').innerHTML = ''
-        $('#progressBar').hide()
-        clearInterval(timerId)
-      }
+    
    
   }
       
