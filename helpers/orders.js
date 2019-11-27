@@ -111,10 +111,10 @@ const processData = (data, processId, fileName) => {
       percentDone: (.25)*100
     });
     Sales.InsertIntoOrderTable(cleanData, e, processId, function(results){
-      console.log(results[results.length-1])
+      var inserted = results[results.length-1];
       e.emit('EndDataInsertProcess', {
         processId: processId,
-        message: `Inserted ${0} DataRows from ${fileName} into tempOrders.`,
+        message: `Inserted ${inserted} DataRows from ${fileName} into tempOrders.`,
         percentDone: 100,
         complete: false
       });
@@ -149,11 +149,11 @@ exports.process = function (data, {processId, fileName}) {
     console.log('File Process has Ended: ' + data.message);
   })
   processor.on('BeginDataInsertProcess', function (data) {
-    console.log('Begining Writing to Memeory: ' + data.message);
+    console.log('Begining Writing to DB: ' + data.message);
     saveMessage(processId, data);
   });
   processor.on('EndDataInsertProcess', function (data) {
-    console.log('Finished Writing to Memory: ', data);
+    console.log('Finished Writing to DB: ', data);
     saveMessage(processId, data);
   });
   processor.on('ClearedPrepTableProcess', function(data) {
@@ -185,7 +185,7 @@ var saveMessage = (procId, data) => {
       DetailType: 'MESSAGE',
       DetailMessage: data.message,
       FileId: procId,
-      
+      PercentDone: data.percentDone || 0
     });
     detail.save((err, result) => {
       if(err) console.log(err);
