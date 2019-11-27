@@ -15,6 +15,9 @@
   </div>
   <div class="toast-body">
     Thanks for uploading your Data file. Make the call using id:{{processId}}
+  <div class="progress">
+  <div id="progressBar" class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+</div>
   </div>
 </div>
 {{/if}}
@@ -36,15 +39,22 @@
     $(document).ready(function ($) {
       // Your code here
       console.log( "ready! " + processId );
+      //$()
       $('.toast').toast('show');
       
       if(processId>0){
-        const response = await fetch('/api/process/15/details');
-        const myJson = await response.json();
-        console.log(JSON.stringify(myJson));
+        run();
       }
       
     });
 })(jQuery);
+  async function run(){
+    setInterval()
+      const response = await fetch(`/api/process/${processId}/details`);
+        const myJson = await response.json();
+        console.log(JSON.stringify(myJson));  
+    $('#progressBar').attr('aria-valuenow', myJson[0].PercentDone).css('width', myJson[0].PercentDone);
+    
+  }
 </script>
 {{/contentFor}}
