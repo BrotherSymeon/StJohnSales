@@ -6,6 +6,10 @@ exports.process_status = function(req, res){
   //console.log(req.params.id);
   var detail = new FileProcessDetails();
   detail.query(sql, function(err, rows, fields){
+    if(err){
+      console.log(err)
+      res.send(500).status
+    }
     res.json(rows);
   })
   //res.json(req.params.id);

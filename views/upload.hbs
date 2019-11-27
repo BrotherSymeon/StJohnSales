@@ -46,27 +46,31 @@
         run();
       }
       
-    });
-})(jQuery);
-  async function run(){
-    let done = false;
-    let timerId = setInterval(() => {
-      const response = await fetch(`/api/process/${processId}/details`);
-      const myJson = await response.json();
-      if(myJson[0]){
-        $('#progressBar').attr('aria-valuenow', myJson[0].PercentDone).css('width', myJson[0].PercentDone);
-        if(myJson[0].PercentDone === 100){
-          done = true
+      async function run(){
+        let done = false;
+        let timerId = setInterval(async () => {
+        const response = await fetch(`/api/process/${processId}/details`);
+        const myJson = await response.json();
+        if(myJson[0]){
+          $('#progressBar').attr('aria-valuenow', myJson[0].PercentDone).css('width', myJson[0].PercentDone);
+          $('#progressBar').innerHTML = String(myJson[0].PercentDone) + '%'
+          if(myJson[0].PercentDone === 100){
+            done = true
+          }
+        }
+      }, 2000);
+        
+      if(done){
+        $('#progressBar').innerHTML = ''
+        $('#progressBar').hide()
+        clearInterval(timerId)
       }
-      }
-      
-      
-    }, 2000);
-    if(done){
-      $('#progressBar').hide()
-      clearInterval(timerId)
-    }
    
   }
+      
+      
+    });
+})(jQuery);
+ 
 </script>
 {{/contentFor}}
