@@ -38,7 +38,11 @@
       console.log( "ready! " + processId );
       $('.toast').toast('show');
       
-      
+      if(processId>0){
+        const response = await fetch('/api/process/15/details');
+        const myJson = await response.json();
+        console.log(JSON.stringify(myJson));
+      }
       
     });
 })(jQuery);
