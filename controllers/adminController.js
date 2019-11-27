@@ -1,6 +1,7 @@
 var User = require('../models/user');
 var Sales = require('../models/sales');
 var OrderHelper = require(('../helpers/orders'));
+let FileProcess = require('../models/FileProcess');
 
 
 
@@ -32,9 +33,16 @@ exports.upload_orders = async function (req, res) {
   var processId = 9;
   
   setTimeout(function(){
-    OrderHelper.process(req.file.buffer.toString("utf-8"), {processId, fileName : req.file.originalname})
-    console.log('yeaaaaaah');
-    console.log(req.file)
+    var process = new FileProcess({
+      FileName: req.file.originalname,
+      ProcessStatus: 'Started'
+    });
+    process.save(function(err, res){
+      proc
+    });
+    console.log(`new fileid: ${process.FileId}`);
+    OrderHelper.process(req.file.buffer.toString("utf-8"), {processId: process.FileId, fileName : req.file.originalname})
+   
     
   }, 5000);
   //console.log(req.file.buffer.toString("utf-8"));

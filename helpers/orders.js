@@ -2,7 +2,7 @@ let emitter = require('events').EventEmitter;
 let Sales = require('../models/sales');
 let Enumeration = require('../lib/enumeration');
 let utils = require('../lib/utilities');
-let FileProcess = require('../models/FileProcess');
+
 
 let OrderColumns = new Enumeration([
   'SaleDate',
@@ -135,10 +135,7 @@ exports.process = function (data, {processId, fileName}) {
   
   processor.on('BeginFileProcess', function (data) {
     console.log('File Process has Begun: ' + data);
-    var process = new FileProcess({
-      FileName
-    });
-    process.
+   
   });
   processor.on('FileLineProcess', function (data) {
     //console.log('Line of File has been read: ' + data);
