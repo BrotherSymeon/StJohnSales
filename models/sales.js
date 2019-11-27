@@ -68,8 +68,8 @@ exports.InsertIntoOrderTable = async function (lines, e, processId) {
         if (err) {
             console.log(err);
         }
-        console.log(errors)
-        console.log(JSON.parse(JSON.stringify(results)));
+        //console.log(errors)
+        //console.log(JSON.parse(JSON.stringify(results)));
         e.emit('Done', {
           processId: processId,
           message: 'Done',
