@@ -178,11 +178,14 @@ exports.process = function (data, {processId, fileName}) {
 var saveMessage = (procId, data) => {
    var detail = new FileProcessDetails({
       DetailType: 'MESSAGE',
-      MessageDetail: data.message,
+      DetailMessage: data.message,
       FileId: procId,
       
     });
-    detail.save();
-}
+    detail.save((err, result) => {
+      if(err) console.log(err);
+      console.log(result);
+    });
+};
 
 

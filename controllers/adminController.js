@@ -24,12 +24,12 @@ exports.data_upload = function(req, res) {
   return res.render("upload", { title: "St Johns Sales - Upload Data" });
 };
 
-exports.upload_orders = async function(req, res) {
+exports.upload_orders = async function(req, response) {
   var message = "Thank You, we will haave this done shortly";
   //req.fields; // contains non-file fields
   //console.log(req.file);// contains files
   var processId = 0;
-  var thisres = res
+  
   var process = new FileProcess({
     FileName: req.file.originalname,
     ProcessStatus: 'STARTED'
@@ -42,7 +42,7 @@ exports.upload_orders = async function(req, res) {
         fileName: req.file.originalname
       });
     }, 5000);
-    return thisres.render('upload', {
+    return response.render('upload', {
       title: 'St Johns Sales - Upload Data',
       message: message,
       processId
