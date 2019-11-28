@@ -9,28 +9,38 @@ var title = 'St Johns Sales';
 
 var sessionChecker = (req, res, next) => {
   console.log("sessionChecker");
-  console.log(req.session);
-  if (!req.session.user) {
-    res.redirect("/users/login");
-    //console.log('one')
-  } else if (req.session.user.user_id && req.cookies.user_sid) {
-    try{
-      //console.log(JSON.parse(req.session.user.roles));
-    }catch(err){
-      console.log(err)
-    }
-    
+  console.log(process.env.LOCAL);
+  if (process.env.LOCAL) {
+    res.locals.authenticated = true;
+    req.session.user = require('../lib/fakeUser').user;
     next();
   } else {
-    //console.log('3')
-    res.redirect("/users/login");
+    
+    console.log(req.session);
+    if (!req.session.user) {
+
+      res.redirect("/users/login");
+      //console.log('one')
+    } else if (req.session.user.user_id && req.cookies.user_sid) {
+      try {
+        //console.log(JSON.parse(req.session.user.roles));
+      } catch (err) {
+        console.log(err)
+      }
+
+      next();
+    } else {
+      //console.log('3')
+      res.redirect("/users/login");
+    }
+    
   }
 };
 
 /* GET home page. */
-router.get('/', sessionChecker, salesController.dashboard );
+router.get('/', sessionChecker, salesController.dashboard);
 
-router.get('/about', sessionChecker, function(req, res) {
+router.get('/about', sessionChecker, function (req, res) {
   //eq.cookies.user_sid && !req.session.user)
   var randomFortune = fortune.getFortune();
   res.render('about', {
@@ -40,12 +50,12 @@ router.get('/about', sessionChecker, function(req, res) {
   });
 });
 
-router.get('/admin', sessionChecker, function(req, res) {
-    res.render('admin', { title });
-  
+router.get('/admin', sessionChecker, function (req, res) {
+  res.render('admin', { title });
+
 })
 
-router.get('/test', sessionChecker, function(req, res) {
+router.get('/test', sessionChecker, function (req, res) {
   return res.sendStatus(200);
   //var mysql = require("mysql");
   //var pool = mysql.createPool({
@@ -54,13 +64,13 @@ router.get('/test', sessionChecker, function(req, res) {
   //  password: "johnnyappleseed3334",
   //  database: "sales"
   //});
-//
+  //
   //pool.query("SELECT * FROM tempOrders;", function(error, results, fields) {
-   // if (error) throw error;
-   // console.log("The solution is: ", results[0]);
-   // 
+  // if (error) throw error;
+  // console.log("The solution is: ", results[0]);
+  // 
   //});
-  
+
 });
 
 module.exports = router;
