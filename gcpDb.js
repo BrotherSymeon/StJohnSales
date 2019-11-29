@@ -1,5 +1,6 @@
 var mysql = require('mysql');
 var async = require('async');
+var dbConfig = require('./config/db');
 var PROD_DB ='app_prod_db'
   , TEST_DB = 'app_test_db';
 
@@ -12,12 +13,7 @@ var state = {
 };
 
 exports.connect = function(mode, done) {
-  state.pool = mysql.createPool({
-    host: '35.196.170.106',
-    user: 'salesadmin',
-    password: 'johnnyappleseed3334',
-    database : 'sales'
-  });
+  state.pool = mysql.createPool(dbConfig);
   
   state.mode = mode;
   done();

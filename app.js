@@ -12,6 +12,7 @@ var passport = require('passport');
 
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
+var dbConfig = require('./config/db');
  
 var options = {
     host: process.env.MYSQL_HOST,
@@ -21,7 +22,7 @@ var options = {
     database: process.env.MYSQL_DB
 };
  
-var sessionStore = new MySQLStore(options);
+var sessionStore = new MySQLStore(dbConfig);
  
 
 
