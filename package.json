@@ -7,6 +7,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www",
     "lint": "eslint *.js lib/*.js routes/*.js public/qa/*.js public/javascripts/*.js",
     "test-unit": "mocha -u tdd -R spec qa/tests*.js ",
     "test-integration": "mocha -u tdd -R spec qa/integration/tests-*.js "

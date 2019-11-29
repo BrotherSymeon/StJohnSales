@@ -10,7 +10,7 @@ var title = 'St Johns Sales';
 var sessionChecker = (req, res, next) => {
   console.log("sessionChecker");
   console.log(process.env.LOCAL);
-  if (process.env.LOCAL) {
+  if (!!process.env.LOCAL === true) {
     res.locals.authenticated = true;
     req.session.user = require('../lib/fakeUser').user;
     next();

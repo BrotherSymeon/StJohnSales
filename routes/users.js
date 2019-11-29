@@ -11,7 +11,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://stjohnsales.glitch.me/users/auth/google/callback"
+      callbackURL: "/users/auth/google/callback"
     },
     function(accessToken, refreshToken, profile, cb) {
       User.findByEmail(profile.emails[0].value, function(err, data) {
