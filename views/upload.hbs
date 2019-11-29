@@ -41,13 +41,25 @@
 {{/if}}
 
 <h4>
-  Submit Orders
+  Upload Etsy Order File
 </h4>
+<div class="jumbotron">
 <form method="POST" action="/admin/upload/orders" enctype="multipart/form-data">
-  <input type="file" name="orders" />
+<div class="form-group">
+
+  <input id="orders" type="file" name="orders" />
+</div>
+  <button type="submit" class="btn btn-primary">Upload</button>
+</form>
+</div>
+
+<h4>
+  Upload Etsy Order Items File
+</h4>
+<form method="POST" action="/admin/upload/orderitems" enctype="multipart/form-data">
+  <input type="file" name="orderItems" />
   <input type="submit" />
 </form>
-
 
 {{#contentFor "pageScripts"}}
 <script src="/js/lib.js"></script>
