@@ -6,8 +6,9 @@ var logger = require('morgan');
 var hbs = require('express-hbs');
 var debug = require('debug')('meadowlark:server');
 var passport = require('passport');
+require('./config/containerConfig').config();
 
-var { diContainer }  = require('./diContainer');
+/* var { diContainer }  = require('./diContainer');
 diContainer.factory('dbConfig', require('./config/db'));
 diContainer.factory('salesDb', require("./gcpDb"));
 diContainer.factory('utils', require('./lib/utilities'));
@@ -25,7 +26,7 @@ diContainer.factory('adminController', require('./controllers/adminController'))
 diContainer.factory('fileProcessController', require('./controllers/fileProcessController'));
 
 global.goc = {};
-goc.container = diContainer;
+goc.container = diContainer */;
 
 
 
