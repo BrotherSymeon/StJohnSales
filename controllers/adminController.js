@@ -4,7 +4,7 @@ var OrderHelper = require("../helpers/orders");
 let FileProcess = require("../models/FileProcess");
 
 
-module.exports = (processModel, orderService) => {
+module.exports = (db, orderService) => {
   const adminController = {};
 
   adminController.users_list = function(req, res) {
@@ -32,7 +32,7 @@ module.exports = (processModel, orderService) => {
     //console.log(req.file);// contains files
     var processId = 0;
     
-    var process = new processModel({
+    var process = new db.FileProcesses({
       FileName: req.file.originalname,
       ProcessStatus: 'STARTED'
     });

@@ -2,9 +2,9 @@ var express = require('express');
 var router = express.Router();
 
 
-var fileProcessController = goc.container.get('fileProcessController');
+var fileProcessDetailsController = goc.container.get('fileProcessDetailsController');
 
-router.get('/process/:id/details', fileProcessController.processStatus);
+router.get('/process/:id/details', fileProcessDetailsController.processStatus);
 
 
 

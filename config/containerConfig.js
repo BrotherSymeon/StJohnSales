@@ -20,6 +20,7 @@ module.exports = {
     //CONTROLLERS----->
     diContainer.factory('adminController', require('../controllers/adminController'));
     diContainer.factory('fileProcessController', require('../controllers/fileProcessController'));
+    diContainer.factory('fileProcessDetailsController', require('../controllers/fileProcessDetailsController'));
 
     global.goc = {};
     goc.container = diContainer;

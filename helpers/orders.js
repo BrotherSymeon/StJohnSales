@@ -3,7 +3,7 @@ let Enumeration = require('../lib/enumeration');
 
 
 
-module.exports = (utils, salesModel, processDetailsModel) => {
+module.exports = (utils, salesModel, db) => {
   const ordersService = {};
 
   ordersService.process = function (data, {processId, fileName}) {
@@ -136,7 +136,7 @@ module.exports = (utils, salesModel, processDetailsModel) => {
   };
 
   var saveMessage = (procId, data) => {
-    var detail = new processDetailsModel({
+    var detail = new db.FileProcessDetails({
        DetailType: 'MESSAGE',
        DetailMessage: data.message,
        FileId: procId,
