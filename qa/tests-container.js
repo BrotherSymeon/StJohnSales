@@ -12,4 +12,5 @@ suite('diContainer', function(){
     const expected = 'example-db';
     expect(actual === expected);
   });
+  
 });

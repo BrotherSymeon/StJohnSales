@@ -7,6 +7,26 @@ var hbs = require('express-hbs');
 var debug = require('debug')('meadowlark:server');
 var passport = require('passport');
 
+var { diContainer }  = require('./diContainer');
+diContainer.factory('dbConfig', require('./config/db'));
+diContainer.factory('salesDb', require("./gcpDb"));
+diContainer.factory('utils', require('./lib/utilities'));
+diContainer.factory('orderService', require('./helpers/orders'));
+diContainer.factory('mySqlConnection', require('./lib/mysql-model2'));
+//diContainer.factory('mySqlConnection', require('../db/connection'));
+
+//MODELS ---->
+diContainer.factory('processDetailsModel', require('./models/FileProcessDetails'));
+diContainer.factory('processModel', require('./models/FileProcess'));
+diContainer.factory('salesModel', require('./models/sales'));
+
+//CONTROLLERS----->
+diContainer.factory('adminController', require('./controllers/adminController'));
+diContainer.factory('fileProcessController', require('./controllers/fileProcessController'));
+
+global.goc = {};
+goc.container = diContainer;
+
 
 
 
@@ -15,29 +35,23 @@ var MySQLStore = require('express-mysql-session')(session);
 var dbConfig = require('./config/db');
  
 var options = {
-    host: process.env.MYSQL_HOST,
-    port: 3306,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PSWD,
-    database: process.env.MYSQL_DB
+  host: process.env.MYSQL_HOST,
+  port: 3306,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PSWD,
+  database: process.env.MYSQL_DB
 };
+
+var test = dbConfig();
  
-var sessionStore = new MySQLStore(dbConfig);
+var sessionStore = new MySQLStore(options);
  
-
-
-
-var weather = require('./lib/weather');
-
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/api');
 var adminRouter = require('./routes/admin');
 
 var app = express();
-
-
-
 
 // view engine setup
 app.engine('hbs', hbs.express4({
@@ -56,7 +70,7 @@ hbs.registerHelper('toJSON', function(object) {
 });
 
 
-//app.use(logger('dev'));
+app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

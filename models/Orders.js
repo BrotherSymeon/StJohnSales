@@ -1,6 +1,6 @@
 
 module.exports = function(mySqlConnection) {
 	return mySqlConnection.extend({
-		tableName: 'FileProcessDetails'
+		tableName: 'Orders',
 	});
 };

@@ -5,10 +5,14 @@
  */
 require('dotenv').config();
 var db = require('../db');
-var gcpDb = require('../gcpDb');
+var gcpDb = require('../gcpDb')();
 var app = require('../app');
 var debug = require('debug')('meadowlark:server');
 var http = require('http');
+
+
+
+
 
 /**
  * Get port from environment and store in Express.
@@ -92,6 +96,7 @@ function onError(error) {
       throw error;
   }
 }
+
 
 /**
  * Event listener for HTTP server "listening" event.
