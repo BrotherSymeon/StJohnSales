@@ -18,7 +18,7 @@ module.exports = function() {
       const factory = factories[ name ];
       dependencies[ name ] = factory && diContainer.inject( factory );
       if( !dependencies[ name ]) {
-        throw new Error(`Cannot find module: ${name}`);
+        throw new Error('Cannot find module: ' +  JSON.stringify(name));
       }
     }
     return dependencies[ name ];

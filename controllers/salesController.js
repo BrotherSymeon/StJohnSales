@@ -1,5 +1,7 @@
-var Sales = require('../models/sales');
-var someAsync = require('../helpers/someAsync');
+
+var db = require('../gcpDb');
+var Sales = require('../models/sales')(db());
+
 
 exports.dashboard = async function(req, res) {
   try{
@@ -15,7 +17,7 @@ exports.dashboard = async function(req, res) {
     
     return res.render('index', { title : 'St Johns Sales'});
   }catch(err){
-    console.error(err);
+    console.error(err.message);
     return res.render('index', { title : 'St Johns Sales'});
   }
   
