@@ -1,9 +1,9 @@
 
 
-module.exports = function(db) {
+module.exports =  function(db) {
   const fileProcessController = {};
   var FileProcessesModel = new db.FileProcesses();
-  fileProcessController.getProcesses = function(req, res) {
+  fileProcessController.getProcesses = async function(req, res) {
     var id = req.params.id || 0;
     //var sql = ` SELECT * from  FileProcessDetails  where FileId = ${req.params.id} and FileProcessDetailId = (   select max(FileProcessDetailId) from FileProcessDetails WHERE FileId = ${req.params.id}  );`
     try{

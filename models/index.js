@@ -4,6 +4,8 @@ var fileProcessDetails = require('./FileProcessDetails');
 var orders = require('./Orders');
 var orderItems = require('./OrderItems');
 var users = require('./Users');
+var tempOrders = require('./tempOrders');
+var tempOrderItems = require('./tempOrderItems');
 
 
 module.exports = (mySqlConnection) => {
@@ -12,7 +14,9 @@ module.exports = (mySqlConnection) => {
     FileProcessDetails: fileProcessDetails(mySqlConnection),
     Orders: orders(mySqlConnection),
     OrderItems: orderItems(mySqlConnection),
-    Users: users(mySqlConnection)
+    Users: users(mySqlConnection),
+    TempOrders: tempOrders(mySqlConnection),
+    TempOrderItems:tempOrderItems(mySqlConnection)
   };
 
   return db;

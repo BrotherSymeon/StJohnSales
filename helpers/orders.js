@@ -53,6 +53,88 @@ module.exports = (utils, salesModel, db) => {
     
   };
 
+  ordersService.insertIntoTempOrderTable = (lines, e, processId, cb) => {
+    var rows = lines;
+    var promises = [];
+    var errors = [];
+    var tempOrdersModel = db.TempOrderItems();
+
+    // delete from the tem table
+    promises.push(function(done) {
+      tempOrdersModel.query(ordersService.deleteTempOrdersTableSQL(), (err, result) => {
+        if (err) return done(err);
+  
+        e.emit("ClearedPrepTableProcess", {
+          processId: processId,
+          message: `Cleared Order temp Table`,
+          percentDone: null
+        });
+  
+        return done(null, result.affectedRows);
+      });
+    });
+
+    //insert each one by one
+    rows.forEach((line, index) => {
+      promises.push(function(done) {
+        tempOrdersModel.queryOptions(sqlInsertStmt, [[line]], (err, result) => {
+          if (err) {
+            errors.push({ err, result });
+            return done(null, err);
+          }
+          var total = rows.length;
+          e.emit("SavedDataLine", {
+            processId: processId,
+            message: `Saved data line ${index} of ${total} to prep table`,
+            percentDone: (index / total) * 100
+          });
+          return done(null, result);
+        });
+      });
+    });
+
+    promises.push(function(done) {
+      e.emit("BeginFinalProcessing", {
+        processId: processId,
+        message: `Begining Final Process`,
+        percentDone: null
+      });
+      tempOrdersModel.query( ordersService.insertIntoTempOrdersTableSQL(), (err, result) => {
+        if (err) return done(err);
+  
+        e.emit("CompleteFinalProcessing", {
+          processId: processId,
+          message: `Final Process done. ${result.affectedRows} entries added to order table.`,
+          percentDone: null
+        });
+        console.log(result.affectedRows);
+        return done(null, result.affectedRows);
+      });
+    });
+
+    //run all of the functions
+    async.series(promises, (err, results) => {
+      if (err) {
+        console.log(err);
+      }
+      //console.log(errors)
+      //console.log(JSON.parse(JSON.stringify(results)));
+      e.emit("Done", {
+        processId: processId,
+        message: "Done",
+        percentDone: 100,
+        errors: errors,
+        results: JSON.parse(JSON.stringify(results))
+      });
+      if(cb){
+        cb(JSON.parse(JSON.stringify(results)));
+      }
+    });
+
+
+
+  };
+
   ordersService.processData = (data, processId, fileName) => {
     var e = new emitter();
   
@@ -117,7 +199,7 @@ module.exports = (utils, salesModel, db) => {
         message: `Inserting DataRows from ${fileName} into tempOrders.`,
         percentDone: (.25)*100
       });
-      salesModel.InsertIntoOrderTable(cleanData, e, processId, function(results){
+      ordersService.insertIntoTempOrderTable(cleanData, e, processId, function(results){
         var inserted = results[results.length-1];
         e.emit('EndDataInsertProcess', {
           processId: processId,
@@ -133,6 +215,14 @@ module.exports = (utils, salesModel, db) => {
   
     
     return e;
+  };
+
+  ordersService.deleteTempOrdersTableSQL = () =>{
+    return "DELETE FROM tempOrders;";
+  };
+
+  ordersService.insertIntoTempOrdersTableSQL = () => {
+    return "INSERT INTO tempOrders(SaleDate,OrderId,BuyerUserId,FullName,FirstName,LastName,NumberOfItems,PaymentMethod,DateShipped,Street1,Street2,ShipCity,ShipState,ShipZipCode,ShipCountry,Currency,OrderValue,CouponCode,CouponDetails,DiscountAmount,ShippingDiscount,Shipping,SalesTax,OrderTotal,Status,CardProcessingFees,OrderNet,AdjustedOrderTotal,AdjustedCardProcessingFees,AdjustedNetOrderAmount,Buyer,OrderType,PaymentType,InPersonDiscount,InPersonLocation)  VALUES ?";
   };
 
   var saveMessage = (procId, data) => {
