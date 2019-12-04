@@ -1,11 +1,12 @@
-{{!< layout}} 
+{{!< layout}}
 
 <h3>Upload</h3>
-<hr/>
+<hr />
 {{#if err}}
-<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="position: absolute; top: 10; right: 0;" data-autohide="false">
+<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="position: absolute; top: 10; right: 0;"
+  data-autohide="false">
   <div class="toast-header">
-    
+
     <strong class="mr-auto alert-danger">Error</strong>
     <small></small>
     <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
@@ -19,9 +20,10 @@
 {{/if}}
 
 {{#if message}}
-<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="position: absolute; top: 10; right: 0;" data-autohide="false">
+<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="position: absolute; top: 10; right: 0;"
+  data-autohide="false">
   <div class="toast-header">
-    
+
     <strong class="mr-auto">Thank you</strong>
     <small></small>
     <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
@@ -30,26 +32,27 @@
   </div>
   <div class="toast-body">
     Thanks for uploading your Data file. We will start tracking its progress in a moment.
-     <div class="progress" >
-  <div id="progressBar" class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100"></div>
-</div>
+    <div class="progress">
+      <div id="progressBar" class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0"
+        aria-valuemax="100"></div>
+    </div>
     <div id="spinner" class="sk-fading-circle">
-  <div class="sk-circle1 sk-circle"></div>
-  <div class="sk-circle2 sk-circle"></div>
-  <div class="sk-circle3 sk-circle"></div>
-  <div class="sk-circle4 sk-circle"></div>
-  <div class="sk-circle5 sk-circle"></div>
-  <div class="sk-circle6 sk-circle"></div>
-  <div class="sk-circle7 sk-circle"></div>
-  <div class="sk-circle8 sk-circle"></div>
-  <div class="sk-circle9 sk-circle"></div>
-  <div class="sk-circle10 sk-circle"></div>
-  <div class="sk-circle11 sk-circle"></div>
-  <div class="sk-circle12 sk-circle"></div>
-</div>
+      <div class="sk-circle1 sk-circle"></div>
+      <div class="sk-circle2 sk-circle"></div>
+      <div class="sk-circle3 sk-circle"></div>
+      <div class="sk-circle4 sk-circle"></div>
+      <div class="sk-circle5 sk-circle"></div>
+      <div class="sk-circle6 sk-circle"></div>
+      <div class="sk-circle7 sk-circle"></div>
+      <div class="sk-circle8 sk-circle"></div>
+      <div class="sk-circle9 sk-circle"></div>
+      <div class="sk-circle10 sk-circle"></div>
+      <div class="sk-circle11 sk-circle"></div>
+      <div class="sk-circle12 sk-circle"></div>
+    </div>
 
     <div id="done">
-      
+
     </div>
   </div>
 </div>
@@ -59,13 +62,13 @@
   Upload Etsy Order File
 </h4>
 <div class="jumbotron">
-<form method="POST" action="/admin/upload/orders" enctype="multipart/form-data">
-<div class="form-group">
+  <form method="POST" action="/admin/upload/orders" enctype="multipart/form-data">
+    <div class="form-group">
 
-  <input id="orders" type="file" name="orders" />
-</div>
-  <button type="submit" class="btn btn-primary">Upload</button>
-</form>
+      <input id="orders" type="file" name="orders" />
+    </div>
+    <button type="submit" class="btn btn-primary">Upload</button>
+  </form>
 </div>
 
 <h4>
@@ -79,64 +82,68 @@
 {{#contentFor "pageScripts"}}
 <script src="/js/lib.js"></script>
 <script>
-  var processId = {{processId}}
+  var processId = {{ processId }}
   jQuery.noConflict();
-  (function( $ ) {
+  (function ($) {
     $(document).ready(function ($) {
       // Your code here
-      console.log( "ready! " + processId );
+      console.log("ready! " + processId);
       //$()
       //$('.toast').toast('show');
-      
-      
-      if(processId>0){
+
+
+      if (processId > 0) {
         $('.toast').toast('show');
         run();
       }
-      
-      function checkDone(){
-      
+
+      function checkDone() {
+
       }
-      
-      async function run(){
-       let done = false;
-      let timerId = null;
+
+      async function run() {
+        let done = false;
+        let timerId = null;
         timerId = setInterval(async () => {
-          
-        const response = await fetch(`/api/process/${processId}/details`);
-        const myJson = await response.json();
-        if(myJson[0]){
-          $('#spinner').hide();
-          //.css("width", i + "%").text(i + " %")
-          console.log(myJson[0].PercentDone)
-          $('#progressBar').attr('aria-valuenow', myJson[0].PercentDone).css('width', myJson[0].PercentDone + '%').text(myJson[0].PercentDone + " %");
-          $('#progressBar').innerText = `${myJson[0].PercentDone}%`
-          setText('done', myJson[0].DetailMessage)
-          if(myJson[0].PercentDone === 100){
-            done = true
+
+          const response = await fetch(`/api/process/${processId}/details`);
+          if (!response.ok) {
+            clearInterval(timerId);
+            console.log(`Request retruned: ${response.status} - ${response.statusText}`)
           }
-        }
-        if(done){
-          clearInterval(timerId);
-          setText('done', 'Done Now. Thanks again.');
-          
-     
-          setTimeout(function(){
-            $('#progressBar').innerHTML = ''
-            $('#progressBar').hide()
-            $('.toast').hide();
-            
-          }, 3000);
-        }
-      }, 2000);
-        
-    
-   
-  }
-      
-      
+          const myJson = await response.json();
+          if (myJson[0]) {
+            $('#spinner').hide();
+            //.css("width", i + "%").text(i + " %")
+            console.log(myJson[0].PercentDone)
+            $('#progressBar').attr('aria-valuenow', myJson[0].PercentDone).css('width', myJson[0].PercentDone + '%').text(myJson[0].PercentDone + " %");
+            $('#progressBar').innerText = `${myJson[0].PercentDone}%`
+            setText('done', myJson[0].DetailMessage)
+            if (myJson[0].PercentDone === 100) {
+              done = true
+            }
+          }
+          if (done) {
+            clearInterval(timerId);
+            setText('done', 'Done Now. Thanks again.');
+
+
+            setTimeout(function () {
+              $('#progressBar').innerHTML = ''
+              $('#progressBar').hide()
+              $('.toast').hide();
+
+            }, 1000);
+          }
+        }, 500);
+
+
+
+      }
+
+
     });
-})(jQuery);
- 
+  })(jQuery);
+
 </script>
 {{/contentFor}}
