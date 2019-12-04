@@ -31,6 +31,7 @@
     "parse-fn-args": "1.0.1",
     "passport": "^0.4.0",
     "passport-google-oauth": "^2.0.0",
+    "passport-local": "1.0.0",
     "underscore": "^1.9.1"
   },
   "devDependencies": {
