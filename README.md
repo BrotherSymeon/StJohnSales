@@ -4,4 +4,4 @@
 
 This App is for tracking sales statistics, Orders, Item Sales, Customers and the like.
 
-## Upload Instructiones
+## Upload Instructions
