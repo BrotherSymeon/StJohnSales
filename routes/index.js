@@ -7,7 +7,7 @@ var salesController = require('../controllers/salesController');
 var router = express.Router();
 var title = 'St Johns Sales';
 
-var sessionChecker = (req, res, next) => {
+/* var sessionChecker = (req, res, next) => {
   console.log("sessionChecker");
   console.log(process.env.LOCAL);
   //if (!!process.env.LOCAL === true) {
@@ -35,12 +35,12 @@ var sessionChecker = (req, res, next) => {
     }
     
  // }
-};
+}; */
 
 /* GET home page. */
-router.get('/', sessionChecker, salesController.dashboard);
+router.get('/',  salesController.dashboard);
 
-router.get('/about', sessionChecker, function (req, res) {
+router.get('/about', function (req, res) {
   //eq.cookies.user_sid && !req.session.user)
   var randomFortune = fortune.getFortune();
   res.render('about', {
@@ -50,12 +50,12 @@ router.get('/about', sessionChecker, function (req, res) {
   });
 });
 
-router.get('/admin', sessionChecker, function (req, res) {
+router.get('/admin',  function (req, res) {
   res.render('admin', { title });
 
 })
 
-router.get('/test', sessionChecker, function (req, res) {
+router.get('/test',  function (req, res) {
   return res.sendStatus(200);
   //var mysql = require("mysql");
   //var pool = mysql.createPool({

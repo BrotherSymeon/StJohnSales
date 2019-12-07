@@ -93,11 +93,42 @@ app.use(session({
 
 app.use((req, res, next) => {
   if (req.session && req.session.flash && req.session.flash.length > 0) {
+    console.log(reg.session.flash);
     req.session.flash = [];
   }
   next();
 });
-
+app.use(/^(?!\/auth).*$/, (req, res, next) => {
+  
+    console.log("sessionChecker");
+    console.log(process.env.LOCAL);
+    //if (!!process.env.LOCAL === true) {
+    //  res.locals.authenticated = true;
+    //  req.session.user = require('../lib/fakeUser').user;
+    //  next();
+   // } else {
+      
+      console.log(req.session);
+      if (!req.session.user) {
+  
+        res.redirect("/auth/login");
+        //console.log('one')
+      } else if (req.session.user.user_id && req.cookies.user_sid) {
+        try {
+          //console.log(JSON.parse(req.session.user.roles));
+        } catch (err) {
+          console.log(err)
+        }
+  
+        next();
+      } else {
+        //console.log('3')
+        res.redirect("/auth/login");
+      }
+      
+   // }
+  
+})
 // This middleware will check if user's cookie is still saved in browser and user is not set, then automatically log the user out.
 // This usually happens when you stop your express server after login, your cookie still remains saved in the browser.
 app.use((req, res, next) => {
