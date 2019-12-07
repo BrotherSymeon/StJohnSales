@@ -10,16 +10,16 @@ var title = 'St Johns Sales';
 var sessionChecker = (req, res, next) => {
   console.log("sessionChecker");
   console.log(process.env.LOCAL);
-  if (!!process.env.LOCAL === true) {
-    res.locals.authenticated = true;
-    req.session.user = require('../lib/fakeUser').user;
-    next();
-  } else {
+  //if (!!process.env.LOCAL === true) {
+  //  res.locals.authenticated = true;
+  //  req.session.user = require('../lib/fakeUser').user;
+  //  next();
+ // } else {
     
     console.log(req.session);
     if (!req.session.user) {
 
-      res.redirect("/users/login");
+      res.redirect("/auth/login");
       //console.log('one')
     } else if (req.session.user.user_id && req.cookies.user_sid) {
       try {
@@ -31,10 +31,10 @@ var sessionChecker = (req, res, next) => {
       next();
     } else {
       //console.log('3')
-      res.redirect("/users/login");
+      res.redirect("/auth/login");
     }
     
-  }
+ // }
 };
 
 /* GET home page. */

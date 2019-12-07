@@ -102,16 +102,16 @@
                   {{#if authenticated}}
                     <div class="user-area dropdown float-right">
                         <a href="#" style="align-items: center;" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class="user-avatar rounded-circle" src="{{ user.photo }}" alt="User Avatar">
+                           
                           
-                            {{user.displayName}}
+                            {{user.username}}
                           
                         </a>
                         
                         <div class="user-menu dropdown-menu">
                             <a class="nav-link" href="#"><i class="fa fa-user"></i> My Profile</a>
                             <a class="nav-link" href="#"><i class="fa fa-cog"></i> Settings</a>
-                            <a class="nav-link" href="/users/logout"><i class="fa fa-power-off"></i> Logout</a>
+                            <a class="nav-link" href="/auth/logout"><i class="fa fa-power-off"></i> Logout</a>
                         </div>
                       
                     </div>

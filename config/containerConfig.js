@@ -19,6 +19,7 @@ module.exports = {
 
     //CONTROLLERS----->
     diContainer.factory('adminController', require('../controllers/adminController'));
+    diContainer.factory('authController', require('../controllers/authController'));
     diContainer.factory('fileProcessController', require('../controllers/fileProcessController'));
     diContainer.factory('fileProcessDetailsController', require('../controllers/fileProcessDetailsController'));
 
