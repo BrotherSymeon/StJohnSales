@@ -14,12 +14,13 @@ module.exports = {
     //MODELS ---->
     diContainer.factory('processDetailsModel', require('../models/FileProcessDetails'));
     diContainer.factory('processModel', require('../models/FileProcess'));
-    diContainer.factory('salesModel', require('../models/sales'));
+   // diContainer.factory('salesModel', require('../models/sales'));
     diContainer.factory('db', require('../models'));
 
     //CONTROLLERS----->
     diContainer.factory('adminController', require('../controllers/adminController'));
     diContainer.factory('authController', require('../controllers/authController'));
+    diContainer.factory('dashboardController', require('../controllers/dashboardController'));
     diContainer.factory('fileProcessController', require('../controllers/fileProcessController'));
     diContainer.factory('fileProcessDetailsController', require('../controllers/fileProcessDetailsController'));
 

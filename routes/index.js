@@ -1,6 +1,6 @@
 var express = require('express');
 var fortune = require('../lib/fortune');
-var salesController = require('../controllers/salesController');
+
 //var gcp = require("../gcpDb");
 //var debug = require('debug')('meadowlark:server');
 
@@ -38,7 +38,9 @@ var title = 'St Johns Sales';
 }; */
 
 /* GET home page. */
-router.get('/',  salesController.dashboard);
+var dashboardController = goc.container.get('dashboardController');
+
+router.get('/',  dashboardController.dashboard);
 
 router.get('/about', function (req, res) {
   //eq.cookies.user_sid && !req.session.user)
@@ -55,22 +57,6 @@ router.get('/admin',  function (req, res) {
 
 })
 
-router.get('/test',  function (req, res) {
-  return res.sendStatus(200);
-  //var mysql = require("mysql");
-  //var pool = mysql.createPool({
-  //  host: "35.196.170.106",
-  //  user: "salesadmin",
-  //  password: "johnnyappleseed3334",
-  //  database: "sales"
-  //});
-  //
-  //pool.query("SELECT * FROM tempOrders;", function(error, results, fields) {
-  // if (error) throw error;
-  // console.log("The solution is: ", results[0]);
-  // 
-  //});
 
-});
 
 module.exports = router;

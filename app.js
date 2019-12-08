@@ -49,7 +49,6 @@ var test = dbConfig();
 var sessionStore = new MySQLStore(options);
  
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/api');
 var adminRouter = require('./routes/admin');
 var authRouter = require('./routes/auth');
@@ -100,15 +99,15 @@ app.use((req, res, next) => {
 });
 app.use(/^(?!\/auth).*$/, (req, res, next) => {
   
-    console.log("sessionChecker");
-    console.log(process.env.LOCAL);
+    //console.log("sessionChecker");
+    //console.log(process.env.LOCAL);
     //if (!!process.env.LOCAL === true) {
     //  res.locals.authenticated = true;
     //  req.session.user = require('../lib/fakeUser').user;
     //  next();
    // } else {
       
-      console.log(req.session);
+      //console.log(req.session);
       if (!req.session.user) {
   
         res.redirect("/auth/login");
