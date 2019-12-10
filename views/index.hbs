@@ -3,6 +3,27 @@
 <h3>Dashboard</h3>
 <div>
   <div class="row">
+    <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+         <h4 class="card-title mb-0">
+            <i class="fa fa-chart-pie"></i>
+              Total Sales By Month
+          </h4>
+       
+      </div>
+         <div class="card-body">
+            
+            <!-- Morris chart - Sales -->
+              
+                <canvas id="total-month-revenue-chart-canvas" height="300" style="height: 300px;"></canvas>                         
+              
+             
+          </div>
+    </div>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-xl-6">
       <div class="card">
         <div class="card-header">
@@ -97,6 +118,7 @@
     var etsyQuarterlyData = {{{toJSON etsyQuarterlyData }}}
     var squareMonthlyData = {{{toJSON squareMonthlyData }}}
     var squareQuarterlyData = {{{toJSON squareQuarterlyData }}}
+    var orderTotalsByMonthData = {{{toJSON orderTotalsByMonthData }}}
     
     etsyQuarterlyData.push(etsyQuarterlyData.shift());
     squareQuarterlyData.push(squareQuarterlyData.shift());
@@ -131,6 +153,44 @@
     }
   window.addEventListener('load', function () {
     
+
+        buildChart('total-month-revenue-chart-canvas',
+              {
+                labels  : orderTotalsByMonthData.map((item) =>  months[Number(item.MonthOfYear) - 1]),
+                datasets: [
+                  {
+                    label               : 'Total Sales By Month',
+                    backgroundColor     : 'rgba(60,141,188,0.9)',
+                    borderColor         : 'rgba(60,141,188,0.8)',
+                    pointRadius          : false,
+                    pointColor          : '#3b8bba',
+                    pointStrokeColor    : 'rgba(60,141,188,1)',
+                    pointHighlightFill  : '#fff',
+                    pointHighlightStroke: 'rgba(60,141,188,1)',
+                    data                : mapData(orderTotalsByMonthData)
+                  }
+                ]
+              },
+              {
+                maintainAspectRatio : false,
+                responsive : true,
+                legend: {
+                  display: false
+                },
+                scales: {
+                  xAxes: [{
+                    gridLines : {
+                      display : false,
+                    }
+                  }],
+                  yAxes: [{
+                    gridLines : {
+                      display : false,
+                    }
+                  }]
+                }
+              }, 'line');
+
     buildChart('etsy-quarter-revenue-chart-canvas',
               {
                 labels  : etsyQuarterlyData.map((item) => item.QuarterOfYear),

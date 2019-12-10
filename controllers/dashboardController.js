@@ -13,11 +13,13 @@ module.exports = (db) => {
       var etsyQuarterlyData = await db.Orders.OrderAmountsByQuarter(year, 'ETSY');
       var squareMonthlyData = await db.Orders.OrderAmountsByMonth(year, 'SQUARE');
       var squareQuarterlyData = await db.Orders.OrderAmountsByQuarter(year, 'SQUARE');
+      var orderTotalsByMonthData = await db.Orders.OrderTotalsByMonth(year);
 
       res.locals.etsyMonthlyData = etsyMonthlyData;
       res.locals.etsyQuarterlyData = etsyQuarterlyData;
       res.locals.squareMonthlyData = squareMonthlyData;
       res.locals.squareQuarterlyData = squareQuarterlyData;
+      res.locals.orderTotalsByMonthData = orderTotalsByMonthData;
 
       return res.render('index', { title : 'St Johns Sales'});
 
