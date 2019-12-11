@@ -27,6 +27,8 @@ router.get('/users/new', adminController.users_new);
 
 router.get('/upload', adminController.data_upload);
 
-router.post('/upload/orders',upload.single('orders'), adminController.upload_orders)
+router.post('/upload/orders',upload.single('orders'), adminController.upload_orders);
+
+router.post('/upload/orderitems',upload.single('orderitems'), adminController.upload_order_items);
 
 module.exports = router;

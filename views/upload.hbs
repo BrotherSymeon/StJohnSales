@@ -74,10 +74,12 @@
 <h4>
   Upload Etsy Order Items File
 </h4>
+<div class="jumbotron">
 <form method="POST" action="/admin/upload/orderitems" enctype="multipart/form-data">
-  <input type="file" name="orderItems" />
+  <input type="file" name="orderitems" />
   <input type="submit" />
 </form>
+</div>
 
 {{#contentFor "pageScripts"}}
 <script src="/js/lib.js"></script>

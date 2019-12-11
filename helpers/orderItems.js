@@ -4,10 +4,10 @@ let async = require('async');
 
 
 module.exports = (utils, db) => {
-  const ordersService = {};
+  const orderItemsService = {};
 
-  ordersService.process = function (data, {processId, fileName}) {
-    var processor = ordersService.processData(data, processId, fileName);
+  orderItemsService.process = function (data, {processId, fileName}) {
+    var processor = orderItemsService.processOrderItemsData(data, processId, fileName);
     
     processor.on('BeginFileProcess', function (data) {
       console.log('File Process has Begun: ' + data.message);
@@ -53,20 +53,20 @@ module.exports = (utils, db) => {
     
   };
 
-  ordersService.insertIntoTempOrderTable = (lines, e, processId, cb) => {
+  orderItemsService.insertIntoTempOrderItemsTable = (lines, e, processId, cb) => {
     var rows = lines;
     var promises = [];
     var errors = [];
-    var tempOrdersModel = new db.TempOrders();
+    var tempOrderItemsModel = new db.TempOrderItems();
 
     // delete from the tem table
     promises.push(function(done) {
-      tempOrdersModel.query(ordersService.deleteTempOrdersTableSQL(), (err, result) => {
+      tempOrderItemsModel.query(orderItemsService.deleteTempOrderItemsTableSQL(), (err, result) => {
         if (err) return done(err);
   
         e.emit('ClearedPrepTableProcess', {
           processId: processId,
-          message: `Cleared Order temp Table`,
+          message: `Cleared Order Items temp Table`,
           percentDone: null
         });
   
@@ -77,7 +77,7 @@ module.exports = (utils, db) => {
     //insert each one by one
     rows.forEach((line, index) => {
       promises.push(function(done) {
-        tempOrdersModel.queryOptions(ordersService.insertIntoTempOrdersTableSQL(), [[line]], (err, result) => {
+        tempOrderItemsModel.queryOptions(orderItemsService.insertIntoTempOrderItemsTableSQL(), [[line]], (err, result) => {
           if (err) {
             errors.push({ err, result });
             return done(null, err);
@@ -99,7 +99,7 @@ module.exports = (utils, db) => {
         message: `Begining Final Process`,
         percentDone: null
       });
-      tempOrdersModel.query( ordersService.extractToOrders(), (err, result) => {
+      tempOrderItemsModel.query( orderItemsService.extractToOrderItems(), (err, result) => {
         if (err) return done(err);
   
         e.emit("CompleteFinalProcessing", {
@@ -135,7 +135,7 @@ module.exports = (utils, db) => {
 
   };
 
-  ordersService.processData = (data, processId, fileName) => {
+  orderItemsService.processOrderItemsData = (data, processId, fileName) => {
     var e = new emitter();
   
     setTimeout(function(){
@@ -160,18 +160,17 @@ module.exports = (utils, db) => {
   
           lineData.forEach((elem, index) => {
   
-            if ([OrderColumns.ADJUSTEDCARDPROCESSINGFEES,
-            OrderColumns.ADJUSTEDNETORDERAMOUNT,
-            OrderColumns.CARDPROCESSINGFEES,
-            OrderColumns.INPERSONDISCOUNT,
-            OrderColumns.ADJUSTEDORDERTOTAL,
-            OrderColumns.ORDERTOTAL,
-            OrderColumns.SHIPPING,
-            OrderColumns.SHIPPINGDISCOUNT,
-            OrderColumns.SALESTAX,
-            OrderColumns.DISCOUNTAMOUNT,
-            OrderColumns.ORDERVALUE,
-            OrderColumns.ORDERNET].includes(index)) {
+            if ([OrderItemColumns.QUANTITY,
+            OrderItemColumns.PRICE,
+            OrderItemColumns.VATPAIDBYBUYER,
+            OrderItemColumns.INPERSONDISCOUNT,
+            OrderItemColumns.ADJUSTEDORDERTOTAL,
+            OrderItemColumns.ITEMTOTAL,
+            OrderItemColumns.ORDERSALESTAX,
+            OrderItemColumns.ITEMTOTAL,
+            OrderItemColumns.ORDERSHIPPING,
+            OrderItemColumns.SHIPPINGDISCOUNT,
+            OrderItemColumns.DISCOUNTAMOUNT].includes(index)) {
               //console.log(utils.removeCharacters( elem, '"' ));
               lineData[index] = Number(utils.removeCharacters( elem, '"' ));
             }else{
@@ -179,7 +178,7 @@ module.exports = (utils, db) => {
             }
           });
           
-          if(lineData.length === 35){
+          if(lineData.length === 32){
             // only insert ones with a row length of 35
             cleanData.push( lineData );
           } else {
@@ -196,14 +195,14 @@ module.exports = (utils, db) => {
       });
       e.emit('BeginDataInsertProcess', {
         processId: processId,
-        message: `Inserting DataRows from ${fileName} into tempOrders.`,
+        message: `Inserting DataRows from ${fileName} into tempOrderItems.`,
         percentDone: (.25)*100
       });
-      ordersService.insertIntoTempOrderTable(cleanData, e, processId, function(results){
+      orderItemsService.insertIntoTempOrderItemsTable(cleanData, e, processId, function(results){
         var inserted = results[results.length-1];
         e.emit('EndDataInsertProcess', {
           processId: processId,
-          message: `Inserted ${inserted} DataRows from ${fileName} into tempOrders.`,
+          message: `Inserted ${inserted} DataRows from ${fileName} into tempOrderItems.`,
           percentDone: 100,
           complete: false
         });
@@ -217,119 +216,154 @@ module.exports = (utils, db) => {
     return e;
   };
 
-  ordersService.deleteTempOrdersTableSQL = () =>{
-    return "DELETE FROM tempOrders;";
+  orderItemsService.deleteTempOrderItemsTableSQL = () =>{
+    return "DELETE FROM tempOrderItems;";
   };
 
-  ordersService.insertIntoTempOrdersTableSQL = () => {
-    return "INSERT INTO tempOrders(SaleDate,OrderId,BuyerUserId,FullName,FirstName,LastName,NumberOfItems,PaymentMethod,DateShipped,Street1,Street2,ShipCity,ShipState,ShipZipCode,ShipCountry,Currency,OrderValue,CouponCode,CouponDetails,DiscountAmount,ShippingDiscount,Shipping,SalesTax,OrderTotal,Status,CardProcessingFees,OrderNet,AdjustedOrderTotal,AdjustedCardProcessingFees,AdjustedNetOrderAmount,Buyer,OrderType,PaymentType,InPersonDiscount,InPersonLocation)  VALUES ?";
+  orderItemsService.insertIntoTempOrderItemsTableSQL = () => {
+    return `INSERT INTO tempOrderItems(
+      SaleDate,
+      ItemName,
+      Buyer,
+      Quantity,
+      Price,
+      CouponCode,
+      CouponDetails,
+      DiscountAmount,
+      ShippingDiscount,
+      OrderShipping,
+      OrderSalesTax,
+      ItemTotal,
+      Currency,
+      TransactionID,
+      ListingID,
+      DatePaid,
+      DateShipped,
+      ShipName,
+      ShipAddress1,
+      ShipAddress2,
+      ShipCity,
+      ShipState,
+      ShipZipcode,
+      ShipCountry,
+      OrderID,
+      Variations,
+      OrderType,
+      ListingsType,
+      PaymentType,
+      InPersonDiscount,
+      InPersonLocation,
+      VATPaidbyBuyer
+    )  VALUES ?`;
   };
 
-  ordersService.extractToOrders = () => {
+  orderItemsService.extractToOrderItems = () => {
     return `
-      INSERT INTO Orders (
+      INSERT INTO OrderItems(
         SaleDate,
-        OrderId,
-        DayOfYear, 
-        MonthOfYear, 
-        QuarterOfYear, 
-        SaleYear,
-        SoldThrough ,
-        BuyerUserId ,
-        FullName,
-        FirstName ,
-        LastName ,
-        NumberOfItems,
-        PaymentMethod ,
-        DateShipped,
-        Street1 ,
-        Street2 ,
-        ShipCity ,
-        ShipState ,
-        ShipZipCode ,
-        ShipCountry ,
-        Currency ,
-        OrderValue ,
-        CouponCode ,
-        CouponDetails ,
+        ItemName,
+        Buyer,
+        Quantity,
+        Price,
+        CouponCode,
+        CouponDetails,
         DiscountAmount,
         ShippingDiscount,
-        Shipping,
-        SalesTax,
-        OrderTotal,
-        Status,
-        CardProcessingFees,
-        OrderNet,
-        AdjustedOrderTotal,
-        AdjustedCardProcessingFees,
-        AdjustedNetOrderAmount,
-        Buyer ,
-        OrderType ,
-        PaymentType ,
-        InPersonDiscount ,
-        InPersonLocation 
+        OrderShipping,
+        OrderSalesTax,
+        ItemTotal,
+        Currency,
+        TransactionID,
+        ListingID,
+        DatePaid,
+        DateShipped,
+        ShipName,
+        ShipAddress1,
+        ShipAddress2,
+        ShipCity,
+        ShipState,
+        ShipZipcode,
+        ShipCountry,
+        OrderID,
+        Variations,
+        OrderType,
+        ListingsType,
+        PaymentType,
+        InPersonDiscount,
+        InPersonLocation,
+        VATPaidbyBuyer
       ) select
-        SaleDate,
-        OrderId,
-        DAYOFYEAR(DATE( 
+      DATE( 
+        CONCAT( 
+          CONCAT('20', MID(SaleDate, 7, 2)), 
+          '-', 
+          MID(SaleDate, 1, 2),
+          '-', 
+          MID(SaleDate, 4, 2) 
+          ) 
+        ) as SaleDate,
+      ItemName,
+      Buyer,
+      Quantity,
+      Price,
+      CouponCode,
+      CouponDetails,
+      DiscountAmount,
+      ShippingDiscount,
+      OrderShipping,
+      OrderSalesTax,
+      ItemTotal,
+      Currency,
+      TransactionID,
+      ListingID,
+      IF (DatePaid = '',
+        NULL,
+        DATE( 
           CONCAT( 
-            CONCAT('20', MID(SaleDate, 7, 2)), 
+            MID(DatePaid, 7, 4), 
             '-', 
-            MID(SaleDate, 1, 2),
+            MID(DatePaid, 1, 2),
             '-', 
-            MID(SaleDate, 4, 2) 
+            MID(DatePaid, 4, 2) 
             ) 
-          )) as DayOfYear,
-        MID(SaleDate, 1, 2) as SaleMonth,  
-          FiscalYearStartDate( DATE( 
-          CONCAT( 
-            CONCAT('20', MID(SaleDate, 7, 2)), 
-            '-', 
-            MID(SaleDate, 1, 2),
-            '-', 
-            MID(SaleDate, 4, 2) 
+          ) 
+        ) as DatePaid,
+        IF (DateShipped = '', 
+          NULL,
+          DATE( 
+            CONCAT( 
+              MID(DateShipped, 7, 4), 
+              '-', 
+              MID(DateShipped, 1, 2),
+              '-', 
+              MID(DateShipped, 4, 2) 
+              ) 
             ) 
-          )) as Quarter,
-          CONCAT('20', MID(SaleDate, 7, 2)),
-          IF(PaymentMethod = 'Other', 'SQUARE','ETSY'),
-          BuyerUserId ,
-        FullName,
-        FirstName ,
-        LastName ,
-        NumberOfItems,
-        PaymentMethod ,
-        DateShipped,
-        Street1 ,
-        Street2 ,
-        ShipCity ,
-        ShipState ,
-        ShipZipCode ,
-        ShipCountry ,
-        Currency ,
-        OrderValue ,
-        CouponCode ,
-        CouponDetails ,
-        DiscountAmount,
-        ShippingDiscount,
-        Shipping,
-        SalesTax,
-        OrderTotal,
-        Status,
-        CardProcessingFees,
-        OrderNet,
-        AdjustedOrderTotal,
-        AdjustedCardProcessingFees,
-        AdjustedNetOrderAmount,
-        Buyer ,
-        OrderType ,
-        PaymentType ,
-        InPersonDiscount ,
-        InPersonLocation 
-        FROM tempOrders t 
+          ) as DateShipped,
+      ShipName,
+      ShipAddress1,
+      ShipAddress2,
+      ShipCity,
+      ShipState,
+      ShipZipcode,
+      ShipCountry,
+      OrderID,
+      Variations,
+      OrderType,
+      ListingsType,
+      PaymentType,
+      InPersonDiscount,
+      InPersonLocation,
+      VATPaidbyBuyer
+        FROM tempOrderItems t 
         WHERE NOT EXISTS
           (SELECT 1
-          FROM Orders o
-          WHERE o.OrderId = t.OrderId);
+          FROM OrderItems o
+          WHERE o.OrderID = t.OrderID)
+        AND EXISTS
+          (SELECT 1
+          FROM Orders r
+          WHERE r.OrderId = t.OrderID);
       `;
   }
 
@@ -346,46 +380,45 @@ module.exports = (utils, db) => {
      });
   };
 
-  return ordersService;
+  return orderItemsService;
 }
 
-let OrderColumns = new Enumeration([
+
+
+let OrderItemColumns = new Enumeration([
   'SaleDate',
-  'OrderId',
-  'BuyerUserId',
-  'FullName',
-  'FirstName',
-  'LastName',
-  'NumberOfItems',
-  'PaymentMethod',
-  'DateShipped',
-  'Street1',
-  'Street2',
-  'ShipCity',
-  'ShipState',
-  'ShipZipCode',
-  'ShipCountry',
-  'Currency',
-  'OrderValue',
+  'ItemName',
+  'Buyer',
+  'Quantity',
+  'Price',
   'CouponCode',
   'CouponDetails',
   'DiscountAmount',
   'ShippingDiscount',
-  'Shipping',
-  'SalesTax',
-  'OrderTotal',
-  'Status',
-  'CardProcessingFees',
-  'OrderNet',
-  'AdjustedOrderTotal',
-  'AdjustedCardProcessingFees',
-  'AdjustedNetOrderAmount',
-  'Buyer',
+  'OrderShipping',
+  'OrderSalesTax',
+  'ItemTotal',
+  'Currency',
+  'TransactionID',
+  'ListingID',
+  'DatePaid',
+  'DateShipped',
+  'ShipName',
+  'ShipAddress1',
+  'ShipAddress2',
+  'ShipCity',
+  'ShipState',
+  'ShipZipcode',
+  'ShipCountry',
+  'OrderID',
+  'Variations',
   'OrderType',
+  'ListingsType',
   'PaymentType',
   'InPersonDiscount',
-  'InPersonLocation']);
-
+  'InPersonLocation',
+  'VATPaidbyBuyer'
+]);
 
 
 
