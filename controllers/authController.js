@@ -9,7 +9,7 @@ module.exports = (db) => {
   const authController = {};
   authController.getLogin = (req, res) => {
     //render login form
-    res.render('auth/login', { title: 'St Johns Sales - Login' });
+    res.render('auth/login', { message: req.flash('message'), title: 'St Johns Sales - Login' });
   };
 
   authController.passportLoginMiddleware = passport.authenticate('local', {
