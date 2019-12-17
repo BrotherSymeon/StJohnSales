@@ -11,44 +11,44 @@ module.exports = (utils, db) => {
     
     processor.on('BeginFileProcess', function (data) {
       console.log('File Process has Begun: ' + data.message);
-      saveMessage(processId, data);
+      saveProcessDetail(processId, data);
      
     });
     processor.on('FileLineProcess', function (data) {
-      saveMessage(processId, data);
+      saveProcessDetail(processId, data);
       //console.log('Line of File has been read: ' + data);
     });
     processor.on('EndFileProcess', function(data) {
-      saveMessage(processId, data);
+      saveProcessDetail(processId, data);
       console.log('File Process has Ended: ' + data.message);
     })
     processor.on('BeginDataInsertProcess', function (data) {
       console.log('Begining Writing to DB: ' + data.message);
-      saveMessage(processId, data);
+      saveProcessDetail(processId, data);
     });
     processor.on('EndDataInsertProcess', function (data) {
       console.log('Finished Writing to DB: ', data);
-      saveMessage(processId, data);
+      saveProcessDetail(processId, data);
     });
     processor.on('ClearedPrepTableProcess', function(data) {
       console.log('Deleted all form tempOrders table: ',data);
-      saveMessage(processId, data);
+      saveProcessDetail(processId, data);
     });
     processor.on('SavedDataLine', function(data) {
-      saveMessage(processId, data);
+      saveProcessDetail(processId, data);
       //console.log('Saved Data Line to tempOrders table: ', data);
     });
     processor.on('BeginFinalProcessing', function(data) {
       console.log('begin moving data from tempOrders to Orders : ', data);
-      saveMessage(processId, data);
+      saveProcessDetail(processId, data);
     });
     processor.on('CompleteFinalProcessing', function(data) {
       console.log('end moving data from tempOrders to Orders : ', data);
-      saveMessage(processId, data);
+      saveProcessDetail(processId, data);
     });
     processor.on('Done', function(data) {
       //console.log('Done : ;-)');
-      //saveMessage(processId, data);
+      saveProcessStatus(processId, 'DONE');
     });
     
   };
@@ -179,7 +179,7 @@ module.exports = (utils, db) => {
           });
           
           if(lineData.length === 32){
-            // only insert ones with a row length of 35
+            // only insert ones with a row length of 32
             cleanData.push( lineData );
           } else {
             //console.log(`linedata length: ${lineData.length}`);
@@ -209,7 +209,7 @@ module.exports = (utils, db) => {
       });
   
   
-      }, 2000);
+      }, 500);
     
   
     
@@ -367,12 +367,23 @@ module.exports = (utils, db) => {
       `;
   }
 
-  var saveMessage = (procId, data) => {
+  var saveProcessDetail = (procId, data) => {
     var detail = new db.FileProcessDetails({
        DetailType: 'MESSAGE',
        DetailMessage: data.message,
        FileId: procId,
        PercentDone: data.percentDone || 0
+     });
+     detail.save((err, result) => {
+       if(err) console.log(err);
+       //console.log(result);
+     });
+  };
+
+  var saveProcessStatus = (procId, status) => {
+    var process = new db.FileProcess({
+       FileId: procId,
+       ProcessStatus: status
      });
      detail.save((err, result) => {
        if(err) console.log(err);

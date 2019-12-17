@@ -7,9 +7,10 @@ module.exports = {
     diContainer.factory('dbConfig', require('./db'));
     diContainer.factory('salesDb', require("../gcpDb"));
     diContainer.factory('utils', require('../lib/utilities'));
-    diContainer.factory('orderService', require('../helpers/orders'));
-    diContainer.factory('orderItemsService', require('../helpers/orderItems'));
+
+
     diContainer.factory('mySqlConnection', require('../lib/mysql-model2'));
+    diContainer.factory('fileLoaderSvc', require('../lib/fileLoader'));
     //diContainer.factory('mySqlConnection', require('../db/connection'));
 
     //MODELS ---->

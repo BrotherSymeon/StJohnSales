@@ -1,0 +1,14 @@
+   {
+    "ecmaVersion": 6,
+    "esversion": 6,
+      "libs": [
+        "browser",
+        "jquery",
+        "ecmascript"
+      ],
+      "plugins": {
+        "doc_comment": true,
+        "node": {},
+        "es_modules": {}
+        }
+    }
