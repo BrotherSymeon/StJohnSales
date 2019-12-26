@@ -2,14 +2,16 @@
 var { diContainer }  = require('../diContainer');
 
 module.exports = {
-  
+
   config: function() {
     diContainer.factory('dbConfig', require('./db'));
+    diContainer.factory('dbMultiConfig', require('./db_multi'));
     diContainer.factory('salesDb', require("../gcpDb"));
     diContainer.factory('utils', require('../lib/utilities'));
 
 
     diContainer.factory('mySqlConnection', require('../lib/mysql-model2'));
+    diContainer.factory('mySqlMultiConnection', require('../lib/mysql-multi'));
     diContainer.factory('fileLoaderSvc', require('../lib/fileLoader'));
     //diContainer.factory('mySqlConnection', require('../db/connection'));
 
