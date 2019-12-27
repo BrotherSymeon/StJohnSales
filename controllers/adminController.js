@@ -151,11 +151,11 @@ module.exports = (db, fileLoaderSvc) => {
       });
       e.on('Done', function(data) {
         data.message = `Done: Processing ${data.fileName}:`;
-        //adminController._saveProcessStatus(data.processId, 'FINISHED');
+        adminController._saveProcessStatus(data, 'FINISHED');
       });
       e.on(fileLoaderSvc.events.DONE_WITH_ERRORS, function(data) {
         data.message = `Done With Errors: Processing ${data.fileName}:`;
-        //adminController._saveProcessStatus(data.processId, 'ERROR');
+        adminController._saveProcessStatus(data, 'ERROR');
       });
 
 
@@ -172,9 +172,33 @@ module.exports = (db, fileLoaderSvc) => {
 
   };
 
-  adminController._saveProcessDetail= function(data){
+  adminController._saveProcessStatus = function(data, statusMessage) {
+    var status = new db.FileProcesses();
+    status.find('first', {WHERE: `FileId=${data.processId}`},(err, result) => {
+      if(err){
+        console.log(err);
+        return;
+      }
+      // set the status
+      status.ProcessStatus = statusMessage;
+      status.save((err, result) => {
+        if(err){
+          return console.log(err.meassage);
+        }
+        if(statusMessage === 'ERROR'){
+          adminController._saveProcessDetail({
+            message: data.errors.join('|'),
+            processId: data.processId,
+            percentDone: 100
+          }, 'ERROR');
+        }
+      });
+
+    });
+  };
+  adminController._saveProcessDetail= function(data, messageType){
     var detail = new db.FileProcessDetails({
-       DetailType: 'MESSAGE',
+       DetailType: messageType || 'MESSAGE',
        DetailMessage: data.message,
        FileId: data.processId,
        PercentDone: data.percentDone || 0

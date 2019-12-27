@@ -115,16 +115,15 @@
           }
           const myJson = await response.json();
           if (myJson[0]) {
+            if(myJson[0].ProcessStatus === 'FINISHED' || myJson[0].ProcessStatus === 'ERROR' || myJson[0].PercentDone === 100){
+              done = true;
+            }
             $('#spinner').hide();
-            //.css("width", i + "%").text(i + " %")
-            console.log(myJson[0].PercentDone)
             $('#progressBar').attr('aria-valuenow', myJson[0].PercentDone).css('width', myJson[0].PercentDone + '%').text(myJson[0].PercentDone + " %");
             $('#progressBar').innerText = `${myJson[0].PercentDone}%`
             setText('done', myJson[0].DetailMessage)
-            if (myJson[0].PercentDone === 100) {
-              done = true
-            }
           }
+
           if (done) {
             clearInterval(timerId);
             setText('done', 'Done Now. Thanks again.');
