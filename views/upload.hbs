@@ -2,7 +2,7 @@
 
 <h3>Upload</h3>
 <hr />
-{{#if err}}
+{{#if error}}
 <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="position: absolute; top: 10; right: 0;"
   data-autohide="false">
   <div class="toast-header">
@@ -115,6 +115,7 @@
           }
           const myJson = await response.json();
           if (myJson[0]) {
+            console.dir(myJson[0]);
             if(myJson[0].ProcessStatus === 'FINISHED' || myJson[0].ProcessStatus === 'ERROR' || myJson[0].PercentDone === 100){
               done = true;
             }

@@ -9,6 +9,9 @@ module.exports = (db) => {
   const authController = {};
   authController.getLogin = (req, res) => {
     //render login form
+    const errors = req.flash().error || [];
+    const messages = req.flash().message || [];
+
     res.render('auth/login', { message: req.flash('message'), title: 'St Johns Sales - Login' });
   };
 
@@ -30,19 +33,20 @@ module.exports = (db) => {
     } else {
       res.redirect("/auth/login");
     }
-  }
+  };
 
 
   authController.getRegister = async (req, res) => {
     //render sign up form
-    res.render('auth/register', { 'message': req.flash('message') });
+    const messages = req.flash().messages || [];
+    res.render('auth/register', { messages });
   };
 
   authController.register = async (req, res) => {
     try {
       var body = req.body;
       if (body && body.email && body.password) {
-        
+
         var users = new db.Users();
         var sql = 'SELECT * FROM Users WHERE email = ?;';
         var user = await users.queryOptions(sql, [body.email]);
@@ -56,7 +60,7 @@ module.exports = (db) => {
           var hash = await bcrypt.hash(body.password, 10);
 
           console.log(`Hash: ${hash}`);
-        
+
 
           try {
             var data = [body.username, body.email, hash, body.email];
@@ -66,7 +70,7 @@ module.exports = (db) => {
             var result = await users.queryOptions(insertStmt, data);
             if (result.affectedRows === 0) {
               req.flash('message', 'You are not allowed to register for acces to this app. Please see your systems admin');
-              
+
               return res.render('auth/register', {message: req.flash('message')});
             }
           } catch (err) {
@@ -75,19 +79,21 @@ module.exports = (db) => {
 
           }
 
-
-          console.log(result);
-          return res.render('auth/login', { 'message': req.flash('message', 'Please login with your new account') });
+          req.flash('messages', 'Thank you for registering. Please Login with your new account');
+          let messages = req.flash().messages || [];
+          return res.render('auth/login', { messages });
         }
 
       } else {
-        req.flash('message', 'username and password required');
-        return res.render('auth/register', { 'message': req.flash('message', 'there was an essue') });
+        let messages = req.flash().messages || [];
+        return res.render('auth/register', { messages });
       }
 
     } catch (err) {
       console.log(err);
-      return res.render('auth/register', { 'message': req.flash('message', 'OOps.. something has gone wrong') });
+      req.flash('messages', 'OOPs... something went wrong');
+      const messages = req.flash().messages;
+      return res.render('auth/register', { messages });
     }
 
 
@@ -105,7 +111,7 @@ module.exports = (db) => {
     try {
       var users = new db.Users();
       var usersFound = await users.find('first', { where: `email = '${email}'` });
-      
+
       if (!usersFound.length) {
         return done(null, null, { message: 'User Not Found.' });
       }

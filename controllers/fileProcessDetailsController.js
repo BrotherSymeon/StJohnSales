@@ -1,4 +1,4 @@
-module.exports =  function(db) {
+module.exports = function(db) {
   const fileProcessDetailsController = {};
   var FileProcessDetailsModel = new db.FileProcessDetails();
   fileProcessDetailsController.processStatus = async function(req, res) {
@@ -7,16 +7,14 @@ module.exports =  function(db) {
       FileProcessDetails pd
       INNER JOIN FileProcess fp
         ON fp.FileId = pd.FileId
-      where fp.FileId = ${req.params.id} and
-      FileProcessDetailId = (   select max(FileProcessDetailId) from FileProcessDetails WHERE pd.FileId = ${req.params.id}  );`;
-    try{
+      where fp.FileId = ${req.params.id} ORDER BY FileProcessDetailId DESC LIMIT 1;`;
+    try {
       var status = await FileProcessDetailsModel.query(sql);
       res.json(status);
-    }catch(err){
+    } catch (err) {
       console.log(err);
       res.status(500).send(err.message);
     }
-
   };
   return fileProcessDetailsController;
 };
