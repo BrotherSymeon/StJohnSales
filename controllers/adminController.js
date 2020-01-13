@@ -129,79 +129,61 @@ module.exports = (db, fileLoaderSvc, eventHandler) => {
     }
   };
 
-  adminController._saveProcessStatus = function(data, statusMessage) {
-    var status = new db.FileProcesses();
-    status.find(
-      "first",
-      { WHERE: `FileId=${data.processId}` },
-      (err, result) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-        // set the status
-        status.ProcessStatus = statusMessage;
-        status.save((err, result) => {
-          if (err) {
-            return console.log(err.meassage);
-          }
-          if (statusMessage === "ERROR") {
-            adminController._saveProcessDetail(
-              {
-                message: data.errors.join("|"),
-                processId: data.processId,
-                percentDone: 100
-              },
-              "ERROR"
-            );
-          }
-        });
-      }
-    );
-  };
-  adminController._saveProcessDetail = function(data, messageType) {
-    var detail = new db.FileProcessDetails({
-      DetailType: messageType || "MESSAGE",
-      DetailMessage: data.message,
-      FileId: data.processId,
-      PercentDone: data.percentDone || 0
-    });
-    detail.save((err, result) => {
-      if (err) console.log(err);
-      //console.log(result);
-    });
-  };
   adminController.upload_order_items = async function(req, response) {
+    log("uploading %o", req.file.originalname);
     var message = "Thank You, we will have this done shortly";
+    var funcError = null;
 
+    //console.log(req.file);// contains files
     var processId = 0;
-
     var process = new db.FileProcesses({
       FileName: req.file.originalname,
       ProcessStatus: "STARTED"
     });
 
-    process.save(function(err, res) {
-      if (err) {
-        console.log(err.message);
-        return response.render("upload", {
-          title: "St Johns Sales - Upload Data",
-          err: err
-        });
-      }
-      processId = res.insertId;
-      setTimeout(function() {
-        orderItemsService.process(req.file.buffer.toString("utf-8"), {
-          processId,
-          fileName: req.file.originalname
-        });
-      }, 500);
+    try {
+      await process.query(
+        "DELETE FROM FileProcess WHERE CreatedOn < ADDDATE( NOW(), INTERVAL 2 DAY);"
+      );
+
+      var newProc = await process.save();
+      processId = newProc.insertId;
+      log("new process created in db FileProcessId=%o", processId);
+      var e = fileLoaderSvc
+        .init({
+          processId: processId,
+          fileName: req.file.originalname,
+          data: req.file.buffer.toString("utf-8"),
+          tempInsertSQL: `INSERT INTO tempOrderItems(SaleDate,ItemName,Buyer,Quantity,Price,CouponCode,CouponDetails,DiscountAmount,ShippingDiscount,OrderShipping,OrderSalesTax,ItemTotal,Currency,TransactionID,ListingID,DatePaid,DateShipped,ShipName,ShipAddress1,ShipAddress2,ShipCity,ShipState,ShipZipCode,ShipCountry,OrderId,Variations,OrderType,ListingsType,PaymentType,InPersonDiscount,InPersonLocation,VATPaidbyBuyer)  VALUES ?`,
+          tempTableName: "tempOrderItems",
+          loadDataSQL: "CALL LoadOrderItems(?)",
+          convertToNumberIndexes: [
+            OrderItemColumns.QUANTITY,
+            OrderItemColumns.PRICE,
+            OrderItemColumns.DISCOUNTAMOUNT,
+            OrderItemColumns.SHIPPINGDISCOUNT,
+            OrderItemColumns.ORDERSHIPPING,
+            OrderItemColumns.ORDERSALESTAX,
+            OrderItemColumns.ITEMTOTAL,
+            OrderItemColumns.SHIPPINGDISCOUNT,
+            OrderItemColumns.INPERSONDISCOUNT
+          ],
+          dataRowLength: 32
+        })
+        .process();
+
+      eventHandler.handleEvents(e);
+    } catch (err) {
+      log("error %o", err);
+      funcError = err;
+    } finally {
       return response.render("upload", {
         title: "St Johns Sales - Upload Data",
+        error: funcError ? funcError.message : null,
         message: message,
-        processId
+        processId: processId
       });
-    });
+    }
   };
   var OrderColumns = new Enumeration([
     "SaleDate",
@@ -239,6 +221,41 @@ module.exports = (db, fileLoaderSvc, eventHandler) => {
     "PaymentType",
     "InPersonDiscount",
     "InPersonLocation"
+  ]);
+
+  var OrderItemColumns = new Enumeration([
+    "SaleDate",
+    "ItemName",
+    "Buyer",
+    "Quantity",
+    "Price",
+    "CouponCode",
+    "CouponDetails",
+    "DiscountAmount",
+    "ShippingDiscount",
+    "OrderShipping",
+    "OrderSalesTax",
+    "ItemTotal",
+    "Currency",
+    "TransactionID",
+    "ListingID",
+    "DatePaid",
+    "DateShipped",
+    "ShipName",
+    "ShipAddress1",
+    "ShipAddress2",
+    "ShipCity",
+    "ShipState",
+    "ShipZipcode",
+    "ShipCountry",
+    "OrderID",
+    "Variations",
+    "OrderType",
+    "ListingsType",
+    "PaymentType",
+    "InPersonDiscount",
+    "InPersonLocation",
+    "VATPaidbyBuyer"
   ]);
 
   return adminController;

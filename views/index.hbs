@@ -1,4 +1,4 @@
-{{!< layout}} 
+{{!< layout}}
 
 <h3>Dashboard</h3>
 <div>
@@ -10,15 +10,15 @@
             <i class="fa fa-chart-pie"></i>
               Total Sales By Month
           </h4>
-       
+
       </div>
          <div class="card-body">
-            
+
             <!-- Morris chart - Sales -->
-              
-                <canvas id="total-month-revenue-chart-canvas" height="300" style="height: 300px;"></canvas>                         
-              
-             
+
+                <canvas id="total-month-revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
+
+
           </div>
     </div>
     </div>
@@ -35,7 +35,7 @@
             <div class="tab-content p-0">
             <!-- Morris chart - Sales -->
               <div class="chart tab-pane active" id="etsy-month-revenue-chart" style="position: relative; height: 300px;">
-                <canvas id="etsy-month-revenue-chart-canvas" height="300" style="height: 300px;"></canvas>                         
+                <canvas id="etsy-month-revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
               </div>
              </div>
           </div><!-- /.card-body -->
@@ -53,7 +53,7 @@
             <div class="tab-content p-0">
             <!-- Morris chart - Sales -->
               <div class="chart tab-pane active" id="etsy-quarter-revenue-chart" style="position: relative; height: 300px;">
-                <canvas id="etsy-quarter-revenue-chart-canvas" height="300" style="height: 300px;"></canvas>                         
+                <canvas id="etsy-quarter-revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
               </div>
              </div>
           </div><!-- /.card-body -->
@@ -73,7 +73,7 @@
             <div class="tab-content p-0">
             <!-- Morris chart - Sales -->
               <div class="chart tab-pane active" id="square-month-revenue-chart" style="position: relative; height: 300px;">
-                <canvas id="square-month-revenue-chart-canvas" height="300" style="height: 300px;"></canvas>                         
+                <canvas id="square-month-revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
               </div>
              </div>
           </div><!-- /.card-body -->
@@ -91,7 +91,7 @@
             <div class="tab-content p-0">
             <!-- Morris chart - Sales -->
               <div class="chart tab-pane active" id="square-quarter-revenue-chart" style="position: relative; height: 300px;">
-                <canvas id="square-quarter-revenue-chart-canvas" height="300" style="height: 300px;"></canvas>                         
+                <canvas id="square-quarter-revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
               </div>
              </div>
           </div><!-- /.card-body -->
@@ -108,8 +108,8 @@
   <script src="/js/lib.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <script>
-    
-    
+
+
     const brandSuccess = '#4dbd74'
     const brandInfo = '#63c2de'
     const brandDanger = '#f86c6b'
@@ -119,19 +119,19 @@
     var squareMonthlyData = {{{toJSON squareMonthlyData }}}
     var squareQuarterlyData = {{{toJSON squareQuarterlyData }}}
     var orderTotalsByMonthData = {{{toJSON orderTotalsByMonthData }}}
-    
-    etsyQuarterlyData.push(etsyQuarterlyData.shift());
-    squareQuarterlyData.push(squareQuarterlyData.shift());
-    
-    
+
+//    etsyQuarterlyData.push(etsyQuarterlyData.shift());
+//    squareQuarterlyData.push(squareQuarterlyData.shift());
+
+
     var etsyMonthlyLabels = etsyMonthlyData.map(function(item){
       return months[Number(item.MonthOfYear) - 1]
     });
     var etsyMonthlyDataPoints = etsyMonthlyData.map(function(item){
       return item.Amount
     });
-    
-    
+
+
     function mapLabels(data, hashName){
       return data.map(function(item){
         return months[Number(item[hashName]) - 1]
@@ -144,15 +144,15 @@
     }
     function buildChart( chartCanvasId, dataOptions, chartOptions, type){
       var canvas = document.getElementById(chartCanvasId).getContext('2d');
-      var etsyMonthlySalesChart = new Chart(canvas, { 
-          type: type, 
-          data: dataOptions, 
+      var etsyMonthlySalesChart = new Chart(canvas, {
+          type: type,
+          data: dataOptions,
           options: chartOptions
         }
       )
     }
   window.addEventListener('load', function () {
-    
+
 
         buildChart('total-month-revenue-chart-canvas',
               {
@@ -227,7 +227,7 @@
                   }]
                 }
               }, 'line');
-    
+
     buildChart('square-month-revenue-chart-canvas',
               {
                 labels  : squareMonthlyData.map((item) => months[Number(item.MonthOfYear) - 1]),
@@ -264,7 +264,7 @@
                   }]
                 }
               }, 'line');
-    
+
     buildChart('square-quarter-revenue-chart-canvas',
               {
                 labels  : squareQuarterlyData.map((item) => item.QuarterOfYear),
@@ -301,8 +301,8 @@
                   }]
                 }
               }, 'line');
-    
-    
+
+
   // Sales chart
   var etsyMonthlySalesChartCanvas = document.getElementById('etsy-month-revenue-chart-canvas').getContext('2d');
   //$('#revenue-chart').get(0).getContext('2d');
@@ -344,15 +344,15 @@
   }
 
   // This will get the first returned node in the jQuery collection.
-  var etsyMonthlySalesChart = new Chart(etsyMonthlySalesChartCanvas, { 
-      type: 'line', 
-      data: etsyMonthlySalesChartData, 
+  var etsyMonthlySalesChart = new Chart(etsyMonthlySalesChartCanvas, {
+      type: 'line',
+      data: etsyMonthlySalesChartData,
       options: etsyMonthlySalesChartOptions
     }
   )
-  
+
   }, false);
-    
+
 
 </script>
 {{/contentFor}}

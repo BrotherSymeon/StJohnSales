@@ -67,7 +67,7 @@
 
       <input id="orders" type="file" name="orders" />
     </div>
-    <button type="submit" class="btn btn-primary">Upload</button>
+    <button type="submit" class="btn btn-primary">Upload Orders</button>
   </form>
 </div>
 
@@ -76,8 +76,11 @@
 </h4>
 <div class="jumbotron">
 <form method="POST" action="/admin/upload/orderitems" enctype="multipart/form-data">
-  <input type="file" name="orderitems" />
-  <input type="submit" />
+  <div class="form-group">
+  <input id="orderitems" type="file" name="orderitems" />
+  </div>
+
+  <button type="submit" class="btn btn-primary">Upload Order Items</button>
 </form>
 </div>
 
