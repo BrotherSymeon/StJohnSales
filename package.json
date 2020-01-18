@@ -32,6 +32,7 @@
     "morgan": "~1.9.1",
     "multer": "^1.4.2",
     "mysql": "^2.17.1",
+    "papaparse": "5.1.1",
     "parse-fn-args": "1.0.1",
     "passport": "^0.4.0",
     "passport-google-oauth": "^2.0.0",

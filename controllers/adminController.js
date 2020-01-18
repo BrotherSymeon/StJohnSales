@@ -11,7 +11,7 @@ module.exports = (db, fileLoaderSvc, eventHandler) => {
    * @param res
    * @returns {undefined}
    */
-  adminController.users_list = function(req, res) {
+  adminController.users_list = function (req, res) {
     res.send("NOT IMPLEMENTED: page to list users");
   };
 
@@ -22,7 +22,7 @@ module.exports = (db, fileLoaderSvc, eventHandler) => {
    * @param res
    * @returns {undefined}
    */
-  adminController.users_detail = function(req, res) {
+  adminController.users_detail = function (req, res) {
     res.send("NOT IMPLEMENTED: page to update user");
   };
   /**
@@ -32,7 +32,7 @@ module.exports = (db, fileLoaderSvc, eventHandler) => {
    * @param res
    * @returns {undefined}
    */
-  adminController.users_new = function(req, res) {
+  adminController.users_new = function (req, res) {
     res.send("NOT IMPLEMENTED: page to create new user");
   };
   /**
@@ -42,7 +42,7 @@ module.exports = (db, fileLoaderSvc, eventHandler) => {
    * @param res
    * @returns {undefined}
    */
-  adminController.user_create = function(req, res) {
+  adminController.user_create = function (req, res) {
     // a function
     res.send("NOT IMPLEMENTED: page to create new user");
   };
@@ -55,7 +55,7 @@ module.exports = (db, fileLoaderSvc, eventHandler) => {
    * @param res
    * @returns {undefined}
    */
-  adminController.data_upload = function(req, res) {
+  adminController.data_upload = function (req, res) {
     return res.render("upload", {
       title: "St Johns Sales - Upload Data",
       processId: 0
@@ -69,7 +69,7 @@ module.exports = (db, fileLoaderSvc, eventHandler) => {
    * @param response
    * @returns {undefined}
    */
-  adminController.upload_orders = async function(req, response) {
+  adminController.upload_orders = async function (req, response) {
     log("uploading %o", req.file.originalname);
     var message = "Thank You, we will have this done shortly";
     var funcError = null;
@@ -129,7 +129,7 @@ module.exports = (db, fileLoaderSvc, eventHandler) => {
     }
   };
 
-  adminController.upload_order_items = async function(req, response) {
+  adminController.upload_order_items = async function (req, response) {
     log("uploading %o", req.file.originalname);
     var message = "Thank You, we will have this done shortly";
     var funcError = null;
