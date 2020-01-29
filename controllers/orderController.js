@@ -22,10 +22,12 @@ module.exports = (db) => {
     });
 
   };
-  orderController.orders = async function (req, res) {
-    log('params %o', req.body)
-    var query = {};
-    var params = req.body;
+  orderController.getStart = function (start, pageSize) {
+    var startNum = (start === 1) ? 1 : (start - 1) * pageSize;
+    return startNum;
+  };
+  orderController.getQuery = function (params) {
+    let query = {};
     if (params.sort.length) {
       query.order = params.sort[0].field;
       console.log('sort type %o', params.sort[0].type);
@@ -33,11 +35,20 @@ module.exports = (db) => {
         query.orderDESC = 'y';
       }
     }
-    var start = Number(params.page) * Number(params.perPage);
+
+    var start = orderController.getStart(Number(params.page), Number(params.perPage));
     query.limit = `${start}, ${params.perPage}`;
+
+    return query;
+  };
+  orderController.orders = async function (req, res) {
+    log('params %o', req.body)
+    var params = req.body;
+    var query = orderController.getQuery(params);
+
     const orders = new db.BuyerOrders();
     var count = await orders.find('count', {});
-    count = JSON.parse(JSON.stringify(count))[0]['COUNT(*)'];
+    count = JSON.parse(JSON.stringify(count))[0]['COUNT(*)']; //lets move this to the  back
     const items = await orders.find('all', query);
 
     var data = {
