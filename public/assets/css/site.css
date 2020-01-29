@@ -192,3 +192,7 @@
   width: 750px;
   padding: 8px;
 }
+
+table.vgt-table {
+    font-size: 14px !important;
+}
