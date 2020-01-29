@@ -31,7 +31,7 @@
     </button>
   </div>
   <div class="toast-body">
-    Thanks for uploading your Data file. We will start tracking its progress in a moment.
+    {{ message }} We will start tracking its progress in a moment.
     <div class="progress">
       <div id="progressBar" class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0"
         aria-valuemax="100"></div>
@@ -59,7 +59,7 @@
 {{/if}}
 
 <h4>
-  Upload Etsy Order File
+  Upload Etsy Order
 </h4>
 <div id="errorAlert" class="sufee-alert alert with-close alert-danger alert-dismissible fade ">
 <span class="badge badge-pill badge-danger">Error</span>
@@ -80,7 +80,7 @@
 </div>
 
 <h4>
-  Upload Etsy Order Items File
+  Upload Etsy Order Items
 </h4>
 <div class="jumbotron">
 <form method="POST" action="/admin/upload/orderitems" enctype="multipart/form-data">
@@ -92,15 +92,58 @@
 </form>
 </div>
 
+<h4>
+  Upload Etsy Listings
+</h4>
+<div class="jumbotron">
+<form method="POST" action="/admin/upload/listings" enctype="multipart/form-data">
+  <div class="form-group">
+  <input id="listings" type="file" name="listings" />
+  </div>
+
+  <button type="submit" class="btn btn-primary">Upload Etsy Listings</button>
+</form>
+</div>
+
+<h4>
+  Upload Etsy Payments
+</h4>
+<div class="jumbotron">
+<form method="POST" action="/admin/upload/payments" enctype="multipart/form-data">
+  <div class="form-group">
+  <input id="payments" type="file" name="payments" />
+  </div>
+
+  <button type="submit" class="btn btn-primary">Upload Etsy Payments</button>
+</form>
+</div>
+
+<h4>
+  Upload Etsy Deposits
+</h4>
+<div class="jumbotron">
+<form method="POST" action="/admin/upload/deposits" enctype="multipart/form-data">
+  <div class="form-group">
+  <input id="deposits" type="file" name="deposits" />
+  </div>
+
+  <button type="submit" class="btn btn-primary">Upload Etsy Deposits</button>
+</form>
+</div>
+
+
+
 {{#contentFor "pageScripts"}}
 <script src="/js/lib.js"></script>
 <script>
   var processId = {{ processId }}
+  var message = '{{ message }}';
   jQuery.noConflict();
   (function ($) {
     $(document).ready(function ($) {
       // Your code here
       console.log("ready! " + processId);
+      console.log(message);
       //$()
       //$('.toast').toast('show');
 

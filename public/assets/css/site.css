@@ -172,3 +172,23 @@
   0%, 39%, 100% { opacity: 0; }
   40% { opacity: 1; } 
 }
+
+
+.number {
+  display: inline-block;
+  padding: 4px 10px;
+  color: #FFF;
+  border-radius: 4px;
+  background: #44475C;
+  margin: 0px 5px;
+  cursor: pointer;
+}
+.number:hover, .number.active {
+  background: #717699;
+}
+.pagination {
+  font-family: 'Open Sans', sans-serif;
+  text-align: right;
+  width: 750px;
+  padding: 8px;
+}

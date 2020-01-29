@@ -6,6 +6,7 @@ var orderItems = require('./OrderItems');
 var users = require('./Users');
 var tempOrders = require('./tempOrders');
 var tempOrderItems = require('./tempOrderItems');
+var buyerOrders = require('./BuyerOrders');
 
 
 module.exports = (mySqlConnection) => {
@@ -16,9 +17,10 @@ module.exports = (mySqlConnection) => {
     OrderItems: orderItems(mySqlConnection),
     Users: users(mySqlConnection),
     TempOrders: tempOrders(mySqlConnection),
-    TempOrderItems:tempOrderItems(mySqlConnection)
+    TempOrderItems: tempOrderItems(mySqlConnection),
+    BuyerOrders: buyerOrders(mySqlConnection)
   };
 
   return db;
 
-}
+};

@@ -33,14 +33,16 @@ var indexRouter = require('./routes/index');
 var apiRouter = require('./routes/api');
 var adminRouter = require('./routes/admin');
 var authRouter = require('./routes/auth');
+var orderRouter = require('./routes/orders');
+
 
 var app = express();
 
 // view engine setup
 app.engine('hbs', hbs.express4({
   partialsDir: __dirname + '/views/partials',
-   helpers: {
-    toJSON : function(object) {
+  helpers: {
+    toJSON: function (object) {
       return JSON.stringify(object);
     }
   }
@@ -48,14 +50,14 @@ app.engine('hbs', hbs.express4({
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
 
-hbs.registerHelper('toJSON', function(object) {
+hbs.registerHelper('toJSON', function (object) {
   return JSON.stringify(object);
 });
 
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(flash());
 app.use(passport.initialize());
@@ -64,11 +66,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use(session({
-    key: 'user_sid',
-    secret: 'session_cookie_secret',
-    store: sessionStore,
-    resave: false,
-    saveUninitialized: false
+  key: 'user_sid',
+  secret: 'session_cookie_secret',
+  store: sessionStore,
+  resave: false,
+  saveUninitialized: false
 }));
 
 app.use((req, res, next) => {
@@ -80,49 +82,49 @@ app.use((req, res, next) => {
 });
 app.use(/^(?!\/auth).*$/, (req, res, next) => {
 
-    //console.log("sessionChecker");
-    //console.log(process.env.LOCAL);
-    //if (!!process.env.LOCAL === true) {
-    //  res.locals.authenticated = true;
-    //  req.session.user = require('../lib/fakeUser').user;
-    //  next();
-   // } else {
+  //console.log("sessionChecker");
+  //console.log(process.env.LOCAL);
+  //if (!!process.env.LOCAL === true) {
+  //  res.locals.authenticated = true;
+  //  req.session.user = require('../lib/fakeUser').user;
+  //  next();
+  // } else {
 
-      //console.log(req.session);
-      if (!req.session.user) {
+  //console.log(req.session);
+  if (!req.session.user) {
 
-        res.redirect("/auth/login");
-        //console.log('one')
-      } else if (req.session.user.user_id && req.cookies.user_sid) {
-        try {
-          //console.log(JSON.parse(req.session.user.roles));
-        } catch (err) {
-          console.log(err)
-        }
+    res.redirect('/auth/login');
+    //console.log('one')
+  } else if (req.session.user.user_id && req.cookies.user_sid) {
+    try {
+      //console.log(JSON.parse(req.session.user.roles));
+    } catch (err) {
+      console.log(err);
+    }
 
-        next();
-      } else {
-        //console.log('3')
-        res.redirect("/auth/login");
-      }
+    next();
+  } else {
+    //console.log('3')
+    res.redirect('/auth/login');
+  }
 
-   // }
+  // }
 
-})
+});
 // This middleware will check if user's cookie is still saved in browser and user is not set, then automatically log the user out.
 // This usually happens when you stop your express server after login, your cookie still remains saved in the browser.
 app.use((req, res, next) => {
-    if (req.cookies.user_sid && req.session.user) {
-      res.locals.authenticated = true;
-      res.locals.user = req.session.user;
-    }
-    next();
+  if (req.cookies.user_sid && req.session.user) {
+    res.locals.authenticated = true;
+    res.locals.user = req.session.user;
+  }
+  next();
 });
 
 
-app.use(function(req, res, next){
+app.use(function (req, res, next) {
   res.locals.showTests = app.get('env') !== 'production' && req.query.test === '1';
-  if(!res.locals.partials) res.locals.partials = {};
+  if (!res.locals.partials) res.locals.partials = {};
   next();
 });
 
@@ -133,16 +135,16 @@ app.use('/', indexRouter);
 app.use('/api', apiRouter);
 app.use('/admin', adminRouter);
 app.use('/auth', authRouter);
-
+app.use('/orders', orderRouter);
 
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

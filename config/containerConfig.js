@@ -1,7 +1,7 @@
-var { diContainer } = require('../diContainer');
+var {diContainer} = require('../diContainer');
 
 module.exports = {
-  config: function() {
+  config: function () {
     diContainer.factory('dbConfig', require('./db'));
     diContainer.factory('dbMultiConfig', require('./db_multi'));
     diContainer.factory('salesDb', require('../gcpDb'));
@@ -26,6 +26,11 @@ module.exports = {
     diContainer.factory('eventHandler', require('../lib/uploadEventHandler'));
 
     //CONTROLLERS----->
+    diContainer.factory(
+      'orderController',
+      require('../controllers/orderController')
+    );
+
     diContainer.factory(
       'adminController',
       require('../controllers/adminController')
