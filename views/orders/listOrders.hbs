@@ -56,11 +56,13 @@
            },
            {
              label: 'Value',
-             field: 'OrderValue'
+             field: 'OrderValue',
+             type: 'decimal'
            },
            {
              label: 'Total',
-             field: 'OrderTotal'
+             field: 'OrderTotal',
+             type: 'decimal'
            },
            {
              label: 'Status',
@@ -84,7 +86,9 @@
      },
      methods: {
        updateParams(newProps){
+         console.log('updated this param: %o', this.serverParams);
          this.serverParams = Object.assign({}, this.serverParams, newProps);
+         console.log('to this: %o', this.serverParams);
        },
        onPageChange(params){
          this.updateParams({page: params.currentPage});
@@ -96,6 +100,7 @@
        },
        onSortChange(params){
          this.updateParams({
+           page: 1,
            sort:[{
              type: params[0].type,
              field: params[0].field,

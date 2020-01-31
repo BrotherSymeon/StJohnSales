@@ -1,20 +1,20 @@
 
 
-module.exports =  function(db) {
+module.exports = function (db) {
   const fileProcessController = {};
   var FileProcessesModel = new db.FileProcesses();
-  fileProcessController.getProcesses = async function(req, res) {
+  fileProcessController.getProcesses = async function (req, res) {
     var id = req.params.id || 0;
     //var sql = ` SELECT * from  FileProcessDetails  where FileId = ${req.params.id} and FileProcessDetailId = (   select max(FileProcessDetailId) from FileProcessDetails WHERE FileId = ${req.params.id}  );`
-    try{
+    try {
       var processes = await FileProcessesModel.find('all', {});
       res.json(processes);
-    }catch(err){
+    } catch (err) {
       console.log('error in fileProcessController');
       console.log(err);
       res.status(500).send(err.message);
     }
-    
+
   };
   return fileProcessController;
 };
