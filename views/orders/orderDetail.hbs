@@ -1,0 +1,191 @@
+{{!< ../layout}}
+{{#contentFor "headScripts"}}
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vue-good-table@2.18.1/dist/vue-good-table.min.css">
+<style>
+fieldset {
+    display: block;
+    margin-inline-start: 2px;
+    margin-inline-end: 2px;
+    padding-block-start: 0.35em;
+    padding-inline-start: 0.75em;
+    padding-inline-end: 0.75em;
+    padding-block-end: 0.625em;
+    min-inline-size: min-content;
+}
+
+</style>
+
+{{/contentFor}}
+  <div id="app" class="col-lg-12">
+    <detail-component></detail-component>
+  </div>
+{{#contentFor "pageScripts"}}
+ <script type="x-template" id="detail-component">
+<div>
+  <h4>Order# [[ detail.OrderId ]]
+  <h5 class="float-right">Sale Date: [[ detail.SaleDate | reformat
+  ]]</h5></h4>
+  <div class="row">
+    <div class="col-xs-6 col-sm-6">
+      <fieldset>
+        <legend>Ship To</legend>
+        <div>
+          [[ detail.FullName]]
+        </div>
+        <div>
+          [[ detail.Street1 ]]
+        </div>
+        <div>
+          [[ detail.Street2 ]]
+        </div>
+        <div>
+          [[ detail.ShipCity ]], [[ detail.ShipState ]] [[
+          detail.ShipZipCode ]]
+        </div>
+        <div>
+          [[ detail.ShipCountry ]]
+        </div>
+      </fieldset>
+    </div>
+    <div class="col-xs-6 col-sm-6">
+      <fieldset>
+        <legend>Payment</legend>
+        <div>
+          Method: [[ detail.PaymentMethod ]]
+        </div>
+        <div>
+          Type: [[ detail.PaymentType ]]
+        </div>
+        <div>
+          Currency: [[ detail.Currency ]]
+        </div>
+        <div>
+          Coupon: [[ detail.CouponCode ]] / [[ detail.CouponDetails
+          ]]
+        </div>
+      </fieldset>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-6 col-sm-6">
+      <fieldset>
+      <legend></legend>
+        <div>
+          Sold Through: [[ detail.SoldThrough ]]
+        </div>
+        <div>
+          Status: [[ detail.Status ]]
+        </div>
+        <div>
+          CreatedOn: [[ detail.CreatedOn | reformat ]]
+        </div>
+      </fieldset>
+    </div>
+    <div class="col-xs-6 col-sm-6">
+      <fieldset>
+        <div>
+          New Customer: [[ detail.NewBuyerDate |reformat ]]
+        </div>
+        <div>
+          Shipped On: [[ detail.DateShipped | reformat ]]
+        </div>
+        <div>
+          UpdatedOn: [[ detail.UpdatedOn | reformat ]]
+        </div>
+      </fieldset>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12">
+      <hr>
+      <fieldset>
+        <legend>Order Items</legend>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Name</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="lineItem in itemList">
+              <th scope="row">[[ lineItem.OrderItemId ]]</th>
+              <td>[[ lineItem.ItemName ]]</td>
+              <td>[[ lineItem.Quantity ]]</td>
+              <td>[[ lineItem.Price ]]</td>
+            </tr>
+          </tbody>
+        </table>
+      </fieldset>
+    </div>
+  </div>
+</div>
+ </script>
+  <script src="//cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/vue-good-table@2.18.1/dist/vue-good-table.js"></script>
+  <script>
+    //{"OrderId":1566115739,"SoldThrough":"ETSY","NumberOfItems":8,"PaymentMethod":"Credit Card","Currency":"USD","OrderValue":146.53,"CouponCode":"FREESHIP4","CouponDetails":"% off shipping","DiscountAmount":0,"ShippingDiscount":13.16,"Shipping":0,"SalesTax":0,"OrderTotal":158.25,"Status":"","CardProcessingFees":5,"OrderNet":141.53,"AdjustedOrderTotal":0,"AdjustedCardProcessingFees":0,"AdjustedNetOrderAmount":0,"OrderType":"online","PaymentType":"online_cc","InPersonDiscount":0,"InPersonLocation":"","BuyerId":428,"ShipToId":340,"CreatedOn":"2020-02-04T17:07:17.000Z","UpdatedOn":"2020-02-04T17:07:17.000Z","SaleDate":"2019-12-30T05:00:00.000Z","DateShipped":"2020-01-04T05:00:00.000Z","Street1":"991 N Mountain Rd","Street2":"","ShipCity":"Gardiner","ShipState":"NY","ShipZipCode":"12525-5027","ShipCountry":"United States","BuyerUserId":"tonyaychadi","FullName":"Tonya Chadi","FirstName":"Tonya","LastName":"Chadi","BuyerName":"Tonya Chadi","NewBuyerDate":"2019-01-01T05:00:00.000Z"}
+
+    Vue.component('detail-component', {
+      template: '#detail-component',
+      delimiters: ['[[', ']]'],
+      data: function () {
+        return {
+          detail: {{{toJSON detail }}},
+          itemList: {{{ toJSON itemList }}}
+        };
+      },
+      filters : {
+        reformat : function(value){
+          return value.substring(0, 10);
+        }
+      },
+      methods: {
+        loadItems(){
+          var self = this;
+          getFromServer({listing: ''}).then(function(res){
+            self.totalRows = res.totalRows;
+            self.rows = res.rows;
+          });
+        },
+      }
+    });
+var app = new Vue({
+  el: '#app',
+  delimiters: ['[[', ']]'],
+  data:{
+    message:'Hello World',
+  }
+});
+
+
+function getFromServer(url, params){
+  return new Promise(function(resolve, reject){
+    console.log('params %o', params);
+    const options = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json;charset=UTF-8'
+      },
+      body: JSON.stringify(params)
+    };
+
+    fetch(url, options)
+      .then(function(response){ return response.json();})
+      .then(function(data){
+        console.log(data);
+        resolve({
+          totalRows: data.totalRows,
+          rows: data.rows
+        });
+      });
+  });
+}
+
+  </script>
+{{/contentFor}}
+

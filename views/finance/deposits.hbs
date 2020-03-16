@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vue-good-table@2.18.1/dist/vue-good-table.min.css">
 
 {{/contentFor}}
-<h4>Orders</h4>
+<h4>Deposits</h4>
 <div id="app" class="col-lg-12">
   <order-component></order-component>
 </div>
@@ -30,6 +30,18 @@
  <script src="//cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"></script>
  <script src="//cdn.jsdelivr.net/npm/vue-good-table@2.18.1/dist/vue-good-table.js"></script>
  <script>
+   /*
+   | Field               | Type                | Null | Key | Default | Extra          |
++---------------------+---------------------+------+-----+---------+----------------+
+| EtsyDepositId       | bigint(20) unsigned | NO   | PRI | NULL    | auto_increment |
+| DepositDate         | date                | YES  |     | NULL    |                |
+| Amount              | decimal(6,2)        | YES  |     | 0.00    |                |
+| Currency            | varchar(10)         | YES  |     | NULL    |                |
+| Status              | varchar(12)         | YES  |     | NULL    |                |
+| AccountEndingDigits | int(10)             | YES  |     | NULL    |                |
++---------------------+---------------------+------+-----+---------+----------------+
+    */
+
    Vue.component('order-component', {
      template: '#order-component',
      delimiters: ['[[', ']]'],
@@ -37,36 +49,28 @@
        return {
          columns:[
            {
-             label: 'Sale Date',
-             field: 'SaleDate',
+             label: 'Deposit Date',
+             field: 'DepositDate',
              type: 'date',
              dateInputFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSxxx",
              dateOutputFormat: 'MMM. dd, yyyy',
            },
            {
-             label: 'Date Shipped',
-             field: 'DateShipped',
-             type: 'date',
-             dateInputFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSxxx",
-             dateOutputFormat: 'MMM. dd, yyyy',
-           },
-           {
-             label: 'Buyer',
-             field: 'FullName'
-           },
-           {
-             label: 'Value',
-             field: 'OrderValue',
+             label: 'Amount',
+             field: 'Amount',
              type: 'decimal'
            },
            {
-             label: 'Total',
-             field: 'OrderTotal',
-             type: 'decimal'
+             label: 'Currency',
+             field: 'Currency'
            },
            {
              label: 'Status',
              field: 'Status'
+           },
+           {
+             label: 'Ending Digits',
+             field: 'AccountEndingDigits'
            }
          ],
          isLoading: false,
@@ -114,7 +118,6 @@
        },
        onRowDoubleClick(params){
          //alert(JSON.stringify(params));
-         window.location.href = "/orders/" + params.row.OrderId;
        },
        loadItems(){
          var self = this;
@@ -129,7 +132,7 @@
      el: '#app',
      delimiters: ['[[', ']]'],
      data:{
-       message:'Hello World',
+       message:'Hello St Johns Monastery',
      },
    });
 
@@ -137,7 +140,7 @@
   function getFromServer(params){
     return new Promise(function(resolve, reject){
       console.log('params %o', params);
-      const url = '/api/orders';
+      const url = '/api/deposits';
       const options = {
         method: 'POST',
         headers: {
@@ -161,4 +164,5 @@
 
  </script>
 {{/contentFor}}
+
 

@@ -34,6 +34,8 @@ var apiRouter = require('./routes/api');
 var adminRouter = require('./routes/admin');
 var authRouter = require('./routes/auth');
 var orderRouter = require('./routes/orders');
+var depositRouter = require('./routes/etsyDeposits');
+var paymentRouter = require('./routes/etsyPayments');
 
 
 var app = express();
@@ -136,6 +138,8 @@ app.use('/api', apiRouter);
 app.use('/admin', adminRouter);
 app.use('/auth', authRouter);
 app.use('/orders', orderRouter);
+app.use('/deposits', depositRouter);
+app.use('/payments', paymentRouter);
 
 
 // catch 404 and forward to error handler

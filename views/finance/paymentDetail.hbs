@@ -1,0 +1,230 @@
+{{!< ../layout}}
+{{#contentFor "headScripts"}}
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vue-good-table@2.18.1/dist/vue-good-table.min.css">
+<style>
+fieldset {
+    display: block;
+    margin-inline-start: 2px;
+    margin-inline-end: 2px;
+    padding-block-start: 0.35em;
+    padding-inline-start: 0.75em;
+    padding-inline-end: 0.75em;
+    padding-block-end: 0.625em;
+    min-inline-size: min-content;
+}
+
+</style>
+
+{{/contentFor}}
+  <div id="app" class="col-lg-12">
+    <detail-component></detail-component>
+  </div>
+{{#contentFor "pageScripts"}}
+ <script type="x-template" id="detail-component">
+   <!-- 
++-----------------+---------------------+------+-----+-------------------+-----------------------------+
+| Field           | Type                | Null | Key | Default           | Extra                       |
++-----------------+---------------------+------+-----+-------------------+-----------------------------+
+| PaymentID       | bigint(20) unsigned | NO   |     | NULL              |                             |
+| BuyerUsername   | varchar(100)        | YES  |     | NULL              |                             |
+| BuyerName       | varchar(100)        | YES  |     | NULL              |                             |
+| OrderID         | bigint(20) unsigned | YES  |     | NULL              |                             |
+| GrossAmount     | decimal(6,2)        | YES  |     | 0.00              |                             |
+| Fees            | decimal(6,2)        | YES  |     | 0.00              |                             |
+| NetAmount       | decimal(6,2)        | YES  |     | 0.00              |                             |
+| PostedGross     | decimal(6,2)        | YES  |     | 0.00              |                             |
+| PostedFees      | decimal(6,2)        | YES  |     | 0.00              |                             |
+| PostedNet       | decimal(6,2)        | YES  |     | 0.00              |                             |
+| AdjustedGross   | decimal(6,2)        | YES  |     | 0.00              |                             |
+| AdjustedFees    | decimal(6,2)        | YES  |     | 0.00              |                             |
+| AdjustedNet     | decimal(6,2)        | YES  |     | 0.00              |                             |
+| Currency        | varchar(10)         | YES  |     | NULL              |                             |
+| ListingAmount   | decimal(6,2)        | YES  |     | 0.00              |                             |
+| ListingCurrency | varchar(10)         | YES  |     | NULL              |                             |
+| ExchangeRate    | decimal(6,2)        | YES  |     | 0.00              |                             |
+| VATAmount       | decimal(6,2)        | YES  |     | NULL              |                             |
+| GiftCardApplied | bit(1)              | YES  |     | NULL              |                             |
+| Status          | varchar(20)         | YES  |     | NULL              |                             |
+| FundsAvailable  | date                | YES  |     | NULL              |                             |
+| OrderDate       | date                | YES  |     | NULL              |                             |
+| Buyer           | varchar(50)         | YES  |     | NULL              |                             |
+| OrderType       | varchar(50)         | YES  |     | NULL              |                             |
+| PaymentType     | varchar(50)         | YES  |     | NULL              |                             |
+| RefundAmount    | decimal(6,2)        | YES  |     | 0.00              |                             |
+| UpdatedOn       | timestamp           | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
+| CreatedOn       | timestamp           | NO   |     | CURRENT_TIMESTAMP |                             |
++-----------------+---------------------+------+-----+-------------------+-----------------------------+
+
+   -->
+<div>
+  <h4>Payment# [[ detail.PaymentID ]]</h4>
+  <div class="row">
+    <div class="col-xs-6 col-sm-6">
+      <fieldset>
+        <legend>Buyer</legend>
+        <div>
+         Buyer User Name: [[ detail.BuyerUsername]]
+        </div>
+        <div>
+         Buyer: [[ detail.Buyer ]]
+        </div>
+        <div>
+         Buyer Name: [[ detail.BuyerName ]]
+        </div>
+      </fieldset>
+      <fieldset>
+        <div>
+          Listing Amount: [[ detail.ListingAmount ]] 
+        </div>
+        <div>
+          Listing Currency: [[ detail.ListingCurrency ]] 
+        </div>
+        <div>
+          Gift Card Applied: [[ !!detail.GiftCardApplied.data[0] ]] 
+        </div>
+        <div>
+          Status: [[ detail.Status ]] 
+        </div>
+        <div>
+          Funds Available: [[ detail.FundsAvailable | reformat ]] 
+        </div>
+        <div>
+          Order Date: [[ detail.OrderDate | reformat ]] 
+        </div>
+      </fieldset>
+    </div>
+    <div class="col-xs-6 col-sm-6">
+      <fieldset>
+        <legend>Payment</legend>
+        <div>
+          Gross Amount: [[ detail.GrossAmount ]]
+        </div>
+        <div>
+          Fees: [[ detail.Fees ]]
+        </div>
+        <div>
+          Net Amount: [[ detail.NetAmount ]]
+        </div>
+        <div>
+          Posted Fees: [[ detail.PostedFees ]]
+        </div>
+        <div>
+          Posted Gross: [[ detail.PostedGross ]]
+        </div>
+        <div>
+          Posted Net: [[ detail.PostedNet ]]
+        </div>
+        <div>
+          Adjusted Fees: [[ detail.AdjustedFees ]]
+        </div>
+        <div>
+          Adjusted Gross: [[ detail.AdjustedGross ]]
+        </div>
+        <div>
+          Adjusted Net: [[ detail.AdjustedNet ]]
+        </div>
+      </fieldset>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-6 col-sm-6">
+      <fieldset>
+      <legend></legend>
+        <div>
+          Currency: [[ detail.Currency ]]
+        </div>
+        <div>
+          Exchange Rate: [[ detail.ExchangeRate ]]
+        </div>
+        <div>
+          VAT Amount: [[ detail.VATAmount ]]
+        </div>
+        <div>
+          CreatedOn: [[ detail.CreatedOn | reformat ]]
+        </div>
+        <div>
+          UpdatedOn: [[ detail.UpdatedOn | reformat ]]
+        </div>
+      </fieldset>
+    </div>
+    <div class="col-xs-6 col-sm-6">
+      <fieldset>
+        <div>
+          Order Type: [[ detail.OrderType ]]
+        </div>
+        <div>
+          Payment Type: [[ detail.PaymentType ]]
+        </div>
+        <div>
+          Refund Amount: [[ detail.RefundAmount ]]
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</div>
+ </script>
+  <script src="//cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/vue-good-table@2.18.1/dist/vue-good-table.js"></script>
+  <script>
+
+    Vue.component('detail-component', {
+      template: '#detail-component',
+      delimiters: ['[[', ']]'],
+      data: function () {
+        return {
+          detail: {{{toJSON detail }}}
+        };
+      },
+      filters : {
+        reformat : function(value){
+          return value.substring(0, 10);
+        }
+      },
+      methods: {
+        loadItems(){
+          var self = this;
+          getFromServer({listing: ''}).then(function(res){
+            self.totalRows = res.totalRows;
+            self.rows = res.rows;
+          });
+        },
+      }
+    });
+var app = new Vue({
+  el: '#app',
+  delimiters: ['[[', ']]'],
+  data:{
+    message:'Hello World',
+  }
+});
+
+
+function getFromServer(url, params){
+  return new Promise(function(resolve, reject){
+    console.log('params %o', params);
+    const options = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json;charset=UTF-8'
+      },
+      body: JSON.stringify(params)
+    };
+
+    fetch(url, options)
+      .then(function(response){ return response.json();})
+      .then(function(data){
+        console.log(data);
+        resolve({
+          totalRows: data.totalRows,
+          rows: data.rows
+        });
+      });
+  });
+}
+
+  </script>
+{{/contentFor}}
+
+

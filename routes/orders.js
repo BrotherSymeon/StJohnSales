@@ -7,5 +7,7 @@ var orderController = goc.container.get('orderController');
 
 router.get('/', orderController.index);
 
+router.get('/:id', orderController.byOrderId);
+
 module.exports = router;
 

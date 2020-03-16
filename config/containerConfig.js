@@ -32,6 +32,20 @@ module.exports = {
     );
 
     diContainer.factory(
+      'paymentController',
+      require('../controllers/paymentController')
+    );
+
+    diContainer.factory(
+      'depositController',
+      require('../controllers/depositController')
+    );
+
+    diContainer.factory(
+      'paymentController',
+      require('../controllers/paymentController')
+    );
+    diContainer.factory(
       'adminController',
       require('../controllers/adminController')
     );

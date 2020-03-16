@@ -931,19 +931,23 @@
 .transition {
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease; }
-
+legend {
+  font-size: 18px !important;
+}
 body {
   background: #f1f2f7;
   display: table;
   font-family: 'Open Sans' sans-serif !important;
-  font-size: 16px;
-  width: 100%; }
+  font-size: 14px;
+  width: 100%;
+  color: #606266;
+  }
 
 div[class*="col-"] {
   float: left; }
 
 p {
-  font-size: 16px;
+  font-size: 14px;
   font-family: 'Open Sans' sans-serif;
   font-weight: 400;
   line-height: 24px;

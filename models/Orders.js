@@ -1,7 +1,8 @@
 module.exports = mySqlConnection => {
   return mySqlConnection.extend(
     {
-      tableName: "Orders"
+      tableName: "Orders",
+      primaryKey: "OrderId"
     },
     {
       OrderAmountsByQuarter: async (year, soldThrough) => {

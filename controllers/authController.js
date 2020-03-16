@@ -12,7 +12,7 @@ module.exports = (db) => {
     const errors = req.flash().error || [];
     const messages = req.flash().message || [];
 
-    res.render('auth/login', { message: req.flash('message'), title: 'St Johns Sales - Login' });
+    res.render('auth/login', {message: req.flash('message'), title: 'St Johns Sales - Login'});
   };
 
   authController.passportLoginMiddleware = passport.authenticate('local', {
@@ -39,7 +39,7 @@ module.exports = (db) => {
   authController.getRegister = async (req, res) => {
     //render sign up form
     const messages = req.flash().messages || [];
-    res.render('auth/register', { messages });
+    res.render('auth/register', {messages});
   };
 
   authController.register = async (req, res) => {
@@ -54,7 +54,7 @@ module.exports = (db) => {
 
         if (user.length) {
           req.flash('message', 'User already exists!')
-          return res.render('auth/register', { 'message': req.flash('message') });
+          return res.render('auth/register', {'message': req.flash('message')});
         } else {
           //hash password and store user to db
           var hash = await bcrypt.hash(body.password, 10);
@@ -75,25 +75,25 @@ module.exports = (db) => {
             }
           } catch (err) {
             console.log(err);
-            return res.render('auth/register', { 'message': req.flash('message', 'Error creating user. Please see your systems admin') });
+            return res.render('auth/register', {'message': req.flash('message', 'Error creating user. Please see your systems admin')});
 
           }
 
           req.flash('messages', 'Thank you for registering. Please Login with your new account');
           let messages = req.flash().messages || [];
-          return res.render('auth/login', { messages });
+          return res.render('auth/login', {messages});
         }
 
       } else {
         let messages = req.flash().messages || [];
-        return res.render('auth/register', { messages });
+        return res.render('auth/register', {messages});
       }
 
     } catch (err) {
       console.log(err);
       req.flash('messages', 'OOPs... something went wrong');
       const messages = req.flash().messages;
-      return res.render('auth/register', { messages });
+      return res.render('auth/register', {messages});
     }
 
 
@@ -105,23 +105,23 @@ module.exports = (db) => {
     passReqToCallback: true
   }, async (req, email, password, done) => {
     if (!email || !password) {
-      return done(null, null, { message: 'All fields are required.' });
+      return done(null, null, {message: 'All fields are required.'});
     }
 
     try {
       var users = new db.Users();
-      var usersFound = await users.find('first', { where: `email = '${email}'` });
-
-      if (!usersFound.length) {
-        return done(null, null, { message: 'User Not Found.' });
+      var usersFound = await users.find('first', {where: `email = '${email}'`});
+      console.log(usersFound);
+      if (!usersFound) {
+        return done(null, null, {message: 'User Not Found.'});
       }
-      var isCorrect = await bcrypt.compare(password, usersFound[0].password);
+      var isCorrect = await bcrypt.compare(password, usersFound.password);
       if (!isCorrect) {
-        return done(null, null, { message: 'Invalid username or password.' });
+        return done(null, null, {message: 'Invalid username or password.'});
       }
       //maybe this should be req.passport.session.user
-      req.session.user = usersFound[0];
-      return done(null, usersFound[0]);
+      req.session.user = usersFound;
+      return done(null, usersFound);
 
     } catch (err) {
       console.log(err)
@@ -138,11 +138,11 @@ module.exports = (db) => {
   passport.deserializeUser(async function (id, done) {
     try {
       var users = new db.Users();
-      var user = await users.find('first', { where: `user_id = ${id}` });
+      var user = await users.find('first', {where: `user_id = ${id}`});
       return done(null, user);
     } catch (err) {
       console.log(`passport deserialize error: ${err.message}`);
-      return done(null, null, { message: err.message });
+      return done(null, null, {message: err.message});
     }
 
   });

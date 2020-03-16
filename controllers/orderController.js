@@ -8,7 +8,6 @@ module.exports = (db) => {
     const orders = new db.BuyerOrders();
     var count = await orders.find('count', {});
     const items = await orders.find('all', {limit: '1, 10'});
-    count = JSON.parse(JSON.stringify(count))[0]['COUNT(*)'];
 
     const data = {
       items: JSON.parse(JSON.stringify(items)),
@@ -48,7 +47,7 @@ module.exports = (db) => {
 
     const orders = new db.BuyerOrders();
     var count = await orders.find('count', {});
-    count = JSON.parse(JSON.stringify(count))[0]['COUNT(*)']; //lets move this to the  back
+    //count = JSON.parse(JSON.stringify(count))[0]['COUNT(*)']; //lets move this to the  back
     const items = await orders.find('all', query);
 
     var data = {
@@ -57,8 +56,20 @@ module.exports = (db) => {
     };
     res.json(data);
   }
-  orderController.ordersById = async function (req, res) {
-
+  orderController.byOrderId = async function (req, res) {
+    log(`loading order number ${req.params.id}`);
+    const detail = new db.OrderDetail();
+    const orderItems = new db.OrderItems();
+    const item = await detail.find('first', {where: `OrderId =${req.params.id}`});
+    var itemList = await orderItems.find('all', {where: `OrderId =${req.params.id}`});
+    itemList = JSON.parse(JSON.stringify(itemList));
+    log('returned data = %o', item);
+    log('returned itemList = %o', itemList);
+    res.locals.detail = item;
+    res.locals.itemList = itemList;
+    return res.render('orders/orderDetail', {
+      title: `St Johns Sales - Order# ${req.params.id}`
+    });
   };
   return orderController;
 };
