@@ -1,6 +1,8 @@
 image: google/cloud-sdk:alpine
 
 config-compile:
+  before_script:
+  - npm install
   stage: build
   image: node:10
   script:
