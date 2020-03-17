@@ -5,4 +5,8 @@ const ejs = require('ejs');
 const template = fs.readFileSync('app.tpl.yaml').toString();
 const content = ejs.render(template, process.env);
 
-fs.writeFileSync('app.yaml', content);
+try {
+  fs.writeFileSync('app.yaml', content);
+} catch (e) {
+  console.error(`${JSON.stringify(e)}`);
+};
