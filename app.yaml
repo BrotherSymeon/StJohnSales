@@ -1,1 +1,10 @@
 runtime: nodejs10
+env_variables:
+  MYSQL_HOST: <% DB_HOST %>
+  MYSQL_USER: <% DB_USER %>
+  MYSQL_PSWD: <% DB_PASSWORD %>
+  MYSQL_DB: <% DB_NAME %>
+  GCP_MYSQL_HOST: <% DB_HOST %>
+  GCP_MYSQL_USER: <% DB_USER %>
+  GCP_MYSQL_PSWD: <% DB_PASSWORD %>
+  GCP_MYSQL_DB: <% DB_NAME %>
