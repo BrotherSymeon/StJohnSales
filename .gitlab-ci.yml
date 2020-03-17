@@ -7,11 +7,6 @@ config-compile:
   image: node:10
   script:
   - node ./bin/config-compile.js
-  artifacts:
-    paths:
-    - app.yml
-    expire_in: 1 days
-    when: always
 
 deploy_prod:
   stage: deploy
