@@ -1,5 +1,7 @@
 image: google/cloud-sdk:alpine
 
+before_script:
+  - npm install
 deploy_prod:
   stage: deploy
   only:
