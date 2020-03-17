@@ -6,7 +6,7 @@ config-compile:
   stage: build
   image: node:10
   script:
-  - node bin/config-compile.js
+  - node ./bin/config-compile.js
   artifacts:
     paths:
     - app.yml
