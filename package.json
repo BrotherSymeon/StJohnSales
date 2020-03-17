@@ -15,6 +15,7 @@
     "test-integration": "mocha -u tdd -R spec qa/integration/tests-*.js "
   },
   "dependencies": {
+    "@google-cloud/storage": "4.6.0",
     "async": "^3.1.0",
     "backbone": "^1.4.0",
     "bcrypt": "3.0.7",
