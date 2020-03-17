@@ -6,7 +6,7 @@
   },
   "private": true,
   "scripts": {
-    "start": "node getEnv.js && node ./bin/www",
+    "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
     "bump": "bump  --commit --tag --push",
     "lint": "eslint *.js lib/*.js routes/*.js public/qa/*.js public/javascripts/*.js",
