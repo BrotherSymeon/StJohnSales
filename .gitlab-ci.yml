@@ -21,7 +21,6 @@ deploy_prod:
   - echo $SERVICE_ACCOUNT_KEY > /tmp/$CI_PIPELINE_ID.json
   - gcloud auth activate-service-account --key-file /tmp/$CI_PIPELINE_ID.json
   - gcloud --quiet --project stjohndevsales app deploy app.yaml
-
-after_script:
-- rm /tmp/$CI_PIPELINE_ID.json
+  after_script:
+  - rm /tmp/$CI_PIPELINE_ID.json
 
