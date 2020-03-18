@@ -13,13 +13,17 @@ config-compile:
     expire_in: 1 days
     when: always
 
+# I think we need to patch the gcp mysql with something like this
+# gcloud sql instances patch stjohn-mysql -q --authorized-networks=67.252.59.0/24,0.0.0.0/0
 deploy_db:
-  image: ubuntu:latest
   stage: deploy
   before_script:
   - apt-get update -q && apt-get install -qqy --no-install-recommends mysql-client
+  - gcloud sql instances patch stjohn-mysql -q --authorized-networks=67.252.59.0/24,0.0.0.0/0
   script:
   - mysql --user=$DB_USER --password=$DB_PASSWORD -h$DB_HOST < ./salesDb/testselect.sql 
+  after_script:
+  - gcloud sql instances patch stjohn-mysql -q --authorized-networks=67.252.59.0/24
   only:
   - master
 
