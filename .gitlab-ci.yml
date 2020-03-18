@@ -13,6 +13,17 @@ config-compile:
     expire_in: 1 days
     when: always
 
+deploy_db:
+  image: ubuntu:latest
+  stage: deploy
+  before_script:
+  - apt-get update -q && apt-get install -qqy --no-install-recommends mysql-client
+  script:
+  - mysql --user=$DB_USER --password=$DB_PASSWORD -h$DB_HOST < ./salesDb/testselect.sql 
+  only:
+  - master
+
+
 deploy_prod:
   stage: deploy
   only:
