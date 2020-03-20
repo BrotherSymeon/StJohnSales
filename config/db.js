@@ -13,7 +13,9 @@ module.exports = function () {
     process.env.INSTANCE_CONNECTION_NAME &&
     process.env.NODE_ENV === 'production'
   ) {
-    conf.socketPath = `/cloudsql/${process.env.INSTANCE_CONNECTION_NAME}`;
+    conf.socketPath = '/cloudsql/stjohndevsales:us-east1:stjohn-mysql';
+    //conf.socketPath = `/cloudsql/${process.env.INSTANCE_CONNECTION_NAME}`;
+    delete conf.port;
   }
   console.log('process.env vars ', process.env);
   console.log(conf);
