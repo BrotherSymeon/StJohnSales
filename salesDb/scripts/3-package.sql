@@ -5,7 +5,7 @@ DROP PROCEDURE IF EXISTS package3 $$
 CREATE PROCEDURE package3()
 BEGIN
 
-    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
       SHOW ERRORS;
       ROLLBACK;
@@ -73,7 +73,8 @@ BEGIN
       VARIATION1VALUES VARCHAR(1000),
       VARIATION2TYPE VARCHAR(1000),
       VARIATION2NAME VARCHAR(1000),
-      VARIATION2VALUES VARCHAR(1000)
+      VARIATION2VALUES VARCHAR(1000),
+      PRIMARY KEY (ETSYLISTINGID)
     );
 
 
@@ -235,78 +236,6 @@ BEGIN
     );
 
 
-    SELECT "Droppin OrderDetail view " as "INFO";
-    DROP VIEW IF EXISTS OrderDetail;
-
-    SELECT "Creating OrderDetail VIEW" as "INFO";
-    CREATE VIEW OrderDetail AS
-    SELECT OrderId,
-    SoldThrough,
-    NumberOfItems,
-    PaymentMethod,
-    Currency,
-    OrderValue,
-    CouponCode,
-    CouponDetails,
-    DiscountAmount,
-    ShippingDiscount,
-    Shipping,
-    SalesTax,
-    OrderTotal,
-    Status,
-    CardProcessingFees,
-    OrderNet,
-    AdjustedOrderTotal,
-    AdjustedCardProcessingFees,
-    AdjustedNetOrderAmount,
-    OrderType,
-    PaymentType,
-    InPersonDiscount,
-    InPersonLocation,
-    o.BuyerId,
-    o.ShipToId,
-    CreatedOn,
-    UpdatedOn,
-    SaleDate,
-    DateShipped,
-    s.Street1,
-    s.Street2,
-    s.ShipCity,
-    s.ShipState,
-    s.ShipZipCode,
-    s.ShipCountry,
-    BuyerUserId,
-    b.FullName,
-    b.FirstName,
-    b.LastName,
-    b.BuyerName,
-    NewBuyerDate
-    FROM Orders o
-    LEFT JOIN
-    ShipTo s ON s.ShipToId = o.ShipToId
-    LEFT JOIN
-    Buyer b ON b.BuyerId = o.BuyerId;
-
-
-
-    SELECT "Droppin BuyerOrders view " as "INFO";
-    DROP VIEW IF EXISTS BuyerOrders;
-
-    SELECT "Creating BuyerOrders VIEW" as "INFO";
-    CREATE VIEW BuyerOrders
-    AS
-    SELECT
-    SaleDate,
-    DateShipped,
-    OrderId,
-    OrderValue,
-    OrderTotal,
-    Status,
-    FullName
-    FROM Orders
-    INNER JOIN
-    Buyer USING (BuyerId)
-    ORDER BY SaleDate DESC;
 
 
 
@@ -404,6 +333,26 @@ BEGIN
         ALTER TABLE Orders DROP COLUMN LastName;
     END IF;
 
+    SELECT "Adding CreatedOn to Orders table" as "INFO";
+    IF NOT EXISTS (SELECT 1
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE COLUMN_NAME = 'CreatedOn'
+        AND TABLE_NAME = 'Orders'
+        AND TABLE_SCHEMA = 'sales')
+    THEN
+        ALTER TABLE Orders ADD COLUMN CreatedOn TIMESTAMP DEFAULT NOW() ;
+    END IF;
+
+    SELECT "Adding UpdatedOn to Orders table" as "INFO";
+    IF NOT EXISTS (SELECT 1
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE COLUMN_NAME = 'UpdatedOn'
+        AND TABLE_NAME = 'Orders'
+        AND TABLE_SCHEMA = 'sales')
+    THEN
+        ALTER TABLE Orders ADD COLUMN UpdatedOn TIMESTAMP DEFAULT NOW() ON UPDATE NOW();
+    END IF;
+
 
     SELECT "Adding ShipToId to Orders table" as "INFO";
     IF NOT EXISTS (SELECT 1
@@ -459,6 +408,82 @@ BEGIN
     THEN
         ALTER TABLE OrderItems ADD COLUMN UpdatedOn TIMESTAMP DEFAULT NOW() ON UPDATE NOW();
     END IF;
+
+
+    SELECT "Droppin OrderDetail view " as "INFO";
+    DROP VIEW IF EXISTS OrderDetail;
+
+    SELECT "Creating OrderDetail VIEW" as "INFO";
+    CREATE VIEW OrderDetail AS
+    SELECT OrderId,
+    SoldThrough,
+    NumberOfItems,
+    PaymentMethod,
+    Currency,
+    OrderValue,
+    CouponCode,
+    CouponDetails,
+    DiscountAmount,
+    ShippingDiscount,
+    Shipping,
+    SalesTax,
+    OrderTotal,
+    Status,
+    CardProcessingFees,
+    OrderNet,
+    AdjustedOrderTotal,
+    AdjustedCardProcessingFees,
+    AdjustedNetOrderAmount,
+    OrderType,
+    PaymentType,
+    InPersonDiscount,
+    InPersonLocation,
+    o.BuyerId,
+    o.ShipToId,
+    CreatedOn,
+    UpdatedOn,
+    SaleDate,
+    DateShipped,
+    s.Street1,
+    s.Street2,
+    s.ShipCity,
+    s.ShipState,
+    s.ShipZipCode,
+    s.ShipCountry,
+    BuyerUserId,
+    b.FullName,
+    b.FirstName,
+    b.LastName,
+    b.BuyerName,
+    NewBuyerDate
+    FROM Orders o
+    LEFT JOIN
+    ShipTo s ON s.ShipToId = o.ShipToId
+    LEFT JOIN
+    Buyer b ON b.BuyerId = o.BuyerId;
+
+
+
+    SELECT "Droppin BuyerOrders view " as "INFO";
+    DROP VIEW IF EXISTS BuyerOrders;
+
+    SELECT "Creating BuyerOrders VIEW" as "INFO";
+    CREATE VIEW BuyerOrders
+    AS
+    SELECT
+    SaleDate,
+    DateShipped,
+    OrderId,
+    OrderValue,
+    OrderTotal,
+    Status,
+    FullName
+    FROM Orders
+    INNER JOIN
+    Buyer USING (BuyerId)
+    ORDER BY SaleDate DESC;
+
+
 
 END$$
 

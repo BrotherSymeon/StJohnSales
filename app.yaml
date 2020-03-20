@@ -1,10 +1,11 @@
 runtime: nodejs10
 env_variables:
-  MYSQL_HOST: 35.196.170.160
+  MYSQL_HOST: 35.196.170.106
   MYSQL_USER: salesAdmin
   MYSQL_PSWD: whiteponyrecord
   MYSQL_DB: sales
-  GCP_MYSQL_HOST: 35.196.170.160
+  GCP_MYSQL_HOST: 35.196.170.106
   GCP_MYSQL_USER: salesAdmin
   GCP_MYSQL_PSWD: whiteponyrecord
   GCP_MYSQL_DB: sales
+  INSTANCE_CONNECTION_NAME: stjohndevsales:us-east1:stjohn-mysql
