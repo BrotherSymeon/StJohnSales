@@ -14,6 +14,7 @@ router.post('/register', authController.register);
 router.get('/logout', authController.logout);
 
 router.post('/git', (req, res) => {
+  console.log('git was called');
   console.log('git request body', req.body);
   console.log('git request body.hook.config ', req.body.hook.config);
   const hmac = crypto.createHmac('sha1', process.env.SECRET);
