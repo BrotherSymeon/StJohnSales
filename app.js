@@ -92,8 +92,7 @@ app.use(/^(?!\/auth)(?!\/git).*$/, (req, res, next) => {
   //  req.session.user = require('../lib/fakeUser').user;
   //  next();
   // } else {
-
-  console.log(req.session);
+  // new comment
   if (!req.session.user) {
 
     res.redirect('/auth/login');
