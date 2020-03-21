@@ -1,6 +1,0 @@
-
-
-DELETE FROM Buyer;
-DELETE FROM OrderItems;
-DELETE FROM Orders;
-DELETE FROM ShipTo;
