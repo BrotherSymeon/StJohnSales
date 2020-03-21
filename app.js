@@ -83,7 +83,7 @@ app.use((req, res, next) => {
   }
   next();
 });
-app.use(/^(?!\/auth).*$/, (req, res, next) => {
+app.use(/^(?!\/auth)(?!\/git).*$/, (req, res, next) => {
 
   //console.log("sessionChecker");
   //console.log(process.env.LOCAL);
