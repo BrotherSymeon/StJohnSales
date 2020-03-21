@@ -1,7 +1,11 @@
 const crypto = require('crypto');
 const {execSync} = require('child_process');
+const express = require('express');
 
-app.post('/', (req, res) => {
+const router = express.Router();
+
+router.post('/', (req, res) => {
+  console.log('git request data ', req);
   const hmac = crypto.createHmac('sha1', process.env.SECRET);
   const sig = 'sha1=' + hmac.update(JSON.stringify(req.body)).digest('hex');
   if (req.headers['x-github-event'] === 'push' &&
@@ -23,3 +27,6 @@ app.post('/', (req, res) => {
     return res.sendStatus(403);
   }
 });
+
+
+module.exports = router;
