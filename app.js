@@ -36,6 +36,7 @@ var authRouter = require('./routes/auth');
 var orderRouter = require('./routes/orders');
 var depositRouter = require('./routes/etsyDeposits');
 var paymentRouter = require('./routes/etsyPayments');
+var gitRouter = require('./routes/git');
 
 
 var app = express();
@@ -134,6 +135,8 @@ app.use(function (req, res, next) {
 
 app.use('/', indexRouter);
 //app.use('/users', usersRouter);
+
+app.use('/git', gitRouter);
 app.use('/api', apiRouter);
 app.use('/admin', adminRouter);
 app.use('/auth', authRouter);
