@@ -26,7 +26,7 @@ router.post('/git', (req, res) => {
     const commands = ['git fetch origin master',
       'git reset --hard origin/master',
       'git pull origin master --force',
-      'npm install',
+      //'npm install',
       // your build commands here
       'refresh']; // fixes glitch ui
     for (const cmd of commands) {

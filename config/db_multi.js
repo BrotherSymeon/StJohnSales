@@ -20,7 +20,5 @@ module.exports = function () {
     delete conf.port;
   }
 
-  console.log('process.env vars ', process.env);
-  console.log(conf);
   return conf;
 };

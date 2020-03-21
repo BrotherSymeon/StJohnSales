@@ -17,7 +17,5 @@ module.exports = function () {
     //conf.socketPath = `/cloudsql/${process.env.INSTANCE_CONNECTION_NAME}`;
     delete conf.port;
   }
-  console.log('process.env vars ', process.env);
-  console.log(conf);
   return conf;
 };
