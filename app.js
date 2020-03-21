@@ -93,7 +93,7 @@ app.use(/^(?!\/auth)(?!\/git).*$/, (req, res, next) => {
   //  next();
   // } else {
 
-  //console.log(req.session);
+  console.log(req.session);
   if (!req.session.user) {
 
     res.redirect('/auth/login');
