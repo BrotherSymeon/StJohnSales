@@ -83,7 +83,7 @@ app.use((req, res, next) => {
   }
   next();
 });
-app.use(/^(?!\/auth)(?!\/git).*$/, (req, res, next) => {
+app.use(/^(?!\/auth).*$/, (req, res, next) => {
 
   //console.log("sessionChecker");
   //console.log(process.env.LOCAL);
@@ -135,7 +135,6 @@ app.use(function (req, res, next) {
 app.use('/', indexRouter);
 //app.use('/users', usersRouter);
 
-app.use('/git', gitRouter);
 app.use('/api', apiRouter);
 app.use('/admin', adminRouter);
 app.use('/auth', authRouter);
