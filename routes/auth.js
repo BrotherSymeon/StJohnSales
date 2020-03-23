@@ -17,23 +17,23 @@ router.post('/git', (req, res) => {
   console.log('git was called');
   console.log('git request body', req.body);
   const branch = req.body.ref.split('/')[req.body.ref.split('/').length];
-  console.log('branch is', branch);
+  console.log('branch is ', branch);
   const hmac = crypto.createHmac('sha1', process.env.SECRET);
-  const sig = 'sha1=' + hmac.update(JSON.stringify(req.body)).digest('hex');
-  console.log('git request headers ', req.headers);
-  if (req.headers['x-github-event'] === 'push' &&
-    crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(req.headers['x-hub-signature']))) {
-    res.sendStatus(200);
-    const commands = ['git fetch origin master',
-      'git reset --hard origin/master',
-      'git pull origin master --force',
-      //'npm install',
-      // your build commands here
-      'refresh']; // fixes glitch ui
-    for (const cmd of commands) {
-      console.log(execSync(cmd).toString());
-    }
-    console.log('updated with origin/master!');
+  nst sig = 'sha1=' + hmac.update(JSON.stringify(req.body)).digest('hex');
+    ole.log('git request headers ', req.headers);
+    req.headers['x-github-event'] === 'push' &&
+    ypto.timingSafeEqual(Buffer.from(sig), Buffer.from(req.headers['x-hub-signature']))) {
+    s.sendStatus(200);
+    nst commands = ['git fetch origin master',
+    'git reset --hard origin/master',
+    'git pull origin master --force',
+    //'npm install',
+    // your build commands here
+    'refresh']; // fixes glitch ui
+  for (const cmd of commands) {
+    console.log(execSync(cmd).toString());
+  }
+  console.log('updated with origin/master!');
     return;
   } else {
     console.log('webhook signature incorrect!');
