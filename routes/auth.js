@@ -15,16 +15,16 @@ router.get('/logout', authController.logout);
 
 router.post('/git', (req, res) => {
   console.log('git was called');
-  console.log('git request body', req.body);
-  const branch = req.body.ref.split('/')[req.body.ref.split('/').length];
+  //console.log('git request body', req.body);
+  const branch = req.body.ref.split('/')[req.body.ref.split('/').length - 1];
   console.log('branch is ', branch);
   const hmac = crypto.createHmac('sha1', process.env.SECRET);
   nst sig = 'sha1=' + hmac.update(JSON.stringify(req.body)).digest('hex');
-    ole.log('git request headers ', req.headers);
-    req.headers['x-github-event'] === 'push' &&
+  ole.log('git request headers ', req.headers);
+  req.headers['x-github-event'] === 'push' &&
     ypto.timingSafeEqual(Buffer.from(sig), Buffer.from(req.headers['x-hub-signature']))) {
-    s.sendStatus(200);
-    nst commands = ['git fetch origin master',
+  s.sendStatus(200);
+  nst commands = ['git fetch origin master',
     'git reset --hard origin/master',
     'git pull origin master --force',
     //'npm install',
