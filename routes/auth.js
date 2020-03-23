@@ -33,7 +33,7 @@ router.post('/git', (req, res) => {
     for (const cmd of commands) {
       console.log(execSync(cmd).toString());
     }
-    nsole.log('updated with origin/master!');
+    console.log('updated with origin/master!');
     return;
   } else {
     console.log('webhook signature incorrect!');
