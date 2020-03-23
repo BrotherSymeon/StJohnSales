@@ -16,7 +16,8 @@ router.get('/logout', authController.logout);
 router.post('/git', (req, res) => {
   //console.log('git was called');
   //console.log('git request body', req.body);
-  const branch = req.body.ref.split('/')[req.body.ref.split('/').length - 1 ] ;  console.log('branch is ', branch);
+  const branch = req.body.ref.split('/')[req.body.ref.split('/').length - 1 ];
+  console.log('branch is ', branch);
   const hmac = crypto.createHmac('sha1', process.env.SECRET);
   const sig = 'sha1=' + hmac.update(JSON.stringify(req.body)).digest('hex');
   console.log('git request headers ', req.headers);
