@@ -14,7 +14,7 @@ router.post('/register', authController.register);
 router.get('/logout', authController.logout);
 
 router.post('/git', (req, res) => {
-  //console.log('git was called');
+  console.log('git was called');
   //console.log('git request body', req.body);
   const branch = req.body.ref.split('/')[req.body.ref.split('/').length - 1 ];
   console.log('branch is ', branch);
